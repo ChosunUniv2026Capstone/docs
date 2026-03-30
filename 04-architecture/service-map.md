@@ -10,6 +10,7 @@ related:
   - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/01-requirements/req-student-features.md]]
+  - [[/04-architecture/local-runtime-topology.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
@@ -28,6 +29,8 @@ source:
   - 스키마, 마이그레이션, 데이터 계약
 - `docs`
   - 요구사항, ADR, 규약, 회의록
+- `CodexKit`
+  - 로컬 Docker Compose 와 온보딩 스크립트
 
 # 기본 상호작용
 

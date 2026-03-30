@@ -10,6 +10,7 @@ related:
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
   - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
+  - [[/04-architecture/local-runtime-topology.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
@@ -46,10 +47,13 @@ source:
 
 # 기술 방향
 
+- Front: React + Vite 기반 개발용 콘솔
+- Backend: Python + FastAPI
+- PresenceService: Python + FastAPI + Redis 캐시
+- DB: PostgreSQL
+- Orchestration: Docker Compose
 - Wi-Fi 기반 재실성 판별
-- Docker 기반 MSA 운영 구조
 - OpenWrt 기반 단말 장치 정보 획득
-- Python / FastAPI 기반 백엔드 우선 검토
 
 # 현재 범위
 
