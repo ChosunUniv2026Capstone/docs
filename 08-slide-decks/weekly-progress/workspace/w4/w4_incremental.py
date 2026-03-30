@@ -12,6 +12,7 @@ WORKSPACE = Path("/Users/kimhyeonseok/CodeStorage/smart-class")
 ROOT = WORKSPACE / "docs" / "08-slide-decks" / "weekly-progress"
 BASE = ROOT / "published" / "w3.pptx"
 OUT = ROOT / "published" / "w4.pptx"
+EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
 
 NAVY = RGBColor(0x1E, 0x3A, 0x5F)
 SKY = RGBColor(0xEA, 0xF2, 0xFB)
@@ -19,16 +20,8 @@ GRAY = RGBColor(0xEE, 0xF2, 0xF7)
 LINE = RGBColor(0xC6, 0xD3, 0xE3)
 TEXT = RGBColor(0x1B, 0x2A, 0x38)
 MUTED = RGBColor(0x64, 0x74, 0x8B)
-GREEN = RGBColor(0x2E, 0x8B, 0x57)
 
-BASE_REFS = {
-    "docs": ("be55c70", "origin/main"),
-    "CodexKit": ("29fd521", "HEAD"),
-    "Front": ("a39d68a", "HEAD"),
-    "Backend": ("e1e524b", "HEAD"),
-    "PresenceService": ("eea6cc3", "HEAD"),
-    "DB": ("379af2b", "HEAD"),
-}
+REPOS = ["docs", "CodexKit", "Front", "Backend", "PresenceService", "DB"]
 
 
 def git(repo, *args):
@@ -38,81 +31,62 @@ def git(repo, *args):
     ).strip()
 
 
-def repo_diff_info(repo):
-    base, head = BASE_REFS[repo]
-    files = git(repo, "diff", "--name-only", f"{base}..{head}").splitlines()
-    files = [f for f in files if f and not f.startswith("08-slide-decks/")]
-    commits = git(repo, "log", "--format=%s", f"{base}..{head}").splitlines()
-    shortstat = git(repo, "diff", "--shortstat", f"{base}..{head}")
-    return {"repo": repo, "files": files, "commits": commits, "shortstat": shortstat}
+def resolve_base(repo):
+    tags = [t for t in git(repo, "tag", "--merged", "HEAD", "--sort=creatordate").splitlines() if t]
+    result = subprocess.run(
+        ["git", "-C", str(WORKSPACE / repo), "describe", "--tags", "--exact-match", "HEAD"],
+        text=True,
+        capture_output=True,
+    )
+    head_tag = result.stdout.strip() if result.returncode == 0 else ""
+
+    if not tags:
+        return {"mode": "empty", "ref": EMPTY_TREE, "label": "empty repo"}
+    if head_tag and len(tags) >= 2 and tags[-1] == head_tag:
+        return {"mode": "tag", "ref": tags[-2], "label": f"tag:{tags[-2]}"}
+    return {"mode": "tag", "ref": tags[-1], "label": f"tag:{tags[-1]}"}
 
 
-def summarize(repo, info):
-    files = info["files"]
-    commits = info["commits"]
-    shortstat = info["shortstat"]
+def diff_files(repo, base):
+    if base["mode"] == "empty":
+        out = git(repo, "diff", "--name-only", EMPTY_TREE, "HEAD")
+    else:
+        out = git(repo, "diff", "--name-only", f"{base['ref']}..HEAD")
+    return [line for line in out.splitlines() if line]
 
-    if repo == "docs":
-        focus = []
-        if any("07-status/implementation-roadmap.md" in f for f in files):
-            focus.append("구현 로드맵 상태 문서 추가")
-        if any("04-architecture/local-runtime-topology.md" in f for f in files):
-            focus.append("로컬 런타임 topology 문서 추가")
-        if any("05-work-items/epic-full-lms-delivery-plan.md" in f for f in files):
-            focus.append("LMS delivery epic 문서화")
-        if any("05-work-items/task-phase-2-academic-read-model.md" in f for f in files):
-            focus.append("phase 2 academic read model task 추가")
-        return {
-            "title": "docs",
-            "summary": " / ".join(focus[:3]) or "상태·아키텍처·작업 항목 문서 확장",
-            "detail": f"{len(files)}개 파일 변경, {shortstat or '문서 범위 갱신'}",
-        }
 
-    if repo == "CodexKit":
-        focus = []
-        if any("install/bootstrap_workspace.sh" in f for f in files):
-            focus.append("workspace bootstrap 보강")
-        if any("docker-compose.yml" in f for f in files):
-            focus.append("통합 로컬 runtime 구성 추가")
-        if any("workspace-seed/docs/04-architecture/local-runtime-topology.md" in f for f in files):
-            focus.append("docs seed에 runtime topology 반영")
-        if any("validate_branch_name.py" in f for f in files):
-            focus.append("짧은 브랜치 규약 전파")
-        return {
-            "title": "CodexKit",
-            "summary": " / ".join(focus[:3]) or "운영 패키지와 seed 문서 갱신",
-            "detail": f"{len(files)}개 파일 변경, 최근 커밋: {commits[-1] if commits else '없음'}",
-        }
+def diff_shortstat(repo, base):
+    if base["mode"] == "empty":
+        return git(repo, "diff", "--shortstat", EMPTY_TREE, "HEAD")
+    return git(repo, "diff", "--shortstat", f"{base['ref']}..HEAD")
 
-    if repo == "Front":
-        return {
-            "title": "Front",
-            "summary": "`src/App.tsx`, `src/api.ts`, `src/index.css` 중심으로 로그인·프로필·강의 화면 재구성",
-            "detail": shortstat or "프론트 콘솔 뼈대 추가",
-        }
 
-    if repo == "Backend":
-        return {
-            "title": "Backend",
-            "summary": "`app/main.py`, `models.py`, `schemas.py`, `services.py`로 eligibility / attendance read-model spine 구축",
-            "detail": shortstat or "FastAPI 백엔드 뼈대 추가",
-        }
+def commit_subjects(repo, base):
+    if base["mode"] == "empty":
+        out = git(repo, "log", "--format=%s", "--reverse")
+    else:
+        out = git(repo, "log", "--format=%s", "--reverse", f"{base['ref']}..HEAD")
+    return [line for line in out.splitlines() if line]
 
-    if repo == "PresenceService":
-        return {
-            "title": "PresenceService",
-            "summary": "`dummy_openwrt.py`, `cache.py`, `service.py`로 OpenWrt형 스냅샷 수집 더미 서비스 추가",
-            "detail": shortstat or "재실성 보조 서비스 추가",
-        }
 
-    if repo == "DB":
-        return {
-            "title": "DB",
-            "summary": "`001_schema.sql`, `010_seed.sql`, CSV seed 파일로 attendance slice 데모 데이터 구성",
-            "detail": shortstat or "DB seed 추가",
-        }
+def commit_bodies(repo, base):
+    if base["mode"] == "empty":
+        out = git(repo, "log", "--format=%s%n%b<<END>>", "--reverse")
+    else:
+        out = git(repo, "log", "--format=%s%n%b<<END>>", "--reverse", f"{base['ref']}..HEAD")
+    return [chunk.strip() for chunk in out.split("<<END>>") if chunk.strip()]
 
-    raise ValueError(repo)
+
+def repo_info(repo):
+    base = resolve_base(repo)
+    return {
+        "repo": repo,
+        "base": base,
+        "files": diff_files(repo, base),
+        "shortstat": diff_shortstat(repo, base),
+        "subjects": commit_subjects(repo, base),
+        "commits": commit_bodies(repo, base),
+    }
 
 
 def set_text_frame(text_frame, text, font_size=14, bold=False, color=TEXT):
@@ -144,8 +118,8 @@ def add_top_title(slide, title):
     accent.fill.fore_color.rgb = NAVY
     accent.line.color.rgb = NAVY
 
-    title_box = slide.shapes.add_textbox(Inches(0.38), Inches(0.58), Inches(5.8), Inches(0.4))
-    set_text_frame(title_box.text_frame, title, font_size=21, bold=True, color=TEXT)
+    title_box = slide.shapes.add_textbox(Inches(0.38), Inches(0.58), Inches(6.2), Inches(0.4))
+    set_text_frame(title_box.text_frame, title, font_size=20, bold=True, color=TEXT)
 
 
 def add_card(slide, x, y, w, h, title, body, fill_rgb=SKY):
@@ -158,16 +132,16 @@ def add_card(slide, x, y, w, h, title, body, fill_rgb=SKY):
     box.line.width = Pt(1)
 
     title_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.12), Inches(w - 0.28), Inches(0.22))
-    set_text_frame(title_box.text_frame, title, font_size=13, bold=True, color=NAVY)
+    set_text_frame(title_box.text_frame, title, font_size=12.8, bold=True, color=NAVY)
 
-    body_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.42), Inches(w - 0.28), Inches(h - 0.52))
+    body_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.4), Inches(w - 0.28), Inches(h - 0.5))
     set_text_frame(body_box.text_frame, body, font_size=10.8, color=TEXT)
     body_box.text_frame.vertical_anchor = MSO_ANCHOR.TOP
 
 
-def add_bullet_box(slide, x, y, w, h, title, items):
-    add_card(slide, x, y, w, h, title, "", fill_rgb=GRAY)
-    body_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.42), Inches(w - 0.28), Inches(h - 0.52))
+def add_bullet_card(slide, x, y, w, h, title, items, fill_rgb=GRAY):
+    add_card(slide, x, y, w, h, title, "", fill_rgb=fill_rgb)
+    body_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.4), Inches(w - 0.28), Inches(h - 0.5))
     tf = body_box.text_frame
     tf.clear()
     for idx, item in enumerate(items):
@@ -176,15 +150,15 @@ def add_bullet_box(slide, x, y, w, h, title, items):
         p.level = 0
         p.bullet = True
         p.font.name = "Pretendard"
-        p.font.size = Pt(11.2)
+        p.font.size = Pt(11)
         p.font.color.rgb = TEXT
         p.space_after = Pt(4)
-        p.line_spacing = 1.05
+        p.line_spacing = 1.04
 
 
 def add_slide_at(prs, index):
     layout = prs.slide_layouts[6]
-    slide = prs.slides.add_slide(layout)
+    prs.slides.add_slide(layout)
     sld_id_lst = prs.slides._sldIdLst
     new_id = sld_id_lst[-1]
     sld_id_lst.remove(new_id)
@@ -229,121 +203,156 @@ def update_cover_date(prs):
     meta.text = meta.text.replace("03월 30일", "04월 06일")
 
 
-def add_progress_slide(prs, docs_info, kit_info):
-    slide = add_slide_at(prs, 4)
-    add_top_title(slide, "팀 소개 및 진행사항 - W4 업데이트")
-    add_bullet_box(
-        slide,
-        0.8,
-        1.45,
-        5.3,
-        4.7,
-        "문서 / 운영 변경",
-        [
-            f"docs: {docs_info['summary']}",
-            f"CodexKit: {kit_info['summary']}",
-            "기존 제안서 중심 발표를 유지하되, 이후 주차 업데이트가 가능한 운영 기반을 확보했습니다.",
-        ],
-    )
-    add_card(slide, 6.4, 1.45, 5.95, 1.45, "docs diff", docs_info["detail"], SKY)
-    add_card(slide, 6.4, 3.15, 5.95, 1.45, "CodexKit diff", kit_info["detail"], GRAY)
-    add_card(
-        slide,
-        6.4,
-        4.85,
-        5.95,
-        1.3,
-        "배치 기준",
-        "목차 01 영역에 현재 팀 진행과 운영 변화만 추가하고, 기존 후속 섹션은 유지합니다.",
-        SKY,
-    )
+def pick_commit(info, keyword):
+    for subject in reversed(info["subjects"]):
+        if keyword.lower() in subject.lower():
+            return subject
+    return info["subjects"][-1] if info["subjects"] else "(commit 없음)"
 
 
-def add_repo_implementation_slide(prs, front_info, backend_info, presence_info, db_info):
-    slide = add_slide_at(prs, 12)
-    add_top_title(slide, "구현 진행 현황 - W4 diff 요약")
-    add_card(slide, 0.75, 1.35, 3.0, 2.2, front_info["title"], f"{front_info['summary']}\n{front_info['detail']}", SKY)
-    add_card(slide, 3.95, 1.35, 3.0, 2.2, backend_info["title"], f"{backend_info['summary']}\n{backend_info['detail']}", GRAY)
-    add_card(slide, 7.15, 1.35, 3.0, 2.2, presence_info["title"], f"{presence_info['summary']}\n{presence_info['detail']}", SKY)
-    add_card(slide, 10.35, 1.35, 2.2, 2.2, db_info["title"], f"{db_info['summary']}\n{db_info['detail']}", GRAY)
-    add_bullet_box(
-        slide,
-        0.88,
-        4.0,
-        11.65,
-        2.0,
-        "섹션 배치 이유",
-        [
-            "프론트 / 백엔드 / 재실성 서비스 / DB 변화는 기존 아키텍처·구현 섹션 바로 뒤에 두는 것이 자연스럽습니다.",
-            "이번 주 추가 정보는 각 저장소 diff에서 실제 생성된 파일과 기능 뼈대를 기준으로 요약했습니다.",
-        ],
-    )
+def feature_data(infos):
+    docs = infos["docs"]
+    kit = infos["CodexKit"]
+    front = infos["Front"]
+    backend = infos["Backend"]
+    presence = infos["PresenceService"]
+    db = infos["DB"]
+
+    return {
+        "ops": {
+            "title": "운영 기반 기능",
+            "commits": [
+                pick_commit(docs, "source of truth"),
+                pick_commit(kit, "bootstrap"),
+                pick_commit(kit, "branch"),
+            ],
+            "features": [
+                "docs 저장소를 source of truth로 고정하고 요구사항·아키텍처·상태 문서 체계를 정리",
+                "CodexKit으로 workspace bootstrap, docs seed, 로컬 runtime 템플릿 제공",
+                "브랜치 규약과 repo template이 split-repo 구조에 맞게 통일",
+            ],
+            "files": [
+                "docs/07-status/*",
+                "CodexKit/install/bootstrap_workspace.sh",
+                "CodexKit/workspace-seed/docs/*",
+            ],
+            "base": f"{docs['base']['label']} / {kit['base']['label']}",
+        },
+        "lms": {
+            "title": "LMS 기본 기능",
+            "commits": [
+                pick_commit(front, "login"),
+                pick_commit(backend, "attendance"),
+            ],
+            "features": [
+                "역할 기반 로그인, 프로필 단말 관리, 대시보드 강의 카드, 강의 상세 화면 구성",
+                "학생·교수 강의 조회, 공지 API, 관리자 조회 API, 출석 eligibility read endpoint 구현",
+                "프론트와 백엔드가 같은 LMS 기본 정보 구조를 공유하도록 첫 vertical slice 확보",
+            ],
+            "files": [
+                "Front/src/App.tsx",
+                "Front/src/api.ts",
+                "Backend/app/main.py",
+                "Backend/app/services.py",
+            ],
+            "base": f"{front['base']['label']} / {backend['base']['label']}",
+        },
+        "presence": {
+            "title": "재실성 출석 기능",
+            "commits": [
+                pick_commit(presence, "OpenWrt"),
+                pick_commit(db, "attendance slice"),
+                pick_commit(backend, "attendance"),
+            ],
+            "features": [
+                "OpenWrt 형태를 닮은 dummy snapshot 수집과 Redis-backed 캐시 서비스 구현",
+                "백엔드에서 PresenceService eligibility 결과를 사용하도록 서비스 경계 유지",
+                "사용자·강의·강의실·AP·등록 단말 데이터를 seed로 넣어 출석 판정 검증 기반 확보",
+            ],
+            "files": [
+                "PresenceService/app/service.py",
+                "PresenceService/app/dummy_openwrt.py",
+                "DB/postgres/init/001_schema.sql",
+                "DB/postgres/seed/registered_devices.csv",
+            ],
+            "base": f"{presence['base']['label']} / {db['base']['label']}",
+        },
+        "qa": {
+            "title": "개발·검증 지원 기능",
+            "commits": [
+                pick_commit(kit, "runtime"),
+                pick_commit(docs, "runtime"),
+                pick_commit(db, "attendance slice"),
+            ],
+            "features": [
+                "로컬 runtime topology와 Docker 기반 개발 경로를 문서/seed에 반영",
+                "DB seed, Presence dummy data, Backend/Frontend 실행 흐름을 한 워크스페이스에서 검증 가능",
+                "주간 발표 자료도 이후에는 이전 tag부터 현재까지의 diff와 commit 메시지를 기준으로 생성 가능",
+            ],
+            "files": [
+                "docs/04-architecture/local-runtime-topology.md",
+                "CodexKit/docker-compose.yml",
+                "DB/postgres/seed/*",
+            ],
+            "base": f"{docs['base']['label']} / {kit['base']['label']} / {db['base']['label']}",
+        },
+    }
 
 
-def add_plan_slide(prs, docs_info, all_infos):
-    slide = add_slide_at(prs, 18)
-    add_top_title(slide, "개발 계획 보강 - W4 기준")
-    add_bullet_box(
-        slide,
-        0.82,
-        1.4,
-        6.0,
-        4.85,
-        "현재 판단",
-        [
-            "Phase 1: 로그인, 단말 관리, eligibility, Docker 실행 기본 동작 확보",
-            "Phase 2: 강의 목록 / 공지 / 관리자 조회 뼈대 진행",
-            "후속 단계는 저장소별 첫 slice를 실제 출석 흐름으로 연결하는 작업이 중심입니다.",
-        ],
-    )
-    repos_changed = ", ".join(info["repo"] for info in all_infos if info["files"])
-    add_card(
-        slide,
-        7.05,
-        1.4,
-        5.45,
-        1.45,
-        "diff 기반 추적 범위",
-        f"이번 W4 반영은 {repos_changed} 레포의 git diff를 기준으로 정리했습니다.",
-        SKY,
-    )
-    add_card(
-        slide,
-        7.05,
-        3.05,
-        5.45,
-        1.45,
-        "docs 상태 근거",
-        docs_info["summary"],
-        GRAY,
-    )
-    add_card(
-        slide,
-        7.05,
-        4.7,
-        5.45,
-        1.55,
-        "다음 주 기준",
-        "새 목차를 따로 늘리지 않고, 다음 업데이트도 해당 섹션 안에서 필요한 위치에만 보강합니다.",
-        SKY,
-    )
+def feature_slide(slide, title, feature, stat_left, stat_right):
+    add_top_title(slide, title)
+    add_bullet_card(slide, 0.82, 1.36, 5.5, 4.95, "구현된 기능", feature["features"], fill_rgb=GRAY)
+    add_bullet_card(slide, 6.58, 1.36, 5.85, 2.3, "근거 commit", feature["commits"], fill_rgb=SKY)
+    add_card(slide, 6.58, 3.92, 5.85, 1.12, "기준 범위", feature["base"], fill_rgb=GRAY)
+    add_card(slide, 6.58, 5.3, 2.8, 1.02, "관련 파일", "\n".join(feature["files"][:2]), fill_rgb=SKY)
+    add_card(slide, 9.63, 5.3, 2.8, 1.02, "관련 파일", "\n".join(feature["files"][2:]), fill_rgb=SKY)
+    add_card(slide, 0.82, 6.48, 5.65, 0.52, "Diff 요약", stat_left, fill_rgb=SKY)
+    add_card(slide, 6.58, 6.48, 5.85, 0.52, "Diff 요약", stat_right, fill_rgb=SKY)
 
 
 def main():
-    infos = {repo: repo_diff_info(repo) for repo in BASE_REFS}
-    summaries = {repo: summarize(repo, info) for repo, info in infos.items()}
+    infos = {repo: repo_info(repo) for repo in REPOS}
+    features = feature_data(infos)
 
     prs = Presentation(BASE)
     update_cover_date(prs)
-    add_progress_slide(prs, summaries["docs"], summaries["CodexKit"])
-    add_repo_implementation_slide(
-        prs,
-        summaries["Front"],
-        summaries["Backend"],
-        summaries["PresenceService"],
-        summaries["DB"],
+
+    slide = add_slide_at(prs, 4)
+    feature_slide(
+        slide,
+        "팀 소개 및 진행사항 - 운영 기반 기능",
+        features["ops"],
+        infos["docs"]["shortstat"] or "docs diff 없음",
+        infos["CodexKit"]["shortstat"] or "CodexKit diff 없음",
     )
-    add_plan_slide(prs, summaries["docs"], [infos[r] for r in BASE_REFS])
+
+    slide = add_slide_at(prs, 12)
+    feature_slide(
+        slide,
+        "구현 기능 - LMS 기본 기능",
+        features["lms"],
+        infos["Front"]["shortstat"] or "Front diff 없음",
+        infos["Backend"]["shortstat"] or "Backend diff 없음",
+    )
+
+    slide = add_slide_at(prs, 15)
+    feature_slide(
+        slide,
+        "구현 기능 - 재실성 출석 기능",
+        features["presence"],
+        infos["PresenceService"]["shortstat"] or "PresenceService diff 없음",
+        infos["DB"]["shortstat"] or "DB diff 없음",
+    )
+
+    slide = add_slide_at(prs, 19)
+    feature_slide(
+        slide,
+        "개발 계획 보강 - 개발·검증 지원 기능",
+        features["qa"],
+        infos["docs"]["shortstat"] or "docs diff 없음",
+        infos["CodexKit"]["shortstat"] or "CodexKit diff 없음",
+    )
+
     move_thanks_to_end(prs)
     renumber_pages(prs)
     prs.save(OUT)
