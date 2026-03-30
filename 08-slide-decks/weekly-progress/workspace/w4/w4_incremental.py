@@ -1,4 +1,4 @@
-from copy import deepcopy
+import subprocess
 from pathlib import Path
 
 from pptx import Presentation
@@ -8,18 +8,111 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.util import Inches, Pt
 
 
-ROOT = Path("/Users/kimhyeonseok/CodeStorage/smart-class/docs/08-slide-decks/weekly-progress")
+WORKSPACE = Path("/Users/kimhyeonseok/CodeStorage/smart-class")
+ROOT = WORKSPACE / "docs" / "08-slide-decks" / "weekly-progress"
 BASE = ROOT / "published" / "w3.pptx"
 OUT = ROOT / "published" / "w4.pptx"
 
 NAVY = RGBColor(0x1E, 0x3A, 0x5F)
-BLUE = RGBColor(0x2C, 0x5E, 0x96)
 SKY = RGBColor(0xEA, 0xF2, 0xFB)
 GRAY = RGBColor(0xEE, 0xF2, 0xF7)
 LINE = RGBColor(0xC6, 0xD3, 0xE3)
 TEXT = RGBColor(0x1B, 0x2A, 0x38)
 MUTED = RGBColor(0x64, 0x74, 0x8B)
-WHITE = RGBColor(0xFF, 0xFF, 0xFF)
+GREEN = RGBColor(0x2E, 0x8B, 0x57)
+
+BASE_REFS = {
+    "docs": ("be55c70", "origin/main"),
+    "CodexKit": ("29fd521", "HEAD"),
+    "Front": ("a39d68a", "HEAD"),
+    "Backend": ("e1e524b", "HEAD"),
+    "PresenceService": ("eea6cc3", "HEAD"),
+    "DB": ("379af2b", "HEAD"),
+}
+
+
+def git(repo, *args):
+    return subprocess.check_output(
+        ["git", "-C", str(WORKSPACE / repo), *args],
+        text=True,
+    ).strip()
+
+
+def repo_diff_info(repo):
+    base, head = BASE_REFS[repo]
+    files = git(repo, "diff", "--name-only", f"{base}..{head}").splitlines()
+    files = [f for f in files if f and not f.startswith("08-slide-decks/")]
+    commits = git(repo, "log", "--format=%s", f"{base}..{head}").splitlines()
+    shortstat = git(repo, "diff", "--shortstat", f"{base}..{head}")
+    return {"repo": repo, "files": files, "commits": commits, "shortstat": shortstat}
+
+
+def summarize(repo, info):
+    files = info["files"]
+    commits = info["commits"]
+    shortstat = info["shortstat"]
+
+    if repo == "docs":
+        focus = []
+        if any("07-status/implementation-roadmap.md" in f for f in files):
+            focus.append("구현 로드맵 상태 문서 추가")
+        if any("04-architecture/local-runtime-topology.md" in f for f in files):
+            focus.append("로컬 런타임 topology 문서 추가")
+        if any("05-work-items/epic-full-lms-delivery-plan.md" in f for f in files):
+            focus.append("LMS delivery epic 문서화")
+        if any("05-work-items/task-phase-2-academic-read-model.md" in f for f in files):
+            focus.append("phase 2 academic read model task 추가")
+        return {
+            "title": "docs",
+            "summary": " / ".join(focus[:3]) or "상태·아키텍처·작업 항목 문서 확장",
+            "detail": f"{len(files)}개 파일 변경, {shortstat or '문서 범위 갱신'}",
+        }
+
+    if repo == "CodexKit":
+        focus = []
+        if any("install/bootstrap_workspace.sh" in f for f in files):
+            focus.append("workspace bootstrap 보강")
+        if any("docker-compose.yml" in f for f in files):
+            focus.append("통합 로컬 runtime 구성 추가")
+        if any("workspace-seed/docs/04-architecture/local-runtime-topology.md" in f for f in files):
+            focus.append("docs seed에 runtime topology 반영")
+        if any("validate_branch_name.py" in f for f in files):
+            focus.append("짧은 브랜치 규약 전파")
+        return {
+            "title": "CodexKit",
+            "summary": " / ".join(focus[:3]) or "운영 패키지와 seed 문서 갱신",
+            "detail": f"{len(files)}개 파일 변경, 최근 커밋: {commits[-1] if commits else '없음'}",
+        }
+
+    if repo == "Front":
+        return {
+            "title": "Front",
+            "summary": "`src/App.tsx`, `src/api.ts`, `src/index.css` 중심으로 로그인·프로필·강의 화면 재구성",
+            "detail": shortstat or "프론트 콘솔 뼈대 추가",
+        }
+
+    if repo == "Backend":
+        return {
+            "title": "Backend",
+            "summary": "`app/main.py`, `models.py`, `schemas.py`, `services.py`로 eligibility / attendance read-model spine 구축",
+            "detail": shortstat or "FastAPI 백엔드 뼈대 추가",
+        }
+
+    if repo == "PresenceService":
+        return {
+            "title": "PresenceService",
+            "summary": "`dummy_openwrt.py`, `cache.py`, `service.py`로 OpenWrt형 스냅샷 수집 더미 서비스 추가",
+            "detail": shortstat or "재실성 보조 서비스 추가",
+        }
+
+    if repo == "DB":
+        return {
+            "title": "DB",
+            "summary": "`001_schema.sql`, `010_seed.sql`, CSV seed 파일로 attendance slice 데모 데이터 구성",
+            "detail": shortstat or "DB seed 추가",
+        }
+
+    raise ValueError(repo)
 
 
 def set_text_frame(text_frame, text, font_size=14, bold=False, color=TEXT):
@@ -33,10 +126,10 @@ def set_text_frame(text_frame, text, font_size=14, bold=False, color=TEXT):
         p.font.bold = bold
         p.font.color.rgb = color
         p.space_after = Pt(0)
-        p.line_spacing = 1.1
+        p.line_spacing = 1.08
 
 
-def add_top_title(slide, title, page_no):
+def add_top_title(slide, title):
     line = slide.shapes.add_shape(
         MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(0.22)
     )
@@ -51,21 +144,11 @@ def add_top_title(slide, title, page_no):
     accent.fill.fore_color.rgb = NAVY
     accent.line.color.rgb = NAVY
 
-    title_box = slide.shapes.add_textbox(Inches(0.38), Inches(0.58), Inches(4.8), Inches(0.4))
+    title_box = slide.shapes.add_textbox(Inches(0.38), Inches(0.58), Inches(5.8), Inches(0.4))
     set_text_frame(title_box.text_frame, title, font_size=21, bold=True, color=TEXT)
 
-    page_box = slide.shapes.add_textbox(Inches(12.82), Inches(7.04), Inches(0.22), Inches(0.18))
-    tf = page_box.text_frame
-    tf.clear()
-    p = tf.paragraphs[0]
-    p.text = str(page_no)
-    p.alignment = PP_ALIGN.RIGHT
-    p.font.name = "Pretendard"
-    p.font.size = Pt(9)
-    p.font.color.rgb = MUTED
 
-
-def add_card(slide, x, y, w, h, title, body, fill_rgb):
+def add_card(slide, x, y, w, h, title, body, fill_rgb=SKY):
     box = slide.shapes.add_shape(
         MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(h)
     )
@@ -74,46 +157,70 @@ def add_card(slide, x, y, w, h, title, body, fill_rgb):
     box.line.color.rgb = LINE
     box.line.width = Pt(1)
 
-    title_box = slide.shapes.add_textbox(Inches(x + 0.16), Inches(y + 0.14), Inches(w - 0.32), Inches(0.24))
-    set_text_frame(title_box.text_frame, title, font_size=14, bold=True, color=NAVY)
+    title_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.12), Inches(w - 0.28), Inches(0.22))
+    set_text_frame(title_box.text_frame, title, font_size=13, bold=True, color=NAVY)
 
-    body_box = slide.shapes.add_textbox(Inches(x + 0.16), Inches(y + 0.46), Inches(w - 0.32), Inches(h - 0.58))
-    set_text_frame(body_box.text_frame, body, font_size=11.5, color=TEXT)
+    body_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.42), Inches(w - 0.28), Inches(h - 0.52))
+    set_text_frame(body_box.text_frame, body, font_size=10.8, color=TEXT)
     body_box.text_frame.vertical_anchor = MSO_ANCHOR.TOP
 
 
-def add_bullets(slide, x, y, w, h, items, font_size=17):
-    box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
-    tf = box.text_frame
+def add_bullet_box(slide, x, y, w, h, title, items):
+    add_card(slide, x, y, w, h, title, "", fill_rgb=GRAY)
+    body_box = slide.shapes.add_textbox(Inches(x + 0.14), Inches(y + 0.42), Inches(w - 0.28), Inches(h - 0.52))
+    tf = body_box.text_frame
     tf.clear()
     for idx, item in enumerate(items):
         p = tf.paragraphs[0] if idx == 0 else tf.add_paragraph()
         p.text = item
         p.level = 0
         p.bullet = True
-        p.font.name = "Pretendard Variable"
-        p.font.size = Pt(font_size)
+        p.font.name = "Pretendard"
+        p.font.size = Pt(11.2)
         p.font.color.rgb = TEXT
-        p.space_after = Pt(8)
-        p.line_spacing = 1.12
+        p.space_after = Pt(4)
+        p.line_spacing = 1.05
 
 
-def clone_thanks_to_end(prs):
-    sldIdLst = prs.slides._sldIdLst
-    thanks = sldIdLst[17]
-    sldIdLst.remove(thanks)
-    sldIdLst.append(thanks)
+def add_slide_at(prs, index):
+    layout = prs.slide_layouts[6]
+    slide = prs.slides.add_slide(layout)
+    sld_id_lst = prs.slides._sldIdLst
+    new_id = sld_id_lst[-1]
+    sld_id_lst.remove(new_id)
+    sld_id_lst.insert(index, new_id)
+    return prs.slides[index]
 
 
-def update_thanks_page_number(prs):
-    thanks = prs.slides[-1]
-    for shape in thanks.shapes:
-        if getattr(shape, "has_text_frame", False) and shape.text.strip() == "18":
-            shape.text = "21"
-            for paragraph in shape.text_frame.paragraphs:
-                for run in paragraph.runs:
-                    run.font.name = "Pretendard"
+def move_thanks_to_end(prs):
+    thanks_idx = None
+    for idx, slide in enumerate(prs.slides):
+        texts = [sh.text.strip() for sh in slide.shapes if getattr(sh, "has_text_frame", False) and sh.text.strip()]
+        if "감사합니다." in texts:
+            thanks_idx = idx
             break
+    if thanks_idx is None:
+        return
+    sld_id_lst = prs.slides._sldIdLst
+    thanks = sld_id_lst[thanks_idx]
+    sld_id_lst.remove(thanks)
+    sld_id_lst.append(thanks)
+
+
+def renumber_pages(prs):
+    for slide_index, slide in enumerate(prs.slides, start=1):
+        for shape in slide.shapes:
+            if not getattr(shape, "has_text_frame", False):
+                continue
+            txt = shape.text.strip()
+            if txt.isdigit() and shape.left > 15000000 and shape.top > 9000000:
+                shape.text = str(slide_index)
+                for paragraph in shape.text_frame.paragraphs:
+                    paragraph.alignment = PP_ALIGN.RIGHT
+                    for run in paragraph.runs:
+                        run.font.name = "Pretendard"
+                        run.font.size = Pt(9)
+                        run.font.color.rgb = MUTED
 
 
 def update_cover_date(prs):
@@ -122,79 +229,123 @@ def update_cover_date(prs):
     meta.text = meta.text.replace("03월 30일", "04월 06일")
 
 
-def add_incremental_slides(prs):
-    layout = prs.slide_layouts[6]
-
-    slide = prs.slides.add_slide(layout)
-    add_top_title(slide, "W4 추가 진행사항", 18)
-    add_bullets(
+def add_progress_slide(prs, docs_info, kit_info):
+    slide = add_slide_at(prs, 4)
+    add_top_title(slide, "팀 소개 및 진행사항 - W4 업데이트")
+    add_bullet_box(
         slide,
-        0.82,
-        1.32,
-        6.9,
+        0.8,
+        1.45,
+        5.3,
         4.7,
+        "문서 / 운영 변경",
         [
-            "docs 저장소를 기준으로 로드맵, 리스크, 오픈 질문이 현재 상태에 맞게 정리되었습니다.",
-            "CodexKit이 워크스페이스 부트스트랩, docs seed, 브랜치 규약을 묶는 운영 패키지로 정리되었습니다.",
-            "발표 자료도 일회성 산출물이 아니라 Git으로 관리되는 주간 자산으로 전환하기 시작했습니다.",
+            f"docs: {docs_info['summary']}",
+            f"CodexKit: {kit_info['summary']}",
+            "기존 제안서 중심 발표를 유지하되, 이후 주차 업데이트가 가능한 운영 기반을 확보했습니다.",
         ],
-        font_size=17,
     )
-    add_card(slide, 8.02, 1.42, 4.0, 0.98, "문서", "source of truth 정착", SKY)
-    add_card(slide, 8.02, 2.72, 4.0, 0.98, "운영", "CodexKit 기반 작업 흐름 정리", GRAY)
-    add_card(slide, 8.02, 4.02, 4.0, 0.98, "발표", "PPTX + manifest + notes 관리 시작", SKY)
-    add_card(slide, 8.02, 5.32, 4.0, 0.74, "의미", "제안서에서 진행 보고 체계로 전환", GRAY)
-
-    slide = prs.slides.add_slide(layout)
-    add_top_title(slide, "W4 저장소별 구현 현황", 19)
-    add_card(slide, 0.82, 1.35, 2.25, 2.02, "Front", "로그인 / 프로필 / 강의 화면 구조 재정리", SKY)
-    add_card(slide, 3.18, 1.35, 2.25, 2.02, "Backend", "eligibility 및 attendance read-model spine 확보", GRAY)
-    add_card(slide, 5.54, 1.35, 2.25, 2.02, "PresenceService", "OpenWrt형 더미 수집 서비스 제공", SKY)
-    add_card(slide, 7.90, 1.35, 2.25, 2.02, "DB", "CSV 기반 attendance slice 데모 데이터 시드", GRAY)
-    add_card(slide, 10.26, 1.35, 2.25, 2.02, "docs", "요구사항 / 상태 / 슬라이드 운영 설계 갱신", SKY)
-    add_card(slide, 2.0, 4.05, 4.15, 1.48, "현재 단계", "Phase 1: 로그인, 단말 관리, eligibility, Docker 기본 동작 확보\nPhase 2: 강의 목록 / 공지 / 관리자 조회 뼈대 진행", GRAY)
-    add_card(slide, 6.6, 4.05, 4.6, 1.48, "다음 연결 포인트", "Front-Backend-PresenceService-DB 사이를 실제 출석 흐름으로 연결하고 검증하는 단계로 이동", SKY)
-    note_box = slide.shapes.add_textbox(Inches(0.9), Inches(6.0), Inches(11.7), Inches(0.42))
-    set_text_frame(note_box.text_frame, "핵심은 기능 수 증가보다 서비스 경계와 실행 가능한 첫 slice를 확보한 것입니다.", font_size=16, color=TEXT)
-
-    slide = prs.slides.add_slide(layout)
-    add_top_title(slide, "W4 리스크와 다음 액션", 20)
+    add_card(slide, 6.4, 1.45, 5.95, 1.45, "docs diff", docs_info["detail"], SKY)
+    add_card(slide, 6.4, 3.15, 5.95, 1.45, "CodexKit diff", kit_info["detail"], GRAY)
     add_card(
         slide,
+        6.4,
+        4.85,
+        5.95,
+        1.3,
+        "배치 기준",
+        "목차 01 영역에 현재 팀 진행과 운영 변화만 추가하고, 기존 후속 섹션은 유지합니다.",
+        SKY,
+    )
+
+
+def add_repo_implementation_slide(prs, front_info, backend_info, presence_info, db_info):
+    slide = add_slide_at(prs, 12)
+    add_top_title(slide, "구현 진행 현황 - W4 diff 요약")
+    add_card(slide, 0.75, 1.35, 3.0, 2.2, front_info["title"], f"{front_info['summary']}\n{front_info['detail']}", SKY)
+    add_card(slide, 3.95, 1.35, 3.0, 2.2, backend_info["title"], f"{backend_info['summary']}\n{backend_info['detail']}", GRAY)
+    add_card(slide, 7.15, 1.35, 3.0, 2.2, presence_info["title"], f"{presence_info['summary']}\n{presence_info['detail']}", SKY)
+    add_card(slide, 10.35, 1.35, 2.2, 2.2, db_info["title"], f"{db_info['summary']}\n{db_info['detail']}", GRAY)
+    add_bullet_box(
+        slide,
+        0.88,
+        4.0,
+        11.65,
+        2.0,
+        "섹션 배치 이유",
+        [
+            "프론트 / 백엔드 / 재실성 서비스 / DB 변화는 기존 아키텍처·구현 섹션 바로 뒤에 두는 것이 자연스럽습니다.",
+            "이번 주 추가 정보는 각 저장소 diff에서 실제 생성된 파일과 기능 뼈대를 기준으로 요약했습니다.",
+        ],
+    )
+
+
+def add_plan_slide(prs, docs_info, all_infos):
+    slide = add_slide_at(prs, 18)
+    add_top_title(slide, "개발 계획 보강 - W4 기준")
+    add_bullet_box(
+        slide,
         0.82,
-        1.38,
-        5.7,
-        4.75,
-        "현재 리스크",
-        "• OpenWrt / 게이트웨이 환경에서 필요한 단말 정보를 안정적으로 수집할 수 있는지 검증 필요\n"
-        "• 랜덤 MAC 활성화 시 등록 단말 매칭 실패 가능\n"
-        "• Redis snapshot 캐시 만료 구간에 수집 부하 집중 가능\n"
-        "• 시험 접근 제어 범위를 성급히 넓히면 운영 복잡도 급증",
+        1.4,
+        6.0,
+        4.85,
+        "현재 판단",
+        [
+            "Phase 1: 로그인, 단말 관리, eligibility, Docker 실행 기본 동작 확보",
+            "Phase 2: 강의 목록 / 공지 / 관리자 조회 뼈대 진행",
+            "후속 단계는 저장소별 첫 slice를 실제 출석 흐름으로 연결하는 작업이 중심입니다.",
+        ],
+    )
+    repos_changed = ", ".join(info["repo"] for info in all_infos if info["files"])
+    add_card(
+        slide,
+        7.05,
+        1.4,
+        5.45,
+        1.45,
+        "diff 기반 추적 범위",
+        f"이번 W4 반영은 {repos_changed} 레포의 git diff를 기준으로 정리했습니다.",
+        SKY,
+    )
+    add_card(
+        slide,
+        7.05,
+        3.05,
+        5.45,
+        1.45,
+        "docs 상태 근거",
+        docs_info["summary"],
         GRAY,
     )
     add_card(
         slide,
-        6.72,
-        1.38,
-        5.8,
-        4.75,
-        "다음 액션",
-        "• Front / Backend / PresenceService / DB의 첫 slice를 실제 흐름으로 연결\n"
-        "• 단말 등록과 eligibility 경로를 우선 검증\n"
-        "• OpenWrt 수집 가능 정보와 랜덤 MAC 영향을 실제 환경에서 확인\n"
-        "• 주간 발표는 최신 published deck 기준으로 증분 편집 유지",
+        7.05,
+        4.7,
+        5.45,
+        1.55,
+        "다음 주 기준",
+        "새 목차를 따로 늘리지 않고, 다음 업데이트도 해당 섹션 안에서 필요한 위치에만 보강합니다.",
         SKY,
     )
-    note_box = slide.shapes.add_textbox(Inches(0.9), Inches(6.08), Inches(11.5), Inches(0.36))
-    set_text_frame(note_box.text_frame, "이번 W4에서는 기존 발표를 유지한 채, 현재 저장소 변경사항만 뒤에 덧붙이는 방식으로 업데이트합니다.", font_size=15, color=TEXT)
 
 
 def main():
+    infos = {repo: repo_diff_info(repo) for repo in BASE_REFS}
+    summaries = {repo: summarize(repo, info) for repo, info in infos.items()}
+
     prs = Presentation(BASE)
     update_cover_date(prs)
-    add_incremental_slides(prs)
-    clone_thanks_to_end(prs)
-    update_thanks_page_number(prs)
+    add_progress_slide(prs, summaries["docs"], summaries["CodexKit"])
+    add_repo_implementation_slide(
+        prs,
+        summaries["Front"],
+        summaries["Backend"],
+        summaries["PresenceService"],
+        summaries["DB"],
+    )
+    add_plan_slide(prs, summaries["docs"], [infos[r] for r in BASE_REFS])
+    move_thanks_to_end(prs)
+    renumber_pages(prs)
     prs.save(OUT)
     print(f"saved {OUT}")
 
