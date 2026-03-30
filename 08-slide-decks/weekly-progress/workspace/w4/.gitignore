@@ -1,0 +1,5 @@
+node_modules/
+rendered-w3/
+rendered-w4/
+*.pdf
+*.png
