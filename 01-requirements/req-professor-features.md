@@ -7,10 +7,10 @@ owners:
   - frontend-team
   - backend-team
 related:
-  - req-student-features
-  - service-map
+  - [[/01-requirements/req-student-features.md]]
+  - [[/04-architecture/service-map.md]]
 source:
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 목표

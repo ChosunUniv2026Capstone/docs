@@ -7,12 +7,12 @@ owners:
   - frontend-team
   - backend-team
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - service-map
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/04-architecture/service-map.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 목표

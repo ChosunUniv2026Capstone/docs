@@ -10,10 +10,10 @@ applies_to:
   - backend
   - presence
 related:
-  - req-device-auth
-  - adr-0004-attendance-authorization-flow
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
 ---
 
 # 기본 원칙

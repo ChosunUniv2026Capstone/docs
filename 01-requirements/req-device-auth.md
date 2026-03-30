@@ -7,13 +7,13 @@ owners:
   - backend-team
   - presence-team
 related:
-  - req-attendance-presence
-  - adr-0003-openwrt-device-collection
-  - adr-0004-attendance-authorization-flow
-  - adr-0005-presence-snapshot-cache
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
+  - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 목표

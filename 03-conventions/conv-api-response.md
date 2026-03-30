@@ -10,10 +10,10 @@ applies_to:
   - backend
   - presence
 related:
-  - req-attendance-presence
-  - req-device-auth
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
 ---
 
 # 성공 응답

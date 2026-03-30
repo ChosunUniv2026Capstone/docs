@@ -9,11 +9,11 @@ deciders:
 supersedes: []
 superseded_by: null
 related:
-  - project-summary
-  - conv-git-branch-and-pr
+  - [[/00-overview/project-summary.md]]
+  - [[/03-conventions/conv-git-branch-and-pr.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # Context

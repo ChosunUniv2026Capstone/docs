@@ -6,13 +6,13 @@ updated: 2026-03-30
 owners:
   - db-owner
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - conv-db-naming
-  - adr-0005-presence-snapshot-cache
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/03-conventions/conv-db-naming.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 핵심 엔티티

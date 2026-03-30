@@ -6,11 +6,11 @@ updated: 2026-03-30
 owners:
   - team
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - adr-0005-presence-snapshot-cache
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
 source:
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 회의 목적
@@ -51,4 +51,4 @@ source:
 
 # source
 
-- `06-meetings/raw/2026-03-30-presence-logic-clarification.md`
+- [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]

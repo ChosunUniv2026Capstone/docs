@@ -6,10 +6,10 @@ updated: 2026-03-30
 owners:
   - presence-team
 related:
-  - adr-0003-openwrt-device-collection
-  - network-topology
+  - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
+  - [[/04-architecture/network-topology.md]]
 source:
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 작업

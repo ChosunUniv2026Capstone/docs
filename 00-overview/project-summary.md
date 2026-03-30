@@ -6,13 +6,13 @@ updated: 2026-03-30
 owners:
   - team
 related:
-  - req-student-features
-  - req-attendance-presence
-  - adr-0003-openwrt-device-collection
-  - adr-0004-attendance-authorization-flow
+  - [[/01-requirements/req-student-features.md]]
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
+  - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 프로젝트 개요

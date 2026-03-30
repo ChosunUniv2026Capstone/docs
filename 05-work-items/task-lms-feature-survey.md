@@ -8,11 +8,11 @@ owners:
   - 박준완
 due: 2026-03-27
 related:
-  - req-student-features
-  - req-professor-features
-  - req-admin-features
+  - [[/01-requirements/req-student-features.md]]
+  - [[/01-requirements/req-professor-features.md]]
+  - [[/01-requirements/req-admin-features.md]]
 source:
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 작업

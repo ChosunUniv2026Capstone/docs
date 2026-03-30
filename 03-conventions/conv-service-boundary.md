@@ -11,11 +11,11 @@ applies_to:
   - presence
   - db
 related:
-  - adr-0002-service-boundary
-  - adr-0004-attendance-authorization-flow
-  - service-map
+  - [[/02-decisions/adr-0002-service-boundary.md]]
+  - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
+  - [[/04-architecture/service-map.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
 ---
 
 # Front

@@ -6,12 +6,12 @@ updated: 2026-03-30
 owners:
   - team
 related:
-  - network-topology
-  - req-device-auth
-  - adr-0005-presence-snapshot-cache
+  - [[/04-architecture/network-topology.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 2026-03-30

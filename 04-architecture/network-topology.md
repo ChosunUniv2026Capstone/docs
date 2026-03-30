@@ -6,13 +6,13 @@ updated: 2026-03-30
 owners:
   - presence-team
 related:
-  - adr-0003-openwrt-device-collection
-  - adr-0005-presence-snapshot-cache
-  - req-attendance-presence
+  - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
+  - [[/01-requirements/req-attendance-presence.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 목표

@@ -9,9 +9,9 @@ applies_to:
   - db
   - backend
 related:
-  - data-model-overview
+  - [[/04-architecture/data-model-overview.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
 ---
 
 # 테이블 / 컬럼

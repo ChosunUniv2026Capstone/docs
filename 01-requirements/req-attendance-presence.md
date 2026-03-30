@@ -7,14 +7,14 @@ owners:
   - backend-team
   - presence-team
 related:
-  - req-device-auth
-  - adr-0003-openwrt-device-collection
-  - adr-0004-attendance-authorization-flow
-  - adr-0005-presence-snapshot-cache
-  - network-topology
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
+  - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
+  - [[/04-architecture/network-topology.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 목표

@@ -6,9 +6,9 @@ updated: 2026-03-30
 owners:
   - team
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - adr-0005-presence-snapshot-cache
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
 source:
   - user-note
 ---

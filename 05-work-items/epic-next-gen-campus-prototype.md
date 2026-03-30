@@ -6,11 +6,11 @@ updated: 2026-03-30
 owners:
   - team
 related:
-  - req-student-features
-  - req-attendance-presence
-  - service-map
+  - [[/01-requirements/req-student-features.md]]
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/04-architecture/service-map.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
 ---
 
 # 목표

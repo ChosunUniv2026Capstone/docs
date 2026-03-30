@@ -9,12 +9,12 @@ deciders:
 supersedes: []
 superseded_by: null
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - network-topology
-  - presence-eligibility-api
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/04-architecture/network-topology.md]]
+  - [[/04-architecture/presence-eligibility-api.md]]
 source:
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # Context

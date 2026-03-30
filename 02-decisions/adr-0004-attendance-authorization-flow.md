@@ -9,14 +9,14 @@ deciders:
 supersedes: []
 superseded_by: null
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - conv-service-boundary
-  - service-map
-  - adr-0005-presence-snapshot-cache
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/03-conventions/conv-service-boundary.md]]
+  - [[/04-architecture/service-map.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # Context

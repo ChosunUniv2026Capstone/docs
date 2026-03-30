@@ -7,12 +7,12 @@ owners:
   - backend-team
   - presence-team
 related:
-  - adr-0004-attendance-authorization-flow
-  - adr-0005-presence-snapshot-cache
-  - req-attendance-presence
-  - req-device-auth
+  - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
+  - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
 source:
-  - 06-meetings/raw/2026-03-30-presence-logic-clarification.md
+  - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
 
 # 목적

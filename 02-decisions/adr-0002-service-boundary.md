@@ -9,11 +9,11 @@ deciders:
 supersedes: []
 superseded_by: null
 related:
-  - conv-service-boundary
-  - service-map
+  - [[/03-conventions/conv-service-boundary.md]]
+  - [[/04-architecture/service-map.md]]
 source:
-  - 06-meetings/raw/2026-03-19-capstone-proposal.md
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # Context

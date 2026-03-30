@@ -6,10 +6,10 @@ updated: 2026-03-25
 owners:
   - team
 related:
-  - task-openwrt-gateway-prototype
-  - task-lms-feature-survey
+  - [[/05-work-items/task-openwrt-gateway-prototype.md]]
+  - [[/05-work-items/task-lms-feature-survey.md]]
 source:
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 participants:
   - 심재혁
   - 박준완
@@ -52,4 +52,4 @@ participants:
 
 # source
 
-- `06-meetings/raw/2026-03-25-kickoff-work-items.md`
+- [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]

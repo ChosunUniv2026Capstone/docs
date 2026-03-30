@@ -6,10 +6,10 @@ updated: 2026-03-30
 owners:
   - backend-team
 related:
-  - service-map
-  - data-model-overview
+  - [[/04-architecture/service-map.md]]
+  - [[/04-architecture/data-model-overview.md]]
 source:
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 목표

@@ -12,9 +12,9 @@ applies_to:
   - presence
   - db
 related:
-  - adr-0001-docs-source-of-truth
+  - [[/02-decisions/adr-0001-docs-source-of-truth.md]]
 source:
-  - 06-meetings/raw/2026-03-25-kickoff-work-items.md
+  - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
 ---
 
 # 브랜치

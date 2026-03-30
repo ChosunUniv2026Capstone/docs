@@ -6,8 +6,8 @@ updated: 2026-03-25
 owners:
   - team
 related:
-  - task-openwrt-gateway-prototype
-  - task-lms-feature-survey
+  - [[/05-work-items/task-openwrt-gateway-prototype.md]]
+  - [[/05-work-items/task-lms-feature-survey.md]]
 source:
   - user-note
 ---

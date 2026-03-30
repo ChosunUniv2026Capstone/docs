@@ -6,9 +6,9 @@ updated: 2026-03-19
 owners:
   - team
 related:
-  - req-attendance-presence
-  - req-device-auth
-  - project-summary
+  - [[/01-requirements/req-attendance-presence.md]]
+  - [[/01-requirements/req-device-auth.md]]
+  - [[/00-overview/project-summary.md]]
 source:
   - user-note
 ---
