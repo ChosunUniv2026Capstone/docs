@@ -19,9 +19,10 @@ source:
 
 # 브랜치
 
-- 형식: `<type>/<scope>/<slug>`
-- 허용 scope: `docs`, `frontend`, `backend`, `presence`, `db`, `infra`
-- 예시: `feat/backend/attendance-check-api`
+- 형식: `<type>/<slug>`
+- 예시: `feat/attendance-check-api`
+- 예시: `fix/openwrt-client-parser`
+- 예시: `docs/update-git-convention`
 
 # 커밋
 
