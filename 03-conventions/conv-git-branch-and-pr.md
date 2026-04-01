@@ -23,6 +23,7 @@ source:
 - 예시: `feat/attendance-check-api`
 - 예시: `fix/openwrt-client-parser`
 - 예시: `docs/update-git-convention`
+- 로컬 작업은 반드시 feature branch 에서 시작한다. `main` 에서의 직접 commit/push 는 로컬 hook 으로 차단된다.
 
 # 커밋
 
