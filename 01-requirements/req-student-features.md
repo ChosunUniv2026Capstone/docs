@@ -2,7 +2,7 @@
 title: 학생 기능 요구사항
 type: requirement
 status: active
-updated: 2026-03-30
+updated: 2026-04-05
 owners:
   - frontend-team
   - backend-team
@@ -29,6 +29,7 @@ source:
 - 과제 제출
 - 퀴즈 / 시험 응시
 - 공지사항 확인
+- 공지사항 상세 조회
 - 출석 확인 및 출석 요청
 - 성적 확인
 - 질문게시판 / 문의

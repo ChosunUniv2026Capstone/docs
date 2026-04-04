@@ -2,7 +2,7 @@
 title: 교수 기능 요구사항
 type: requirement
 status: active
-updated: 2026-03-30
+updated: 2026-04-05
 owners:
   - frontend-team
   - backend-team
@@ -26,6 +26,7 @@ source:
 - 학생 제출물 확인
 - 채점 / 피드백
 - 공지 작성
+- 공지 상세 조회
 - 출석 / 진도율 확인
 - 성적 관리
 
