@@ -23,7 +23,9 @@
 ## 작업 시작 전
 - `git checkout main`
 - `git pull --ff-only origin main`
-- `main` 에서 직접 commit 하지 않는다. bootstrap 이 설치한 shared hook 이 이를 차단한다.
+- `main` 에서 직접 commit/push 하지 않는다. bootstrap 이 설치한 shared hook 이 이를 차단한다.
+- bootstrap 이 설치한 shared hook 은 commit/push 전에 `user.name` / `user.email` 을 검사한다.
+- Git identity 가 비어 있거나 `Codex` 기본값이면 hook 이 차단한다. 이 경우 에이전트가 사용자에게 이름/이메일을 물어 `git config` 로 설정한 뒤 다시 진행한다.
 - 기능 시작은 `./start_feature.sh <slug>` 또는 `./start_feature.sh --worktree <slug>` 를 우선 사용한다.
 
 ## 권장 skill
