@@ -32,6 +32,7 @@ source:
   - 강의 시간표와 강의실 배정
 - `classroom_networks`
   - 강의실별 허용 Wi-Fi / AP / 게이트웨이 정보
+  - AP 별 signal threshold 운영 데이터 포함
 - `registered_devices`
   - 사용자 등록 단말
 - `network_snapshots`
@@ -65,6 +66,7 @@ source:
 - 시험 접근 제어에도 재사용 가능한 모델을 지향한다.
 - Redis snapshot 캐시는 영속 저장소가 아니라 성능 최적화 계층으로 취급한다.
 - demo mode 의 mutable presence state 는 DB 테이블이 아니라 PresenceService overlay 계층이 소유한다.
+- AP threshold 는 overlay 가 아니라 영속 운영 데이터이며 DB 가 소유한다.
 
 # Branch 2 출석 모델 규칙
 
@@ -72,3 +74,9 @@ source:
 - projected slot 은 schedule window 를 `starts_at` 기준으로 30분 단위 full segment 로 나눈 결과만 허용한다.
 - `attendance_sessions` 는 `projection_key` 를 저장해야 한다.
 - student self check-in 은 첫 성공 시 audit row 를 남기고, 동일 open session 에 대한 성공 재시도는 no-op / no-extra-audit 이어야 한다.
+
+# Presence refinement 모델 규칙
+
+- `classroom_networks` 는 `signal_threshold_dbm` 같은 AP 별 운영 threshold 값을 가질 수 있어야 한다.
+- `signal_threshold_dbm` 이 null 이면 fallback `-65 dBm` 을 사용한다.
+- 관리자 UI 의 device dropdown source 는 등록 디바이스와 현재 관측 station 의 union 이다.
