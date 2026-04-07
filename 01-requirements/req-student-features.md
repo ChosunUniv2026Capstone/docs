@@ -2,7 +2,7 @@
 title: 학생 기능 요구사항
 type: requirement
 status: active
-updated: 2026-04-05
+updated: 2026-04-07
 owners:
   - frontend-team
   - backend-team
@@ -10,9 +10,11 @@ related:
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/01-requirements/req-device-auth.md]]
   - [[/04-architecture/service-map.md]]
+  - [[/04-architecture/attendance-workflow-architecture.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
+  - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
 ---
 
 # 목표
@@ -39,6 +41,8 @@ source:
 - 학생은 자신의 수강 강의와 현재 수업 시간에만 출석 요청을 할 수 있어야 한다.
 - 출석 요청 시 재실성 판별과 등록 단말 여부를 함께 확인해야 한다.
 - 출석 불가 시 사유를 사용자에게 이해 가능한 형태로 반환해야 한다.
+- 학생은 열린 출석 세션만 볼 수 있어야 한다.
+- 학생 self check-in 은 같은 열린 세션에 대해 idempotent 해야 한다.
 
 # 시험 관련 요구
 
@@ -51,3 +55,5 @@ source:
 - 학생은 공지 목록에서 상세 화면으로 이동해 제목, 본문, 작성자, 등록일을 확인할 수 있어야 한다.
 - 출석 가능 여부는 수업 시간표, 강의실, 재실성 판별 결과를 반영해야 한다.
 - 정상 상태와 실패 상태가 UI 에서 구분 가능해야 한다.
+- 열린 세션이 없으면 `SESSION_NOT_OPEN` 으로 거부되어야 한다.
+- 이미 성공한 self check-in 을 다시 눌러도 성공 응답은 유지되지만 중복 이력은 생기지 않아야 한다.
