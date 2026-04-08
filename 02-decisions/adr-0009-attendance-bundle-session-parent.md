@@ -6,7 +6,8 @@ updated: 2026-04-08
 date: 2026-04-08
 deciders:
   - team
-supersedes: []
+supersedes:
+  - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
 superseded_by: null
 related:
   - [[/01-requirements/req-attendance-presence.md]]

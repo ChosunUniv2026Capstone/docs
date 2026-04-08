@@ -7,7 +7,8 @@ date: 2026-04-07
 deciders:
   - team
 supersedes: []
-superseded_by: null
+superseded_by:
+  - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
 related:
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/03-conventions/conv-service-boundary.md]]
