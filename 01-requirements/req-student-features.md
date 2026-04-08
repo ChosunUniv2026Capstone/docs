@@ -51,7 +51,7 @@ source:
 - 학생 self check-in 은 같은 열린 세션에 대해 idempotent 해야 한다.
 - 학생이 이미 처리된 bundle 에서 다시 출석을 눌러도 중복 audit 는 생기면 안 되며, 이미 처리된 차시는 success/no-op 로 취급해야 한다.
 - 학생 출석 탭에는 학기 전체 출석 결과를 주차 x 차시 표로 보여주는 semester matrix 가 있어야 한다.
-- semester matrix 는 출석=초록, 지각=주황, 결석=빨강, 공결=파랑, 미진행/진행중 미체크=흰색으로 표시되어야 한다.
+- semester matrix 는 상태별로 구분 가능한 시각 표시를 제공해야 한다.
 
 # 시험 관련 요구
 

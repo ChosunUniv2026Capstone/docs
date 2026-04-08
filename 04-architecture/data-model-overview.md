@@ -81,7 +81,7 @@ source:
 - projected slot 은 `courseCode + classroomCode + sessionDate + slotStartAt + slotEndAt` 로 canonical identity 를 만든다.
 - projected slot 은 schedule window 를 `starts_at` 기준으로 30분 단위 full segment 로 나눈 결과만 허용한다.
 - `attendance_sessions.projection_key` 는 bundle anchor slot identity 로 유지해야 한다.
-- `attendance_sessions` 는 `mode(manual|smart|canceled)` 와 `status(active|closed|expired|canceled)` 를 가져야 한다.
+- `attendance_sessions` 는 `mode(manual|smart)` 와 `status(active|closed|expired|canceled)` 를 가져야 한다.
 - `attendance_sessions` 는 `opened_by_user_id`, `opened_at`, `closed_at`, `expires_at`, `latest_version` 을 가져야 한다.
 - `attendance_session_slots` 는 `(attendance_session_id, projection_key, slot_order)` 를 가지며 membership 순서를 보존해야 한다.
 - `attendance_session_slots.projection_key` 는 bundle 이 포함한 실제 slot 집합의 source of truth 여야 한다.
