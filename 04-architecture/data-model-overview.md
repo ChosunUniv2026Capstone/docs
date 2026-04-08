@@ -2,7 +2,7 @@
 title: 데이터 모델 개요
 type: architecture
 status: active
-updated: 2026-04-07
+updated: 2026-04-08
 owners:
   - db-owner
 related:
@@ -11,11 +11,13 @@ related:
   - [[/03-conventions/conv-db-naming.md]]
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
+  - [[/.omx/plans/attendance-bundle-session-consensus-draft-20260408.md]]
 ---
 
 # 핵심 엔티티
@@ -40,11 +42,13 @@ source:
 - `presence_eligibility_logs`
   - 출석 / 시험 eligibility 요청 로그
 - `attendance_sessions`
-  - 교수가 projected slot 에 대해 연 출석 세션
+  - 교수가 선택한 여러 projected slot 을 묶어 여는 bundle parent 출석 세션
+- `attendance_session_slots`
+  - bundle parent session 이 포함하는 ordered projected slot membership
 - `attendance_records`
-  - 학생별 현재 출석 상태
+  - 학생별 / slot별 현재 출석 상태
 - `attendance_status_audit_logs`
-  - 상태 전이 audit history
+  - 학생별 / slot별 상태 전이 audit history
 
 # 관계 요약
 
@@ -55,9 +59,12 @@ source:
 - 한 사용자는 하나 이상의 등록 단말을 가질 수 있다.
 - 한 사용자는 최대 5개의 등록 단말을 가질 수 있다.
 - 하나의 등록 단말 MAC 은 하나의 사용자에게만 속해야 한다.
-- 하나의 `attendance_session` 은 하나의 `projection_key` 와 1:1 로 대응되는 active session 만 가질 수 있다.
-- 하나의 `attendance_record` 는 `(attendance_session_id, student_user_id)` 기준으로 유일해야 한다.
+- 하나의 `attendance_session` 은 bundle parent 1개를 의미한다.
+- 하나의 active projected slot 은 동시에 하나의 bundle parent 에만 속할 수 있다.
+- 하나의 `attendance_session` 은 여러 `attendance_session_slots` membership row 를 가질 수 있다.
+- 하나의 `attendance_record` 는 `(attendance_session_id, projection_key, student_user_id)` 기준으로 유일해야 한다.
 - `attendance_status_audit_logs` 는 self check-in 과 professor manual update 둘 다 기록해야 한다.
+- `attendance_status_audit_logs` 는 append-only 여야 하며 삭제 / 덮어쓰기를 허용하면 안 된다.
 
 # 설계 원칙
 
@@ -72,8 +79,21 @@ source:
 
 - projected slot 은 `courseCode + classroomCode + sessionDate + slotStartAt + slotEndAt` 로 canonical identity 를 만든다.
 - projected slot 은 schedule window 를 `starts_at` 기준으로 30분 단위 full segment 로 나눈 결과만 허용한다.
-- `attendance_sessions` 는 `projection_key` 를 저장해야 한다.
+- `attendance_sessions.projection_key` 는 bundle anchor slot identity 로 유지해야 한다.
+- `attendance_sessions` 는 `mode(manual|smart|canceled)` 와 `status(active|closed|expired|canceled)` 를 가져야 한다.
+- `attendance_sessions` 는 `opened_by_user_id`, `opened_at`, `closed_at`, `expires_at`, `latest_version` 을 가져야 한다.
+- `attendance_session_slots` 는 `(attendance_session_id, projection_key, slot_order)` 를 가지며 membership 순서를 보존해야 한다.
+- `attendance_session_slots.projection_key` 는 bundle 이 포함한 실제 slot 집합의 source of truth 여야 한다.
 - student self check-in 은 첫 성공 시 audit row 를 남기고, 동일 open session 에 대한 성공 재시도는 no-op / no-extra-audit 이어야 한다.
+- bundle overwrite / bundle check-in write 는 slot fan-out 으로 저장해야 한다.
+- `attendance_records.final_status` 는 `present|absent|late|official|sick` 만 허용한다.
+- `attendance_records` 는 `projection_key` 를 가져야 한다.
+- `attendance_records` 는 `attendance_reason`, `finalized_by_user_id`, `finalized_at` 을 가져야 한다.
+- `attendance_status_audit_logs` 는 `projection_key` 를 가져야 한다.
+- `attendance_status_audit_logs` 는 `actor_user_id`, `actor_role`, `change_source`, `previous_status`, `new_status`, `reason`, `changed_at`, `version` 을 가져야 한다.
+- bundle overwrite 는 실제 값이 달라진 slot 에만 changed-only audit row 를 남겨야 한다.
+- realtime replay 를 위해 `attendance_sessions.latest_version` 과 audit / event ordering 규칙이 일치해야 한다.
+- 리포트와 집계는 bundle metadata 가 아니라 slot별 `attendance_records` 최종 상태를 기준으로 계산해야 한다.
 
 # Presence refinement 모델 규칙
 
