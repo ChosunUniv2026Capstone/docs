@@ -45,9 +45,10 @@ source:
 - parent session 은 `attendance_sessions` row 1개로 표현하고 `projection_key` 는 anchor slot identity 로 유지한다.
 - 선택된 모든 slot 은 ordered membership row(`attendance_session_slots`) 로 parent session 아래에 저장한다.
 - 한 projected slot 은 동시에 하나의 active bundle session 에만 속할 수 있다.
-- session mode 는 `manual`, `smart` 로 구분한다.
+- session mode 는 `manual`, `smart`, `canceled` 로 구분한다.
 - lifecycle 은 `active -> closed|expired|canceled -> reopen(optional)` 흐름을 가져야 한다.
-- `manual` 과 `smart` 모두 같은 bundle parent 모델을 사용한다.
+- `manual`, `smart`, `canceled` 모두 같은 bundle parent 모델을 사용한다.
+- `canceled` mode 는 휴강 처리처럼 즉시 닫힌/취소된 bundle parent 를 남기는 운영 명령으로 취급한다.
 - `smart` mode 는 서버 기준 10분 만료 시각(`expires_at`)을 가지는 shared timer 1개만 사용한다.
 
 ## 3. attendance record
