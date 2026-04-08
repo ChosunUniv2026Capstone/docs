@@ -44,6 +44,9 @@ source:
   `projected slot -> open session -> live presence` 규칙을 가진 attendance-specific Backend path 로 처리한다.
 - projected slot 은 기존 시간표 window 를 30분 단위 full segment 로 분해한 결과만 허용한다.
 - 학생 self check-in 은 idempotent 하며, 같은 열린 세션의 성공 재시도는 중복 audit row 를 만들지 않는다.
+- attendance final state authority 는 Backend 가 가진다.
+- professor / student / report realtime 동기화는 Backend attendance event stream 이 소유한다.
+- professor override 는 최신 final state 를 덮어쓰되, 이전 self check-in / manual update 이력은 삭제하지 않는다.
 
 # Consequences
 
@@ -51,3 +54,4 @@ source:
 - Branch 2 는 교수 출석 세션과 학생 self check-in 을 canonical `projection_key` 기반으로 관리할 수 있다.
 - 기존 legacy endpoint 는 payload/path 를 급격히 깨지 않고도 auth helper hardening 을 적용할 수 있다.
 - demo tuple seed/reset 절차가 반드시 필요하다.
+- attendance report/dashboard 는 Backend final state 기준 집계를 실시간으로 표시해야 한다.

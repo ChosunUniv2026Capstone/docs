@@ -63,6 +63,8 @@ source:
 - professor manual update 는 항상 reason 을 포함해야 한다.
 - bundle overwrite / bundle check-in 은 slot fan-out write 로 저장하되 실제 값이 바뀐 slot 에만 changed-only audit row 를 남긴다.
 - bundle roster 기본값은 anchor slot record 를 따르며 anchor slot 에 기록이 없으면 `absent` 를 사용한다.
+- manual session 은 open 직후 미수정 학생을 `absent` 로 해석해야 한다.
+- smart session 은 active 동안 미체크 학생을 `pending` 으로 유지하고, close / expire 시점에만 `absent` 로 확정해야 한다.
 
 ## 5. realtime projection
 
@@ -78,6 +80,8 @@ source:
 - 관리자 대시보드에서 demo-mode presence control panel 표시
 - 교수 projected slot 조회 / bundle session open / timer / roster / history / report UI 표시
 - 학생 bundle smart-attendance card / timer / one-click self check-in / final-state UI 표시
+- 학생 attendance tab semester matrix 표시
+- 교수 attendance dashboard student-stats 표 표시
 
 ## Backend
 

@@ -49,6 +49,8 @@ source:
 - 출석과 시험 접근 제어 실패는 사유 코드를 남긴다.
 - 기존 legacy endpoint 를 유지하는 경우에도 error envelope 와 stable reason code 는 보존한다.
 - attendance session / projected slot 관련 API 는 성공 / 실패 코드를 명확히 구분해야 한다.
+- auth/login/refresh/logout/bootstrap endpoint 도 가능한 한 같은 success / error envelope 규약을 따른다.
+- legacy compatibility 응답을 임시로 유지하는 경우에는 sunset gate 와 최종 제거 기준을 문서화해야 한다.
 
 # 초기 사유 코드 예시
 
@@ -61,8 +63,14 @@ source:
 - `DEVICE_MISMATCH`
 - `SESSION_NOT_OPEN`
 - `SESSION_SLOT_INVALID`
+- `SESSION_ALREADY_OPEN`
 - `PRESENCE_INELIGIBLE`
 - `ATTENDANCE_CHECK_IN_OK`
+- `ATTENDANCE_REASON_REQUIRED`
+- `TOKEN_EXPIRED`
+- `TOKEN_REVOKED`
+- `REFRESH_REPLAY_DETECTED`
+- `COURSE_ROUTE_FORBIDDEN`
 
 # 추가 규칙
 

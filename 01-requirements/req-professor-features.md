@@ -52,6 +52,8 @@ source:
 - 교수의 close / expire / cancel / reopen 동작은 bundle 전체에 한 번에 적용되어야 한다.
 - bundle roster 는 선택된 slot 목록을 요약해서 보여주고 학생 상태 변경은 기본적으로 bundle 대상 차시 전체에 fan-out 적용해야 한다.
 - bundle roster 의 기본값은 anchor slot 기록을 따르고, anchor slot 기록이 없으면 `absent` 를 기본값으로 사용해야 한다.
+- 일반출석은 session open 직후 미수정 학생을 `absent` 로 집계해야 한다.
+- 스마트출석은 active 동안 미체크 학생을 `pending` 으로 보고, close / expire 시점에만 `absent` 로 확정해야 한다.
 - 교수는 상태를 `출석`, `결석`, `지각`, `공가`, `병가` 로 수정할 수 있어야 한다.
 - 교수의 상태 변경은 항상 사유를 포함해야 한다.
 - 교수의 수동 수정은 audit history 로 남아야 한다.
@@ -71,3 +73,4 @@ source:
 - 교수는 휴강 처리된 차시와 재오픈된 차시의 이력을 모두 추적할 수 있어야 한다.
 - 교수가 multi-slot smart session 을 닫거나 만료시키면 timer / roster / report surface 가 모두 같은 bundle 상태로 즉시 수렴해야 한다.
 - 교수는 bundle 화면과 별개로 projection-key 기준 예외 수정 경로를 계속 사용할 수 있어야 한다.
+- 교수 출석 운영 대시보드에는 현재 선택 과목의 학기 전체를 기준으로 학생별 출석/지각/결석/공결 누계를 보여주는 학생별 통계 버튼과 표가 있어야 한다.

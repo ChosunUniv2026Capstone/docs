@@ -44,6 +44,7 @@ source:
 5. PresenceService 는 Redis 의 최근 snapshot 을 재사용하거나, 없으면 OpenWrt 에 요청해 새로 수집한다.
 6. Backend 는 시간표, 강의실, 수강 정보, PresenceService 결과를 결합해 최종 판단한다.
 7. Backend 와 PresenceService 는 필요한 데이터를 DB 또는 해당 데이터 소스에 반영한다.
+8. 인증 복구가 필요한 경우 Front 는 refresh/bootstrap 경로를 통해 Backend 에 세션 복구를 요청한다.
 
 # 경계 요약
 
@@ -57,3 +58,4 @@ source:
 
 - 공개 URL 은 `Nginx` 가 단일 origin 으로 제공한다.
 - `PresenceService` 는 외부 공개 없이 Backend 내부 의존 경로로만 사용한다.
+- Front 의 page/route 권한은 Backend bootstrap/guard 결과를 소비해야 하며, 직접 신뢰하면 안 된다.
