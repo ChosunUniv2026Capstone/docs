@@ -2,10 +2,12 @@
 title: ADR-0008 표준 JWT refresh 구조와 route-driven attendance page flow 를 채택한다
 type: decision
 status: accepted
-updated: 2026-04-07
+updated: 2026-04-08
 date: 2026-04-07
 deciders:
   - team
+supersedes: []
+superseded_by: null
 related:
   - [[/03-conventions/conv-auth-and-session.md]]
   - [[/03-conventions/conv-api-response.md]]
@@ -13,7 +15,8 @@ related:
   - [[/01-requirements/req-student-features.md]]
   - [[/01-requirements/req-professor-features.md]]
 source:
-  - [[/.omx/plans/attendance-auth-routing-consensus-draft-20260407.md]]
+  - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
+  - [[/07-status/2026-04-02-workspace-analysis-report.md]]
 ---
 
 # Context

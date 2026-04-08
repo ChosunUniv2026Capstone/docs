@@ -2,7 +2,7 @@
 title: ADR-0007 더미 재실 제어는 Front 관리자 패널과 PresenceService overlay 로 구성하고 출석은 projected slot session 으로 운영
 type: decision
 status: accepted
-updated: 2026-04-07
+updated: 2026-04-08
 date: 2026-04-07
 deciders:
   - team
@@ -13,6 +13,7 @@ related:
   - [[/03-conventions/conv-service-boundary.md]]
   - [[/03-conventions/conv-auth-and-session.md]]
   - [[/04-architecture/presence-eligibility-api.md]]
+  - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/data-model-overview.md]]
 source:
@@ -51,7 +52,9 @@ source:
 # Consequences
 
 - Branch 1 은 관리자 overlay 제어와 학생 eligibility 재확인 흐름을 빠르게 시연할 수 있다.
-- Branch 2 는 교수 출석 세션과 학생 self check-in 을 canonical `projection_key` 기반으로 관리할 수 있다.
+- Branch 2 는 교수 출석 세션과 학생 self check-in 을 canonical projected-slot identity(`projection_key`) 를 유지한 채 관리할 수 있다.
+- 출석 session lifecycle / route / membership 모델의 세부 구조는 후속 ADR-0009 가 refine 한다.
+- 이 ADR 은 PresenceService overlay 경계, attendance final-state authority, Backend realtime ownership 결정을 계속 소유한다.
 - 기존 legacy endpoint 는 payload/path 를 급격히 깨지 않고도 auth helper hardening 을 적용할 수 있다.
 - demo tuple seed/reset 절차가 반드시 필요하다.
 - attendance report/dashboard 는 Backend final state 기준 집계를 실시간으로 표시해야 한다.

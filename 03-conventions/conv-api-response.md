@@ -2,7 +2,7 @@
 title: API 응답 규약
 type: convention
 status: active
-updated: 2026-04-07
+updated: 2026-04-08
 owners:
   - backend-team
 applies_to:
@@ -16,6 +16,7 @@ related:
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
+  - [[/02-decisions/adr-0008-jwt-refresh-and-route-driven-attendance.md]]
 ---
 
 # 성공 응답

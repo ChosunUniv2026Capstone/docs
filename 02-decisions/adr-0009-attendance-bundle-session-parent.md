@@ -17,8 +17,8 @@ related:
   - [[/04-architecture/data-model-overview.md]]
 source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
-  - [[/.omx/specs/deep-interview-attendance-bundle-session-flow.md]]
-  - [[/.omx/plans/attendance-bundle-session-consensus-draft-20260408.md]]
+  - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/05-work-items/task-capstone-demo-presence-attendance.md]]
 ---
 
 # Context
@@ -28,6 +28,8 @@ source:
 
 반면 학사 기록과 감사 추적은 여전히 차시별 truth 를 유지해야 한다.
 따라서 UX 와 lifecycle 은 bundle 단위로 단순화하되, 저장과 audit 은 slot 단위 무결성을 유지하는 결정을 분리해 문서화해야 한다.
+이 ADR 은 ADR-0007 이 고정한 presence overlay / Backend final-state authority 결정은 유지하고,
+출석 session lifecycle / route / persistence model 만 bundle parent 기준으로 refine 한다.
 
 # Decision
 

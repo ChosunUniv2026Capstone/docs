@@ -10,16 +10,18 @@ related:
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/data-model-overview.md]]
 source:
-  - [[/.omx/plans/attendance-bundle-session-consensus-draft-20260408.md]]
+  - Local workspace scan on 2026-04-08
+  - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/04-architecture/attendance-workflow-architecture.md]]
+  - [[/04-architecture/data-model-overview.md]]
 ---
 
 # 목적
 
-bundle-session semantics 문서 반영 이후, Backend / Front / DB 구현 상태가 어디까지 문서와 맞는지 빠르게 확인하고 lane 간 handoff 포인트를 남긴다.
+bundle-session semantics 문서 반영 이후, Backend / Front / DB 구현 상태가 어디까지 문서와 맞는지 빠르게 확인하는 **중간 정렬 체크포인트**를 남긴다.
 
 # 기준 문서
 
-- docs commit: `8267e2e` (`docs/attendance-bundle-session-parent`)
 - canonical docs:
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
@@ -51,9 +53,8 @@ bundle-session semantics 문서 반영 이후, Backend / Front / DB 구현 상�
 - `Front/src/api.ts`
   - `AttendanceBatchResponse`, `AttendanceSessionRoster`, `StudentAttendanceSession`, `AttendanceCheckInResult` 가 bundle metadata 보다 single `projection_key` 응답을 기본 shape 로 둔다.
 
-## Demo seed / branch hygiene
+## Demo seed / proof gap
 
-- `DB` repo 는 아직 `main` 에 dirty state 로 남아 있다.
 - `DB/postgres/init/012_attendance_demo_seed.sql` 은 sample attendance seed 를 가지지만 bundle parent 기준 demo seed/proof 는 추가 검증이 필요하다.
 
 # lane handoff 메모

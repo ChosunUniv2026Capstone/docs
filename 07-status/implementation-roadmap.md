@@ -2,7 +2,7 @@
 title: 구현 로드맵 상태
 type: status
 status: active
-updated: 2026-04-07
+updated: 2026-04-08
 owners:
   - team
 related:
@@ -21,6 +21,6 @@ source:
 - Capstone demo branch 1
   - 관리자 대시보드 기반 더미 재실 제어 + 학생 eligibility 변화 시연
 - Capstone demo branch 2
-  - projected slot 기반 출석 세션 + student self check-in + audit history
+  - bundle parent attendance session + student bundle self check-in + slot fan-out audit history
 - Phase 3+
   - 강의자료 / 동영상 / 과제 / 퀴즈 / 성적: 계획 수립 완료, 미착수

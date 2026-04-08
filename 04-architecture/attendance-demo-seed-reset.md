@@ -2,7 +2,7 @@
 title: 출석 데모 seed / reset 절차
 type: architecture
 status: active
-updated: 2026-04-07
+updated: 2026-04-08
 owners:
   - db-owner
   - backend-team
@@ -11,7 +11,9 @@ related:
   - [[/04-architecture/data-model-overview.md]]
   - [[/01-requirements/req-attendance-presence.md]]
 source:
-  - [[/.omx/plans/attendance-ui-realtime-consensus-draft-20260407.md]]
+  - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
+  - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/05-work-items/task-capstone-demo-presence-attendance.md]]
 ---
 
 # 목적
@@ -37,8 +39,8 @@ source:
 
 # 수동 reset 절차
 
-1. `docker compose down -v`
-2. `docker compose up -d`
+1. `cd ../CodexKit && docker compose down -v`
+2. `cd ../CodexKit && docker compose up -d`
 3. Presence overlay reset
 4. 프론트 새로고침
 5. 교수 `PRF002` 로 `CSE116` attendance tab 진입

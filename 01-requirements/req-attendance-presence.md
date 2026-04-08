@@ -23,7 +23,9 @@ source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
-  - [[/.omx/plans/attendance-bundle-session-consensus-draft-20260408.md]]
+  - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/04-architecture/attendance-workflow-architecture.md]]
 ---
 
 # 목표

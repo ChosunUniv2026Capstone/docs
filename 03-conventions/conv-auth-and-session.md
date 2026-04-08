@@ -2,7 +2,7 @@
 title: 인증과 세션 규약
 type: convention
 status: active
-updated: 2026-04-07
+updated: 2026-04-08
 owners:
   - backend-team
 applies_to:
@@ -14,9 +14,11 @@ related:
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/02-decisions/adr-0008-jwt-refresh-and-route-driven-attendance.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
+  - [[/04-architecture/local-runtime-topology.md]]
 ---
 
 # 기본 원칙
@@ -40,6 +42,7 @@ source:
 - 단말 등록 상태는 로그인 상태와 별도 정보로 취급한다.
 - access token 은 짧은 만료를 가지는 bearer JWT 여야 한다.
 - refresh token 은 `HttpOnly + Secure` cookie 로만 보관해야 한다.
+- 로컬 개발 환경도 `Secure` cookie 동작 조건(예: HTTPS reverse proxy 또는 localhost 예외 전략)을 별도 문서로 검증 가능해야 한다.
 - Front 는 refresh token 원문을 읽거나 저장하면 안 된다.
 - refresh / bootstrap 은 로그인 상태 복구용이며, 출석/시험 접근 권한 자체를 자동 부여하면 안 된다.
 - cookie 기반 복구를 쓰는 경로는 Front `credentials: include` 와 Backend explicit origin + `allow_credentials=true` 조합을 따라야 한다.

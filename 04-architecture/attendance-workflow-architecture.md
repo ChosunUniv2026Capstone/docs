@@ -17,7 +17,8 @@ related:
   - [[/04-architecture/data-model-overview.md]]
 source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
-  - [[/.omx/plans/attendance-bundle-session-consensus-draft-20260408.md]]
+  - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
 ---
 
 # 목표

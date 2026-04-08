@@ -2,7 +2,7 @@
 title: 프론트 사용자 경험 및 화면 설계 규약
 type: convention
 status: active
-updated: 2026-04-03
+updated: 2026-04-08
 owners:
   - frontend-team
 applies_to:
@@ -17,6 +17,9 @@ related:
   - [[/01-requirements/req-device-auth.md]]
 source:
   - 2026-04-03 사용자 제공 e-class 메인 화면 레퍼런스
+  - [[/02-decisions/adr-0008-jwt-refresh-and-route-driven-attendance.md]]
+  - [[/01-requirements/req-professor-features.md]]
+  - [[/01-requirements/req-student-features.md]]
 ---
 
 # 목적
