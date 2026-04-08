@@ -42,6 +42,8 @@ source:
   - 네트워크 수집 결과 또는 effective snapshot view
 - `presence_eligibility_logs`
   - 출석 / 시험 eligibility 요청 로그
+- `refresh_sessions`
+  - refresh token rotation / replay detection / logout revocation 을 위한 인증 세션 영속 저장소
 - `attendance_sessions`
   - 교수가 선택한 여러 projected slot 을 묶어 여는 bundle parent 출석 세션
 - `attendance_session_slots`
@@ -60,6 +62,8 @@ source:
 - 한 사용자는 하나 이상의 등록 단말을 가질 수 있다.
 - 한 사용자는 최대 5개의 등록 단말을 가질 수 있다.
 - 하나의 등록 단말 MAC 은 하나의 사용자에게만 속해야 한다.
+- 한 사용자는 하나 이상의 `refresh_sessions` row 를 가질 수 있어야 하며, `session_key` 는 전역 유일해야 한다.
+- replay / revoke 상태는 `refresh_sessions` 에 append-only audit 가 아니라 mutable session state 로 남을 수 있다.
 - 하나의 `attendance_session` 은 bundle parent 1개를 의미한다.
 - 하나의 active projected slot 은 동시에 하나의 bundle parent 에만 속할 수 있다.
 - 하나의 `attendance_session` 은 여러 `attendance_session_slots` membership row 를 가질 수 있다.
@@ -75,6 +79,7 @@ source:
 - Redis snapshot 캐시는 영속 저장소가 아니라 성능 최적화 계층으로 취급한다.
 - demo mode 의 mutable presence state 는 DB 테이블이 아니라 PresenceService overlay 계층이 소유한다.
 - AP threshold 는 overlay 가 아니라 영속 운영 데이터이며 DB 가 소유한다.
+- refresh token durability / replay detection 을 위한 인증 세션 영속 데이터는 DB 가 소유한다.
 
 # Branch 2 출석 모델 규칙
 
