@@ -18,7 +18,6 @@ related:
 source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
-  - [[/05-work-items/task-capstone-demo-presence-attendance.md]]
 ---
 
 # Context
