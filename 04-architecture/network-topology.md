@@ -2,17 +2,19 @@
 title: 네트워크 토폴로지 개요
 type: architecture
 status: active
-updated: 2026-03-30
+updated: 2026-04-08
 owners:
   - presence-team
 related:
   - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/01-requirements/req-attendance-presence.md]]
+  - [[/05-work-items/task-openwrt-gateway-prototype.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
+  - [[/06-meetings/raw/2026-04-08-openwrt-setup-and-station-inspection.md]]
 ---
 
 # 목표
@@ -38,6 +40,12 @@ source:
 5. 수집 결과는 Redis 에 저장된다.
 6. PresenceService 는 강의실 / Wi-Fi / 단말 매칭 결과를 만든다.
 7. Backend 는 이를 수강 정보와 시간표와 결합해 최종 판단한다.
+
+# 운영 전제
+
+- OpenWrt 장비는 상단 공유기 내부 대역의 static IP 와 SSH 접근이 가능해야 한다.
+- PresenceService 는 `iw dev`, `ubus`, `iwinfo <iface> assoclist`, `iw dev <iface> station dump` 계열 명령 결과를 파싱할 수 있어야 한다.
+- 구체적인 테스트베드 연결 절차와 장비별 명령 예시는 `[[/05-work-items/task-openwrt-gateway-prototype.md]]` 에서 관리한다.
 
 # 주의점
 
