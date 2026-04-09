@@ -2,7 +2,7 @@
 title: 교수 기능 요구사항
 type: requirement
 status: active
-updated: 2026-04-08
+updated: 2026-04-09
 owners:
   - frontend-team
   - backend-team
@@ -12,6 +12,7 @@ related:
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/04-architecture/service-map.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
+  - [[/04-architecture/exam-mvp-contract.md]]
 source:
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
