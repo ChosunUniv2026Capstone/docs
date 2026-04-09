@@ -52,6 +52,17 @@ source:
   - 학생별 / slot별 현재 출석 상태
 - `attendance_status_audit_logs`
   - 학생별 / slot별 상태 전이 audit history
+- `exams`
+  - 강의에 종속되는 시험 마스터 데이터
+- `exam_questions`
+  - 시험에 속한 문제와 문제 순서, 문제 유형, 배점
+- `exam_question_options`
+  - 객관식/참거짓 문제의 보기와 정답 여부
+- `exam_submissions`
+  - 학생의 시험 응시 시도, 상태, 시작/제출/만료 시각, 점수
+- `exam_submission_answers`
+  - 제출 안의 문제별 답안, 선택 보기, 텍스트 답안, 정오 여부, 획득 점수
+
 
 # 관계 요약
 
@@ -70,6 +81,12 @@ source:
 - 하나의 `attendance_record` 는 `(attendance_session_id, projection_key, student_user_id)` 기준으로 유일해야 한다.
 - `attendance_status_audit_logs` 는 self check-in 과 professor manual update 둘 다 기록해야 한다.
 - `attendance_status_audit_logs` 는 append-only 여야 하며 삭제 / 덮어쓰기를 허용하면 안 된다.
+- 하나의 `course`는 여러 `exams`를 가질 수 있다.
+- 하나의 `exam`은 여러 `exam_questions`를 가진다.
+- 하나의 `exam_question`은 여러 `exam_question_options`를 가질 수 있다.
+- 하나의 `exam`은 여러 `exam_submissions`를 가진다.
+- 하나의 `exam_submission`은 여러 `exam_submission_answers`를 가진다.
+- 각 `exam_submission_answer`는 같은 시험에 속한 제출과 문제만 참조해야 한다.
 
 # 설계 원칙
 
