@@ -2,7 +2,7 @@
 title: 네트워크 토폴로지 개요
 type: architecture
 status: active
-updated: 2026-04-08
+updated: 2026-04-09
 owners:
   - presence-team
 related:
@@ -15,6 +15,7 @@ source:
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - [[/06-meetings/raw/2026-04-08-openwrt-setup-and-station-inspection.md]]
+  - [[/06-meetings/raw/2026-04-09-openwrt-ap-mode-dhcp-clarification.md]]
 ---
 
 # 목표
@@ -44,6 +45,7 @@ source:
 # 운영 전제
 
 - OpenWrt 장비는 상단 공유기 내부 대역의 static IP 와 SSH 접근이 가능해야 한다.
+- 동일 서브넷에서 상단 게이트웨이가 IP 를 관리하고 OpenWrt 가 AP / bridge 역할만 할 때는 OpenWrt LAN DHCP 서버를 비활성화해야 한다.
 - PresenceService 는 `iw dev`, `ubus`, `iwinfo <iface> assoclist`, `iw dev <iface> station dump` 계열 명령 결과를 파싱할 수 있어야 한다.
 - 구체적인 테스트베드 연결 절차와 장비별 명령 예시는 `[[/05-work-items/task-openwrt-gateway-prototype.md]]` 에서 관리한다.
 
