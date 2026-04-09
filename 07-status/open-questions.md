@@ -2,7 +2,7 @@
 title: 오픈 질문
 type: status
 status: active
-updated: 2026-03-30
+updated: 2026-04-08
 owners:
   - team
 related:
@@ -14,7 +14,12 @@ source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
+  - [[/06-meetings/raw/2026-04-08-openwrt-setup-and-station-inspection.md]]
 ---
+
+# 2026-04-08
+
+- OpenWrt LAN DHCP 를 반드시 꺼야 하는지, 아니면 상단 공유기 하위 테스트베드에서는 권장 사항 수준인지 운영 기준을 확정해야 한다.
 
 # 2026-03-30
 
