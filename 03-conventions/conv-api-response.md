@@ -2,7 +2,7 @@
 title: API 응답 규약
 type: convention
 status: active
-updated: 2026-04-08
+updated: 2026-04-10
 owners:
   - backend-team
 applies_to:
@@ -74,6 +74,9 @@ source:
 - `COURSE_ROUTE_FORBIDDEN`
 - `EXAM_NOT_FOUND`
 - `EXAM_NOT_OPEN`
+- `EXAM_NOT_EDITABLE`
+- `EXAM_INVALID_WINDOW`
+- `EXAM_INVALID_PAYLOAD`
 - `EXAM_ATTEMPT_LIMIT_REACHED`
 - `EXAM_LATE_ENTRY_NOT_ALLOWED`
 - `EXAM_SUBMISSION_NOT_FOUND`
