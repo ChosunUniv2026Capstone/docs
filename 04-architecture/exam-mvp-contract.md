@@ -2,7 +2,7 @@
 title: 시험 MVP API 및 데이터 계약
 type: architecture
 status: active
-updated: 2026-04-09
+updated: 2026-04-10
 owners:
   - backend-team
   - frontend-team
@@ -17,6 +17,7 @@ related:
   - [[/04-architecture/presence-eligibility-api.md]]
 source:
   - docs-first exam MVP alignment, 2026-04-09
+  - 2026-04-10 docs lane contract hardening against backend/front bundle review
 ---
 
 # 목적
@@ -141,9 +142,10 @@ source:
 - 문항 답안을 저장한다.
 - 제출 완료 상태에서는 `EXAM_SUBMISSION_ALREADY_FINALIZED` 로 거부한다.
 
-## `POST /api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submissions/{submission_id}/submit`
+## `POST /api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submit`
 
 - 시험을 제출한다.
+- 현재 로컬 MVP 는 학생별/시험별 active `in_progress` submission 하나만 유지하므로 submit route 는 `submission_id` 대신 exam-scoped endpoint 를 사용한다.
 - 객관식/진위형만 포함된 MVP 시험은 제출 시 즉시 score 계산이 가능해야 한다.
 
 # 교수 API 범위

@@ -2,7 +2,7 @@
 title: Exam Workflow API
 type: architecture
 status: active
-updated: 2026-04-09
+updated: 2026-04-10
 owners:
   - backend-team
   - frontend-team
@@ -13,6 +13,7 @@ related:
   - [[/04-architecture/exam-mvp-contract.md]]
 source:
   - 2026-04-09 local alignment with dd exam workflow
+  - 2026-04-10 docs lane contract hardening against docs/backend/front bundle review
 ---
 
 # Domain Model
@@ -60,6 +61,7 @@ source:
 - `POST /api/students/{student_id}/courses/{course_code}/exams/{exam_id}/start`
 - `PUT /api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submissions/{submission_id}/answers/{question_id}`
 - `POST /api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submit`
+  - submit targets the student's active `in_progress` attempt for the exam, so the route stays exam-scoped in the current local MVP.
 
 # Response Shape
 
@@ -135,14 +137,12 @@ source:
 # Error Codes
 
 - `EXAM_NOT_FOUND`
-- `EXAM_FORBIDDEN`
-- `EXAM_NOT_PUBLISHED`
-- `EXAM_WINDOW_NOT_OPEN`
+- `EXAM_NOT_OPEN`
 - `EXAM_NOT_EDITABLE`
-- `EXAM_ALREADY_SUBMITTED`
-- `EXAM_ATTEMPTS_EXHAUSTED`
-- `EXAM_NOT_STARTED`
-- `EXAM_TIME_LIMIT_EXPIRED`
+- `EXAM_INVALID_WINDOW`
 - `EXAM_INVALID_PAYLOAD`
+- `EXAM_ATTEMPT_LIMIT_REACHED`
 - `EXAM_LATE_ENTRY_NOT_ALLOWED`
+- `EXAM_SUBMISSION_NOT_FOUND`
+- `EXAM_SUBMISSION_ALREADY_FINALIZED`
 - `PRESENCE_INELIGIBLE`
