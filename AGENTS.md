@@ -11,6 +11,7 @@
 - work item
 - meeting raw / digested
 - status / risk / open question
+- report / capstone submission snapshot
 
 ## 필수 원칙
 - 원본 회의록은 `06-meetings/raw/` 에 보존한다.
@@ -19,6 +20,10 @@
 - status / meeting summary 는 latest-first 유지
 - ADR 은 한 문서 = 한 결정
 - 불확실한 논의는 requirement / convention 으로 승격하지 않는다.
+- `08-reports/` 는 캡스톤 주간/중간/최종 제출용 보고서 snapshot 이며 current truth 원천이 아니다.
+- 일반적인 requirement / ADR / convention / architecture / work item / meeting / status 업데이트마다 `08-reports/` 를 함께 갱신할 필요는 없다.
+- `08-reports/` 는 사용자가 명시적으로 "보고서 갱신", "08-reports 반영", "주간/중간/최종 보고서 업데이트" 등을 요청할 때만 갱신한다.
+- `08-reports/` 내용과 current truth 가 다를 수 있으면 current truth 문서를 우선하고, 보고서에는 다음 명시적 보고서 갱신 시 반영한다.
 
 ## 작업 시작 전
 - `git checkout main`
