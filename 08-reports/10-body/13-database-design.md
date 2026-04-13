@@ -38,39 +38,287 @@ Redis snapshot 은 영속 DB 가 아니라 PresenceService 의 성능 최적화 
 # 13.3 ERD
 
 ```mermaid
+---
+title: Smart Class Database ERD
+---
 erDiagram
-  users ||--o{ course_enrollments : enrolls
-  users ||--o{ courses : teaches
-  users ||--o{ registered_devices : owns
-  users ||--o{ refresh_sessions : has
-  users ||--o{ attendance_records : receives
-  users ||--o{ attendance_status_audit_logs : acts
-  users ||--o{ exam_submissions : submits
+    USERS ||--o{ COURSES : teaches
+    USERS ||--o{ COURSE_ENROLLMENTS : enrolls
+    USERS ||--o{ NOTICES : writes
+    USERS ||--o{ REGISTERED_DEVICES : owns
+    USERS ||--o{ REFRESH_SESSIONS : authenticates
+    USERS ||--o{ PRESENCE_ELIGIBILITY_LOGS : requested_for
+    USERS ||--o{ ATTENDANCE_SESSIONS : opens
+    USERS ||--o{ ATTENDANCE_RECORDS : receives
+    USERS |o--o{ ATTENDANCE_RECORDS : finalizes
+    USERS ||--o{ ATTENDANCE_STATUS_AUDIT_LOGS : target_student
+    USERS ||--o{ ATTENDANCE_STATUS_AUDIT_LOGS : acts
+    USERS ||--o{ EXAM_SUBMISSIONS : submits
 
-  courses ||--o{ course_enrollments : has
-  courses ||--o{ course_schedules : schedules
-  courses ||--o{ notices : publishes
-  courses ||--o{ attendance_sessions : opens
-  courses ||--o{ exams : contains
+    COURSES ||--o{ COURSE_ENROLLMENTS : has
+    COURSES ||--o{ COURSE_SCHEDULES : scheduled_as
+    COURSES ||--o{ NOTICES : publishes
+    COURSES ||--o{ PRESENCE_ELIGIBILITY_LOGS : checks_for
+    COURSES ||--o{ ATTENDANCE_SESSIONS : opens
+    COURSES ||--o{ EXAMS : contains
 
-  classrooms ||--o{ course_schedules : hosts
-  classrooms ||--o{ classroom_networks : maps
-  classrooms ||--o{ attendance_sessions : hosts
-  classrooms ||--o{ attendance_session_slots : hosts
-  classrooms ||--o{ presence_eligibility_logs : logs
+    CLASSROOMS ||--o{ COURSE_SCHEDULES : hosts
+    CLASSROOMS ||--o{ CLASSROOM_NETWORKS : maps_network
+    CLASSROOMS ||--o{ PRESENCE_ELIGIBILITY_LOGS : observed_in
+    CLASSROOMS ||--o{ ATTENDANCE_SESSIONS : hosts
+    CLASSROOMS ||--o{ ATTENDANCE_SESSION_SLOTS : hosts_slot
 
-  attendance_sessions ||--o{ attendance_session_slots : contains
-  attendance_sessions ||--o{ attendance_records : records
-  attendance_sessions ||--o{ attendance_status_audit_logs : audits
+    ATTENDANCE_SESSIONS ||--o{ ATTENDANCE_SESSION_SLOTS : contains
+    ATTENDANCE_SESSIONS ||--o{ ATTENDANCE_RECORDS : records
+    ATTENDANCE_SESSIONS ||--o{ ATTENDANCE_STATUS_AUDIT_LOGS : audits
 
-  exams ||--o{ exam_questions : has
-  exams ||--o{ exam_submissions : has
-  exams ||--o{ exam_submission_answers : scopes
-  exam_questions ||--o{ exam_question_options : has
-  exam_questions ||--o{ exam_submission_answers : answered_by
-  exam_submissions ||--o{ exam_submission_answers : contains
-  exam_question_options ||--o{ exam_submission_answers : selected_as
+    EXAMS ||--o{ EXAM_QUESTIONS : has
+    EXAMS ||--o{ EXAM_SUBMISSIONS : receives
+    EXAMS ||--o{ EXAM_SUBMISSION_ANSWERS : scopes
+    EXAM_QUESTIONS ||--o{ EXAM_QUESTION_OPTIONS : offers
+    EXAM_QUESTIONS ||--o{ EXAM_SUBMISSION_ANSWERS : answered_by
+    EXAM_SUBMISSIONS ||--o{ EXAM_SUBMISSION_ANSWERS : contains
+    EXAM_QUESTION_OPTIONS |o--o{ EXAM_SUBMISSION_ANSWERS : selected_as
+
+    USERS {
+        bigint id PK "user id"
+        string student_id UK "student login id"
+        string professor_id UK "professor login id"
+        string admin_id UK "admin login id"
+        string name "display name"
+        string role "student professor admin"
+        string password "password hash"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    CLASSROOMS {
+        bigint id PK "classroom id"
+        string classroom_code UK "room code"
+        string name "classroom name"
+        string building "building"
+        string floor_label "floor"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    COURSES {
+        bigint id PK "course id"
+        string course_code UK "course code"
+        string title "course title"
+        bigint professor_user_id FK "professor user id"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    COURSE_ENROLLMENTS {
+        bigint id PK "enrollment id"
+        bigint course_id FK "course id"
+        bigint student_user_id FK "student user id"
+        string status "active etc"
+        timestamp created_at "created time"
+    }
+
+    COURSE_SCHEDULES {
+        bigint id PK "schedule id"
+        bigint course_id FK "course id"
+        bigint classroom_id FK "classroom id"
+        int day_of_week "0 to 6"
+        time starts_at "slot start"
+        time ends_at "slot end"
+        timestamp created_at "created time"
+    }
+
+    NOTICES {
+        bigint id PK "notice id"
+        bigint course_id FK "course id"
+        bigint author_user_id FK "author user id"
+        string title "notice title"
+        string body "notice body"
+        timestamp created_at "created time"
+    }
+
+    CLASSROOM_NETWORKS {
+        bigint id PK "network id"
+        bigint classroom_id FK "classroom id"
+        string ap_id "access point id"
+        string ssid "wifi ssid"
+        string gateway_host "router host"
+        int signal_threshold_dbm "minimum signal"
+        string collection_mode "openwrt ssh etc"
+        timestamp created_at "created time"
+    }
+
+    REGISTERED_DEVICES {
+        bigint id PK "device id"
+        bigint user_id FK "student user id"
+        string label "device label"
+        string mac_address UK "device mac"
+        string status "active etc"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    PRESENCE_ELIGIBILITY_LOGS {
+        bigint id PK "presence log id"
+        bigint student_user_id FK "student user id"
+        bigint course_id FK "course id"
+        bigint classroom_id FK "classroom id"
+        string purpose "attendance exam etc"
+        boolean eligible "presence decision"
+        string reason_code "decision reason"
+        string matched_device_mac "matched mac"
+        json evidence "raw evidence"
+        timestamp observed_at "observed time"
+        int snapshot_age_seconds "snapshot age"
+        timestamp created_at "created time"
+    }
+
+    REFRESH_SESSIONS {
+        bigint id PK "refresh session id"
+        string session_key UK "session key"
+        bigint user_id FK "user id"
+        string current_token_hash "refresh token hash"
+        timestamp expires_at "expiry time"
+        timestamp revoked_at "revoked time"
+        timestamp replay_detected_at "replay detected time"
+        timestamp last_rotated_at "last rotation time"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    ATTENDANCE_SESSIONS {
+        bigint id PK "attendance session id"
+        string projection_key "bundle or slot key"
+        bigint course_id FK "course id"
+        bigint classroom_id FK "classroom id"
+        date session_date "class date"
+        time slot_start_at "representative start"
+        time slot_end_at "representative end"
+        string mode "manual smart canceled"
+        string status "active closed expired canceled"
+        bigint opened_by_user_id FK "professor user id"
+        timestamp opened_at "opened time"
+        timestamp closed_at "closed time"
+        timestamp expires_at "expiry time"
+        int latest_version "audit version"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    ATTENDANCE_SESSION_SLOTS {
+        bigint id PK "attendance slot id"
+        bigint attendance_session_id FK "parent session id"
+        string projection_key "slot projection key"
+        bigint classroom_id FK "classroom id"
+        date session_date "class date"
+        time slot_start_at "slot start"
+        time slot_end_at "slot end"
+        int slot_order "bundle order"
+        timestamp created_at "created time"
+    }
+
+    ATTENDANCE_RECORDS {
+        bigint id PK "attendance record id"
+        bigint attendance_session_id FK "session id"
+        string projection_key "slot projection key"
+        bigint student_user_id FK "student user id"
+        string final_status "present absent late official sick"
+        string attendance_reason "manual reason"
+        bigint finalized_by_user_id FK "finalizer user id"
+        timestamp finalized_at "finalized time"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    ATTENDANCE_STATUS_AUDIT_LOGS {
+        bigint id PK "attendance audit id"
+        bigint attendance_session_id FK "session id"
+        string projection_key "slot projection key"
+        bigint student_user_id FK "student user id"
+        bigint actor_user_id FK "actor user id"
+        string actor_role "actor role"
+        string change_source "manual smart system"
+        string previous_status "before status"
+        string new_status "after status"
+        string reason "change reason"
+        timestamp changed_at "changed time"
+        int version "session version"
+    }
+
+    EXAMS {
+        bigint id PK "exam id"
+        bigint course_id FK "course id"
+        string title "exam title"
+        string description "exam description"
+        string exam_type "quiz midterm final practice custom"
+        string status "draft published open closed archived"
+        timestamp starts_at "exam starts"
+        timestamp ends_at "exam ends"
+        int duration_minutes "time limit minutes"
+        boolean requires_presence "presence required"
+        boolean late_entry_allowed "late entry allowed"
+        boolean auto_submit_enabled "auto submit enabled"
+        boolean shuffle_questions "shuffle questions"
+        boolean shuffle_options "shuffle options"
+        int max_attempts "max attempts"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    EXAM_QUESTIONS {
+        bigint id PK "question id"
+        bigint exam_id FK "exam id"
+        int question_order "display order"
+        string question_type "multiple choice true false"
+        string prompt "question prompt"
+        decimal points "question points"
+        string correct_answer_text "canonical answer"
+        string explanation "answer explanation"
+        boolean is_required "required flag"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    EXAM_QUESTION_OPTIONS {
+        bigint id PK "option id"
+        bigint question_id FK "question id"
+        int option_order "display order"
+        string option_text "option text"
+        boolean is_correct "correct option flag"
+        timestamp created_at "created time"
+    }
+
+    EXAM_SUBMISSIONS {
+        bigint id PK "submission id"
+        bigint exam_id FK "exam id"
+        bigint student_user_id FK "student user id"
+        int attempt_no "attempt number"
+        string status "in progress submitted graded etc"
+        timestamp started_at "started time"
+        timestamp submitted_at "submitted time"
+        timestamp expires_at "personal deadline"
+        int time_limit_snapshot_minutes "snapshotted duration"
+        decimal score "total score"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
+
+    EXAM_SUBMISSION_ANSWERS {
+        bigint id PK "answer id"
+        bigint exam_id FK "exam id consistency key"
+        bigint submission_id FK "submission id"
+        bigint question_id FK "question id"
+        bigint selected_option_id FK "selected option id"
+        string answer_text "free text answer"
+        boolean is_correct "grading result"
+        decimal awarded_score "awarded score"
+        timestamp answered_at "answered time"
+        timestamp created_at "created time"
+        timestamp updated_at "updated time"
+    }
 ```
+
 
 # 13.4 출석 모델 상세
 
