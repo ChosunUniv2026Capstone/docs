@@ -2,7 +2,7 @@
 title: 전체 LMS 구현 로드맵
 type: task
 status: doing
-updated: 2026-03-30
+updated: 2026-04-25
 owners:
   - team
 related:
@@ -11,10 +11,13 @@ related:
   - [[/01-requirements/req-admin-features.md]]
   - [[/04-architecture/service-map.md]]
   - [[/04-architecture/local-runtime-topology.md]]
+  - [[/04-architecture/attendance-workflow-architecture.md]]
+  - [[/04-architecture/exam-workflow-api.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
+  - current code/test audit, 2026-04-25
 ---
 
 # 목표
@@ -57,6 +60,15 @@ source:
 - 교수 퀴즈 / 시험 출제
 - 학생 퀴즈 / 시험 응시
 
+## Phase 4a. Objective Exam Local MVP
+
+- 교수 시험 생성 / 수정 / 삭제
+- 교수 시험 게시 / 마감
+- 학생 시험 목록 / 상세 조회
+- 학생 시험 시작 guard
+- 학생 답안 저장 / 제출
+- attempt deadline / auto submit / deterministic question shuffle
+
 ## Phase 5. Attendance and Grade Record
 
 - 출석 기록 저장 / 조회
@@ -64,14 +76,16 @@ source:
 - 성적 조회 / 관리
 - 관리자 운영 지표
 
-# 현재 실행 슬라이스
+# 현재 실행 상태
 
-다음 구현 우선순위는 아래 세 축이다.
+2026-04-25 기준 구현/테스트 감사에서 확인한 상태는 다음과 같다.
 
-1. 역할별 강의 목록 조회
-2. 공지사항 조회 / 상세 조회 / 작성
-3. 강의 상세 화면 안의 학습 자료 / 동영상 임시 프론트 스캐폴드
-4. 관리자 사용자 / 강의실 / 와이파이 목록 조회
+1. Phase 1 Foundation: 완료
+2. Phase 2 Academic Read Model: 완료
+3. Phase 2-3 Bridge 학습 자료 / 동영상 Front 임시 스캐폴드: 완료
+4. Attendance bundle session local MVP: 완료
+5. Objective exam local MVP: 완료
+6. 정식 학습 콘텐츠 Backend/DB 계약, 과제, 성적, 관리자 운영 지표: 후속 구현
 
 # 비기능 원칙
 

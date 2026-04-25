@@ -34,6 +34,7 @@
    - `05-work-items`
    - `06-meetings`
    - `07-status`
+   - `08-reports`
 6. Quartz 가 `public/` 정적 산출물을 만든다.
 7. GitHub Pages artifact 업로드 후 `docs.smart-class.org` 로 배포한다.
 
@@ -80,3 +81,4 @@
 - PR preview 가 없으므로 링크/빌드 오류는 merge 후 `docs/main` 배포 시점에 발견될 수 있다.
 - custom domain/DNS 적용은 코드만으로 완료되지 않는다.
 - 새 최상위 문서 섹션을 공개하려면 `DocsQuartz` 배포 workflow 의 동기화 목록도 함께 갱신해야 한다.
+- `08-reports/` 는 current truth 원천은 아니지만, 캡스톤 보고서 조회를 위해 Quartz 공개 대상에 포함한다.

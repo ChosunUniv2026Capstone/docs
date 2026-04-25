@@ -1,8 +1,8 @@
 ---
 title: Phase 2 학사 조회 기능 구현
 type: task
-status: doing
-updated: 2026-03-30
+status: done
+updated: 2026-04-25
 owners:
   - team
 related:
@@ -12,6 +12,7 @@ related:
   - [[/01-requirements/req-admin-features.md]]
 source:
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
+  - current code/test audit, 2026-04-25
 ---
 
 # 범위
@@ -43,3 +44,9 @@ source:
 - 강의자료 / 동영상 영역은 임시 스캐폴드로 구분되어 보이고, 세션 범위에서만 동작한다.
 - 학생은 공지사항을 볼 수 있다.
 - 관리자는 학생 / 교수 / 관리자 목록과 강의실 / AP 매핑 목록을 볼 수 있다.
+
+# 완료 확인
+
+2026-04-25 코드/테스트 감사 기준으로 Phase 2 학사 조회 기능은 완료로 재분류한다. 학생/교수 강의 목록, 공지 목록/상세/작성, 관리자 사용자/강의실/AP 매핑 조회, 프로필 기반 단말 관리, 강의 상세 내 출석/시험 진입 흐름이 구현되어 있다. Front build/lint, Backend 테스트가 통과했다.
+
+강의자료 / 동영상 영역은 문서의 기존 정의대로 정식 Backend/DB 계약이 아닌 Front 임시 스캐폴드 완료 상태다.
