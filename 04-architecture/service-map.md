@@ -11,6 +11,8 @@ related:
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/01-requirements/req-student-features.md]]
   - [[/04-architecture/local-runtime-topology.md]]
+  - [[/02-decisions/adr-0011-service-repo-runtime-orchestration.md]]
+  - [[/03-conventions/conv-release-and-deployment.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
@@ -33,8 +35,11 @@ source:
   - 스키마, 마이그레이션, 데이터 계약
 - `docs`
   - 요구사항, ADR, 규약, 회의록
+- `Service`
+  - canonical runtime orchestration, compose, nginx config, service release manifests, demo deploy scripts
 - `CodexKit`
-  - 로컬 Docker Compose 와 온보딩 스크립트
+  - workspace bootstrap, repo helper, shared hook, workflow governance
+  - runtime compose/nginx/env 는 소유하지 않고 `Service` 로 위임
 
 # 기본 상호작용
 
@@ -49,6 +54,8 @@ source:
 
 # 경계 요약
 
+- Service 는 런타임 오케스트레이션, edge nginx 설정, 이미지 기반 실행, manifest release, demo deploy wrapper 를 소유한다.
+- CodexKit 은 workspace bootstrap/governance 를 소유하고 runtime 실행은 Service 로 위임한다.
 - Nginx 는 외부 진입점과 path routing 을 소유한다. `/ws/` WebSocket upgrade 도 edge nginx 에서 Backend 로 전달한다.
 - Front 는 판정 결과를 소비한다.
 - Backend 는 최종 도메인 판단을 한다.
