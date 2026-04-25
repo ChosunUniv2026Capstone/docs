@@ -2,7 +2,7 @@
 title: 출석 데모 seed / reset 절차
 type: architecture
 status: active
-updated: 2026-04-08
+updated: 2026-04-26
 owners:
   - db-owner
   - backend-team
@@ -14,6 +14,8 @@ source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/05-work-items/task-capstone-demo-presence-attendance.md]]
+  - [[/02-decisions/adr-0011-service-repo-runtime-orchestration.md]]
+  - [[/03-conventions/conv-release-and-deployment.md]]
 ---
 
 # 목적
@@ -34,17 +36,21 @@ source:
 
 - `users`, `courses`, `course_enrollments`, `course_schedules`, `classrooms`, `classroom_networks`, `registered_devices` seed 는 `DB/postgres/init/010_seed.sql` 기준 truth 를 유지한다.
 - 출석 sample seed 는 `DB/postgres/init/012_attendance_demo_seed.sql` 이 소유한다.
-- hard reset 으로 demo baseline 을 복구할 때는 postgres volume 을 재생성해 init script 전체를 다시 실행해야 한다.
+- hard reset 으로 demo baseline 을 복구할 때는 `Service` compose project 의 postgres volume 을 재생성해 init script 전체를 다시 실행해야 한다.
+- Service manifest 에서 `components.db.resetRequired: true` 이고 DB image digest 가 바뀐 demo deploy 는 `reset_demo_data=true` 입력 없이는 진행하지 않는다.
+- reset script 는 Service project name 으로 생성된 DB volume 만 제거해야 하며, 임의 Docker volume 제거는 금지한다.
 - Presence overlay reset 은 기존 PresenceService admin reset endpoint 를 사용한다.
 
 # 수동 reset 절차
 
-1. `cd ../CodexKit && docker compose down -v`
-2. `cd ../CodexKit && docker compose up -d`
-3. Presence overlay reset
-4. 프론트 새로고침
-5. 교수 `PRF002` 로 `CSE116` attendance tab 진입
-6. 학생 `20201239` 로 smart session 진입 확인
+1. `cd ../Service`
+2. local source mode 에서는 `scripts/up-local.sh` 로 stack 을 실행한다.
+3. image/demo mode 에서는 release manifest 를 확인한 뒤 `scripts/deploy-demo.sh --service-version vX.Y.Z --reset-demo-data` 처럼 reset 의도를 명시한다.
+4. hard reset 이 필요한 수동 로컬 검증에서는 Service compose project 의 postgres volume 만 제거하고 stack 을 다시 실행한다.
+5. Presence overlay reset
+6. 프론트 새로고침
+7. 교수 `PRF002` 로 `CSE116` attendance tab 진입
+8. 학생 `20201239` 로 smart session 진입 확인
 
 # 기대 결과
 

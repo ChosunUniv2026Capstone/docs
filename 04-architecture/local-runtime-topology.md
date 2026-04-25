@@ -9,6 +9,8 @@ related:
   - [[/04-architecture/service-map.md]]
   - [[/04-architecture/presence-eligibility-api.md]]
   - [[/01-requirements/req-attendance-presence.md]]
+  - [[/02-decisions/adr-0011-service-repo-runtime-orchestration.md]]
+  - [[/03-conventions/conv-release-and-deployment.md]]
 source:
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
 ---
@@ -43,8 +45,12 @@ source:
 
 # 실행 위치
 
-- 로컬 오케스트레이션은 `CodexKit/docker-compose.yml` 에서 담당한다.
-- 각 서비스 코드는 sibling repo 에서 build context 로 연결한다.
+- 로컬 오케스트레이션의 canonical owner 는 `Service` repo 이다.
+- 로컬 source build 는 `Service/compose.yml` + `Service/compose.local.yml` 조합으로 실행한다.
+- 이미지 기반 실행은 `Service/compose.yml` + `Service/compose.image.yml` 조합으로 실행한다.
+- 데모 배포는 `Service/compose.yml` + `Service/compose.image.yml` + `Service/compose.demo.yml` 조합과 manifest-pinned 이미지 ref 를 사용한다.
+- 각 서비스 코드는 local mode 에서 sibling repo build context(`../Backend`, `../Front`, `../PresenceService`, `../DB`) 로 연결한다.
+- `CodexKit` 은 runtime compose/nginx/env 의 source of truth 가 아니며, 필요한 경우 `Service` wrapper 로 위임한다.
 
 # 흐름
 
@@ -71,7 +77,7 @@ source:
 
 - 로컬 / 시연 환경에서는 `smart-class.org`, `localhost`, `127.0.0.1`, 사설 IPv4 형식 Host 패턴의 접근을 허용한다.
 - 이 Host 필터링은 로컬 / 시연 접근 호환성을 위한 edge routing 정책이며, TLS / 인증서 기반 운영 보안 경계가 아니다.
-- HTTPS, 인증서, 443 리스너, HTTP -> HTTPS redirect 는 별도 배포 문서에서 다룬다.
+- HTTPS, 인증서, 443 리스너, HTTP -> HTTPS redirect 는 `Service` 데모 배포 문서와 manifest release 절차에서 다룬다.
 
 # 현재 범위
 
