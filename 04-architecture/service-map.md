@@ -57,6 +57,7 @@ source:
 
 # 공개 경계
 
-- 공개 URL 은 `Nginx` 가 단일 origin 으로 제공한다. 로컬 / 시연 Host 필터링은 접근 호환성 정책이며 TLS 기반 보안 경계가 아니다.
+- 공개 URL 은 `Nginx` 가 단일 origin 으로 제공한다. 로컬 / 시연 Host 패턴 필터링은 접근 호환성 정책이며 TLS 기반 보안 경계가 아니다.
+- Postgres / Redis 는 기본적으로 host port 없이 Docker 네트워크 내부 의존 서비스로만 둔다. 신뢰된 LAN 임시 디버깅이 필요할 때만 compose 의 debug port 예시를 명시적으로 해제한다.
 - `PresenceService` 는 외부 공개 없이 Backend 내부 의존 경로로만 사용한다.
 - Front 의 page/route 권한은 Backend bootstrap/guard 결과를 소비해야 하며, 직접 신뢰하면 안 된다.

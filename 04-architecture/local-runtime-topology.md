@@ -34,10 +34,12 @@ source:
   - 기본 호스트 포트 `3100`
 - `postgres`
   - PostgreSQL
-  - 기본 호스트 포트 `5432`
+  - 기본 컨테이너 포트 `5432`
+  - 기본적으로 host port 를 열지 않고 Docker 네트워크 내부에만 노출
 - `redis`
   - Redis
-  - 기본 호스트 포트 `6379`
+  - 기본 컨테이너 포트 `6379`
+  - 기본적으로 host port 를 열지 않고 Docker 네트워크 내부에만 노출
 
 # 실행 위치
 
@@ -61,12 +63,13 @@ source:
 - 로컬 기본 진입점은 `localhost:3100` 이며, 이는 edge nginx 컨테이너의 `80` 포트로 매핑된다.
 - Docker 네트워크 안에서 edge nginx 는 Front 를 `front:80`, Backend 를 `backend:8000` 으로 호출한다.
 - `backend`, `front`, `presence-service`, `postgres`, `redis` 는 Docker 네트워크 내부 통신을 기본으로 한다.
+- Postgres / Redis host port 는 기본 런타임에서는 닫혀 있으며, 신뢰된 LAN 에서 임시 디버깅이 필요할 때만 compose 파일의 주석 처리된 debug port 예시를 해제한다.
 - `presence-service` 는 Backend 의 내부 의존 서비스로 취급하며, 외부 사용자가 직접 접속하는 공개 진입점으로 두지 않는다.
 
 
 # Host 접근 정책
 
-- 로컬 / 시연 환경에서는 `smart-class.org`, `localhost`, `127.0.0.1`, 사설 IPv4 대역의 Host 접근을 허용한다.
+- 로컬 / 시연 환경에서는 `smart-class.org`, `localhost`, `127.0.0.1`, 사설 IPv4 형식 Host 패턴의 접근을 허용한다.
 - 이 Host 필터링은 로컬 / 시연 접근 호환성을 위한 edge routing 정책이며, TLS / 인증서 기반 운영 보안 경계가 아니다.
 - HTTPS, 인증서, 443 리스너, HTTP -> HTTPS redirect 는 별도 배포 문서에서 다룬다.
 
