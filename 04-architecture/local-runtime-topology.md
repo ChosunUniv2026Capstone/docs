@@ -2,7 +2,7 @@
 title: 로컬 런타임 토폴로지
 type: architecture
 status: active
-updated: 2026-04-07
+updated: 2026-04-26
 owners:
   - architecture-owner
 related:
@@ -20,8 +20,9 @@ source:
 # 서비스
 
 - `front`
-  - React + Vite
-  - 기본 컨테이너 포트 `3000`
+  - Docker / compose runtime: Vite build 산출물을 nginx 로 정적으로 제공
+  - 기본 컨테이너 포트 `80`
+  - 직접 개발 실행 시: Vite dev server 포트 `3000`
 - `backend`
   - FastAPI
   - 기본 컨테이너 포트 `8000`
@@ -47,8 +48,8 @@ source:
 
 1. 사용자는 `nginx` 의 외부 포트로 접속한다.
 2. `nginx` 는 `/` 요청을 `front` 로 전달한다.
-3. `nginx` 는 `/api/` 와 `/health` 요청을 `backend` 로 전달한다.
-4. Front 는 same-origin 경로로 Backend 를 호출한다.
+3. `nginx` 는 `/api/`, `/ws/`, `/health` 요청을 `backend` 로 전달한다.
+4. Front 는 same-origin 경로로 Backend REST / WebSocket 을 호출한다.
 5. Backend 가 학생 단말과 수강 / 시간표를 검증한다.
 6. Backend 가 PresenceService 에 eligibility 를 요청한다.
 7. PresenceService 는 Redis 캐시를 먼저 보고, 필요 시 더미 OpenWrt snapshot 을 새로 만든다.
@@ -57,8 +58,17 @@ source:
 # 외부 노출 원칙
 
 - 외부에서 직접 노출하는 서비스는 기본적으로 `nginx` 하나다.
-- `backend`, `presence-service`, `postgres`, `redis` 는 Docker 네트워크 내부 통신을 기본으로 한다.
+- 로컬 기본 진입점은 `localhost:3100` 이며, 이는 edge nginx 컨테이너의 `80` 포트로 매핑된다.
+- Docker 네트워크 안에서 edge nginx 는 Front 를 `front:80`, Backend 를 `backend:8000` 으로 호출한다.
+- `backend`, `front`, `presence-service`, `postgres`, `redis` 는 Docker 네트워크 내부 통신을 기본으로 한다.
 - `presence-service` 는 Backend 의 내부 의존 서비스로 취급하며, 외부 사용자가 직접 접속하는 공개 진입점으로 두지 않는다.
+
+
+# Host 접근 정책
+
+- 로컬 / 시연 환경에서는 `smart-class.org`, `localhost`, `127.0.0.1`, 사설 IPv4 대역의 Host 접근을 허용한다.
+- 이 Host 필터링은 로컬 / 시연 접근 호환성을 위한 edge routing 정책이며, TLS / 인증서 기반 운영 보안 경계가 아니다.
+- HTTPS, 인증서, 443 리스너, HTTP -> HTTPS redirect 는 별도 배포 문서에서 다룬다.
 
 # 현재 범위
 
