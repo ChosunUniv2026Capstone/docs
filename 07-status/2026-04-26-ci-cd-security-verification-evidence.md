@@ -13,6 +13,8 @@ related:
 source:
   - .omx/plans/prd-ci-cd-service-repo-versioning.md
   - .omx/plans/test-spec-ci-cd-service-repo-versioning.md
+  - .omx/plans/prd-ghcr-public-risk-versioning.md
+  - .omx/plans/test-spec-ghcr-public-risk-versioning.md
 ---
 
 # CI/CD security and verification evidence
@@ -68,6 +70,10 @@ Commands run by worker-4 after the first task-6 completion:
 - PASS: `git -C docs status --short -- 08-reports` returned empty output.
 - PASS: secret-pattern scan over tracked component/docs/CodexKit files and non-git `Service/` files returned no matches.
 
+## Public-readiness report
+
+See `07-status/2026-04-26-ghcr-public-readiness-report.md` for the 2026-04-26 scan classification, accepted demo fixtures, anonymous GHCR pull failure evidence, and public health proof. Current blocker: anonymous `docker manifest inspect` returns `denied` for all four manifest-pinned component images.
+
 ## Credential-blocked checks
 
 The following checks require authority or external runtime state unavailable to local workers:
@@ -81,7 +87,8 @@ The following checks require authority or external runtime state unavailable to 
 
 - Workflow links for each component repo PR CI.
 - Workflow links/log excerpts for image publish and same-workflow SemVer tag publication.
-- GHCR package visibility or authenticated fallback pull output.
+- GHCR package visibility plus anonymous pull output; authenticated fallback output is supplemental only and does not satisfy public completion.
+- Current public-readiness report: `07-status/2026-04-26-ghcr-public-readiness-report.md`.
 - Service compose config output for local, image, and demo modes.
 - Service manifest validation and render output.
 - DB reset gate negative, positive, and reset-safe outputs.

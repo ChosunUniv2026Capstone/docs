@@ -19,6 +19,8 @@ related:
 source:
   - .omx/plans/prd-ci-cd-service-repo-versioning.md
   - .omx/plans/test-spec-ci-cd-service-repo-versioning.md
+  - .omx/plans/prd-ghcr-public-risk-versioning.md
+  - .omx/plans/test-spec-ghcr-public-risk-versioning.md
 ---
 
 # 목적
@@ -37,15 +39,16 @@ Smart Class runtime component 와 whole-service demo release 의 version, image,
 
 - 각 runtime repo 는 PR 에서 image build 를 검증하되 push 하지 않는다.
 - `main` push 는 `sha-<shortsha>` 와 `main` 또는 `edge` 태그를 GHCR 에 publish 한다.
-- Release Please 가 실제 release 를 만들 때는 같은 workflow 안에서 `vX.Y.Z`, `vX.Y`, `vX`, `sha-<shortsha>` 태그를 publish 한다.
+- Release Please 가 실제 release 를 만들 때는 같은 workflow 안에서 `vX.Y.Z`, `vX.Y`, `sha-<shortsha>` 태그를 publish 한다. `vX` major tag 는 `X > 0` 인 경우에만 publish 한다.
 - default `GITHUB_TOKEN` 으로 생성된 tag/release 가 downstream workflow 를 자동으로 깨운다는 가정은 금지한다.
 - OCI label 에 source, version, revision 을 기록한다.
 
 # GHCR access
 
 - 첫 pass 정책은 public GHCR package 이며 demo server 는 anonymous pull 을 우선 사용한다.
+- public-readiness 완료 조건은 Service release manifest 의 모든 component image 에 대해 로그인 없는 `docker manifest inspect` 또는 `docker pull` 이 성공하는 것이다.
 - public package 가 허용되지 않는 경우에만 `GHCR_READ_TOKEN` private fallback 을 사용한다.
-- private fallback 은 unauthenticated pull failure 와 authenticated pull success evidence 를 함께 남긴다.
+- private fallback 은 unauthenticated pull failure 와 authenticated pull success evidence 를 함께 남기되, public completion gate 를 대체하지 않는다.
 
 # Service manifest release
 
