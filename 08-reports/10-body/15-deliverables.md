@@ -2,7 +2,7 @@
 title: 산출물
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-05-03
 owners:
   - team
 related:
@@ -27,6 +27,8 @@ source:
 | PresenceService | snapshot cache, dummy overlay, eligibility | 구현/실 장비 확장 계획 |
 | DB 스키마/seed | 사용자/강의/단말/출석/시험 schema 및 seed | 구현됨 |
 | Docker 환경 | Nginx, Front, Backend, PresenceService, PostgreSQL, Redis | 구현됨 |
+| Service runtime | local source mode, GHCR image mode, release manifest, demo deploy script | 구현/검증 진행 |
+| 릴리스 이미지 | Backend/Front/PresenceService/DB GHCR public image publish 및 anonymous pull proof | 구현됨 |
 | 테스트 | Backend pytest, PresenceService pytest, Front lint/build/e2e | 일부 구현 |
 
 # 15.2 최종 산출물
@@ -36,7 +38,7 @@ source:
 - 통합 실행 가능한 차세대 사이버캠퍼스 프로토타입
 - 학생/교수/서비스관리자 전체 기능 화면 캡처
 - 출석/시험 신뢰성 강화 시나리오 시연
-- API/DB/인프라/CI/CD 설계 문서
+- API/DB/인프라/CI/CD 설계 및 검증 문서
 - Mermaid 기반 sequence/flowchart/ERD
 - 테스트 결과와 한계 분석
 - 조선대학교 및 타 학교 도입 가능성 정리

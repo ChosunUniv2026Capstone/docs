@@ -2,7 +2,7 @@
 title: 캡스톤 최종보고서 초안
 type: final-report
 status: draft
-updated: 2026-04-12
+updated: 2026-05-03
 owners:
   - team
 related:
@@ -34,7 +34,7 @@ source:
 - DB ERD 최종화
 - 테스트 실행 결과 표 삽입
 - Docker 실행/health check 결과 삽입
-- CI/CD 구현 여부와 workflow 결과 삽입
+- CI/CD 구현 상태, GHCR public pull proof, workflow 결과 삽입
 - 조선대학교 적용 시나리오와 타 학교 확장 조건 정리
 - 한계와 향후 계획 최종 정리
 
@@ -48,7 +48,7 @@ source:
 | Mermaid diagrams | 초안 | 최신 구현 재검토 필요 |
 | DB ERD | 초안 | 관계/제약 보강 필요 |
 | 테스트 결과 | 미완 | 최종 실행 결과 필요 |
-| CI/CD | 계획 | workflow 구현 여부 확인 필요 |
+| CI/CD | 부분 완료 | component image publish, Service manifest, GHCR anonymous manifest inspect 통과. demo deploy workflow/server 증거 추가 필요 |
 
 # 5. 최종 결론 초안
 

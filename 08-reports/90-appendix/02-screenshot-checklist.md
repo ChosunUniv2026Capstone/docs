@@ -18,7 +18,8 @@ related:
 
 - 촬영일: 2026-04-12
 - 촬영 방식: Playwright Chromium headless screenshot
-- 실행 기준: 기존 Docker 컨테이너를 모두 내린 뒤 `CodexKit/docker-compose.yml` 을 현재 워크스페이스 기준으로 `up -d --build`
+- 실행 기준: 2026-04-12 캡처 당시에는 기존 Docker 컨테이너를 모두 내린 뒤 `CodexKit/docker-compose.yml` 을 현재 워크스페이스 기준으로 `up -d --build`
+- 2026-05-03 기준 공식 runtime entrypoint 는 `Service` repository 이며, 후속 캡처는 `Service/compose.local.yml` 또는 `Service/compose.image.yml` 기준으로 재촬영한다.
 - 접속 URL: `http://127.0.0.1:3100`
 - 사용 계정:
   - 학생: `20201239 / devpass123`

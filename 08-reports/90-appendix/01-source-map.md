@@ -24,7 +24,7 @@ related:
 | 시험 | [[/01-requirements/req-exam-workflow.md]], [[/04-architecture/exam-mvp-contract.md]], [[/04-architecture/exam-workflow-api.md]] |
 | 서비스 경계 | [[/02-decisions/adr-0002-service-boundary.md]], [[/04-architecture/service-map.md]] |
 | DB | [[/04-architecture/data-model-overview.md]], `DB/postgres/init/*.sql` |
-| 인프라 | [[/04-architecture/local-runtime-topology.md]], `CodexKit/docker-compose.yml` |
+| 인프라 | [[/04-architecture/local-runtime-topology.md]], `Service/compose.yml`, `Service/compose.local.yml`, `Service/compose.image.yml`, `Service/nginx/local.conf` |
 | 네트워크/OpenWrt | [[/04-architecture/network-topology.md]], [[/05-work-items/task-openwrt-gateway-prototype.md]] |
 | 일정/WBS | [[/05-work-items/epic-full-lms-delivery-plan.md]], [[/07-status/implementation-roadmap.md]] |
 
