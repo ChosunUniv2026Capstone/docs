@@ -11,7 +11,6 @@
 - work item
 - meeting raw / digested
 - status / risk / open question
-- report / capstone submission snapshot
 
 ## 필수 원칙
 - 원본 회의록은 `06-meetings/raw/` 에 보존한다.

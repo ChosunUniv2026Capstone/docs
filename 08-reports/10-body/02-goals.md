@@ -2,7 +2,7 @@
 title: 목표
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-05-03
 owners:
   - team
 related:
@@ -38,7 +38,7 @@ source:
 | 재실성 판별 | OpenWrt/더미 snapshot + Redis cache + 등록 단말 매칭 | 더미/로컬 구현, 실 장비 확장 계획 |
 | DB | LMS + 출석 + 시험 스키마 | 구현됨 |
 | 인프라 | Docker Compose 로컬 실행 | 구현됨 |
-| CI/CD | 테스트/빌드 자동화 설계 | 계획 |
+| CI/CD | repo별 테스트/빌드 자동화, GHCR 이미지 릴리스, Service manifest 기반 실행/배포 구조 | 구현/검증 진행 |
 
 # 2.3 중간보고 목표
 

@@ -2,7 +2,7 @@
 title: 결론
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-05-03
 owners:
   - team
 related:
@@ -23,7 +23,7 @@ PresenceService 는 OpenWrt 또는 dummy snapshot 을 통해 재실성 근거를
 DB 는 출석 상태뿐 아니라 변경 이력과 시험 응시 데이터를 구조화하여 추적성을 확보한다.
 
 중간 단계에서는 로그인, 강의/공지 조회, 단말 관리, eligibility, 출석/시험 모델, Docker 실행 환경 등 핵심 기반을 마련했다.
-최종 단계에서는 모든 역할별 화면 캡처, API 상세, Mermaid 다이어그램, DB ERD, 주요 코드 설명, 테스트 결과, CI/CD 설계, 조선대학교 및 타 학교 도입 가능성까지 포함해 완성된 보고서로 정리한다.
+최종 단계에서는 모든 역할별 화면 캡처, API 상세, Mermaid 다이어그램, DB ERD, 주요 코드 설명, 테스트 결과, CI/CD 구현/검증 결과, 조선대학교 및 타 학교 도입 가능성까지 포함해 완성된 보고서로 정리한다.
 
-남은 과제는 실제 OpenWrt 수집 안정화, 과제/성적/질문 등 LMS 기능 확장, CI/CD 자동화, 운영 정책 정리다.
+남은 과제는 실제 OpenWrt 수집 안정화, 과제/성적/질문 등 LMS 기능 확장, demo deploy workflow/server 증거 수집, 운영 정책 정리다.
 이 과제를 해결하면 본 프로젝트는 조선대학교 테스트베드뿐 아니라 다른 학교 환경에도 적용 가능한 재실성 기반 LMS 프로토타입으로 발전할 수 있다.

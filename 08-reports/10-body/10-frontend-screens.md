@@ -89,7 +89,8 @@ Front End 는 React + Vite 기반 단일 앱이다.
 
 # 10.8 실제 Playwright 캡처 산출물
 
-아래 이미지는 2026-04-12 에 기존 Docker 컨테이너를 모두 내린 뒤, 현재 워크스페이스 기준 `CodexKit/docker-compose.yml` 스택을 새로 빌드/기동하고 Playwright 로 촬영한 화면이다.
+아래 이미지는 2026-04-12 에 기존 Docker 컨테이너를 모두 내린 뒤, 당시 runtime entrypoint 였던 `CodexKit/docker-compose.yml` 스택을 새로 빌드/기동하고 Playwright 로 촬영한 화면이다.
+2026-05-03 기준 공식 runtime entrypoint 는 `Service` repository 이므로, 후속 캡처는 `Service/compose.local.yml` 또는 `Service/compose.image.yml` 기준으로 재촬영한다.
 기준 URL 은 `http://127.0.0.1:3100` 이다.
 
 ## 공통 화면

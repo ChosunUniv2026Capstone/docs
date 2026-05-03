@@ -2,7 +2,7 @@
 title: 캡스톤 통합 보고서 초안
 type: combined-report
 status: draft
-updated: 2026-04-12
+updated: 2026-05-03
 owners:
   - team
 related:
@@ -54,7 +54,7 @@ source:
 - 학생, 교수, 서비스관리자 관점의 기능 요구
 - 조선대학교 및 타 학교 도입 가능성
 - Front / Backend / PresenceService / DB 서비스 설계
-- API, 데이터 모델, 화면, 주요 코드, 테스트, 인프라, CI/CD 계획
+- API, 데이터 모델, 화면, 주요 코드, 테스트, 인프라, CI/CD 구현/검증 현황
 - 중간 산출물과 최종 산출물
 - 일정, WBS, 목표 대비 달성치
 
@@ -64,7 +64,8 @@ source:
 구현 완료 항목과 설계/계획 항목은 문서 안에서 구분한다.
 
 - 구현/검증된 축: 로그인, 역할별 강의 조회, 공지 조회/작성, 학생 단말 관리, 재실성 eligibility, 출석 세션 설계/일부 구현, 시험 MVP 계약/일부 구현, Docker 기반 로컬 실행
-- 설계/계획 축: 과제, 성적, 질문/문의, 정식 CI/CD, 운영용 배포, 타 학교 도입 패키징
+- 설계/계획 축: 과제, 성적, 질문/문의, 운영용 배포 고도화, 타 학교 도입 패키징
+- 2026-05-03 갱신 축: Service runtime repo, GHCR 공개 이미지 pull 검증, Release Please 기반 component 릴리스, Service manifest 기반 image mode 실행 구조
 
 # 서비스 구성 요약
 
@@ -74,7 +75,8 @@ source:
 | Backend | 인증, LMS 도메인 API, 출석/시험 최종 판정, 권한 검사, 실시간 이벤트 |
 | PresenceService | 강의실 네트워크 snapshot, 등록 단말 매칭, 재실성 eligibility 근거 제공 |
 | DB | 사용자, 강의, 강의실, 단말, 출석, 시험, 인증 세션 데이터 저장 |
-| CodexKit | 로컬 Docker Compose, Nginx reverse proxy, 개발 실행 환경 |
+| Service | 로컬 source build, GHCR image mode, Nginx reverse proxy, release manifest, demo deploy |
+| CodexKit | bootstrap, repo template, workflow/governance helper |
 | docs | 요구사항, ADR, 아키텍처, 상태, 보고서 source of truth |
 
 # 보고서 구성
@@ -108,7 +110,7 @@ source:
 | 재실성 판별 | OpenWrt/더미 snapshot + Redis cache + 등록 단말 매칭 | 더미/로컬 구현, 실 장비 확장 계획 |
 | DB | LMS + 출석 + 시험 스키마 | 구현됨 |
 | 인프라 | Docker Compose 로컬 실행 | 구현됨 |
-| CI/CD | 테스트/빌드 자동화 설계 | 계획 |
+| CI/CD | repo별 테스트/빌드 자동화, GHCR 이미지 릴리스, Service manifest 기반 실행/배포 구조 | 구현/검증 진행 |
 
 # 2.3 중간보고 목표
 
@@ -418,14 +420,16 @@ flowchart TD
 | LMS 기본 조회 | 강의/공지/서비스관리자 조회 구현 | 과제/성적/질문 확장 |
 | 출석 | eligibility + attendance session API/모델 구현 | 실 장비 수집, 운영 정책 강화 |
 | 시험 | 객관식/진위형 MVP 계약/구현 | 수동 채점, 성적 공개, 문제 유형 확장 |
-| 인프라 | Docker Compose + Nginx | CI/CD, staging/prod 분리 |
+| 인프라 | Service Compose + Nginx + GHCR image mode | demo deploy 증거, staging/prod 분리 |
 
 
 # 7. 서비스 인프라
 
 # 7.1 로컬 실행 구조
 
-현재 로컬 개발 환경은 `CodexKit/docker-compose.yml` 이 sibling repository 를 build context 로 참조하는 구조다.
+현재 로컬 개발 환경의 공식 runtime entrypoint 는 `Service` repository 이다.
+`Service/compose.local.yml` 은 sibling repository 를 build context 로 참조하고, `Service/compose.image.yml` 은 GHCR 에 게시된 사전 빌드 이미지를 사용한다.
+`CodexKit` 은 bootstrap/governance kit 로 남고 runtime compose/nginx 원본은 `Service` 로 위임되었다.
 
 | 컨테이너 | 기술 | 기본 포트 | 역할 |
 |---|---|---:|---|
@@ -476,11 +480,28 @@ OpenWrt 기반 테스트베드는 강의실 네트워크 관측을 위한 실험
 
 # 7.5 운영 확장 시 고려사항
 
-- 개발용 Docker Compose 와 운영 배포는 분리해야 한다.
+- 개발용 source build, image 기반 실행, demo 배포 compose 를 분리해 유지해야 한다.
 - PresenceService 는 외부 공개 API 가 아니라 내부 판정 보조 서비스로 유지해야 한다.
 - 라우터 credential/token 은 환경변수 하드코딩이 아니라 Backend/DB 와 동기화되는 구조가 필요하다.
 - Redis 장애 시 fail-open 이 아니라 fail-closed 정책을 기본으로 검토해야 한다.
 - 학교별 네트워크 장비와 인증 방식에 따라 OpenWrt collector 또는 adapter 구현이 달라질 수 있다.
+
+# 7.6 이미지 기반 실행 및 공개 이미지 검증
+
+`Service` 는 로컬 소스 빌드 없이도 Backend, Front, PresenceService, DB 의 GHCR 이미지를 pull 해서 실행할 수 있는 image mode 를 제공한다.
+Service release manifest 는 component image, tag, digest, release evidence, DB reset 필요 여부를 기록한다.
+
+2026-05-03 기준 로그인 없는 `docker manifest inspect` 로 다음 공개 이미지 접근이 확인되었다.
+
+| Component | Public ref | Anonymous manifest inspect |
+|---|---|---|
+| Backend | `ghcr.io/chosununiv2026capstone/backend:v0.2.0` | 통과 |
+| Front | `ghcr.io/chosununiv2026capstone/front:v0.2.1` | 통과 |
+| PresenceService | `ghcr.io/chosununiv2026capstone/presence-service:v0.2.0` | 통과 |
+| DB | `ghcr.io/chosununiv2026capstone/db:v0.2.0` | 통과 |
+
+기존 `Service/manifests/releases/v0.1.0.yml` 의 digest 포함 image ref 도 동일하게 anonymous manifest inspect 가 통과했다.
+따라서 GHCR public pull 자체는 더 이상 배포 차단 요인이 아니며, 남은 증거는 실제 demo deploy workflow 와 서버 healthcheck provenance 이다.
 
 
 # 8. 사용자 분류 및 권한 구성
@@ -684,7 +705,8 @@ Front End 는 React + Vite 기반 단일 앱이다.
 
 # 10.8 실제 Playwright 캡처 산출물
 
-아래 이미지는 2026-04-12 에 기존 Docker 컨테이너를 모두 내린 뒤, 현재 워크스페이스 기준 `CodexKit/docker-compose.yml` 스택을 새로 빌드/기동하고 Playwright 로 촬영한 화면이다.
+아래 이미지는 2026-04-12 에 기존 Docker 컨테이너를 모두 내린 뒤, 당시 runtime entrypoint 였던 `CodexKit/docker-compose.yml` 스택을 새로 빌드/기동하고 Playwright 로 촬영한 화면이다.
+2026-05-03 기준 공식 runtime entrypoint 는 `Service` repository 이므로, 후속 캡처는 `Service/compose.local.yml` 또는 `Service/compose.image.yml` 기준으로 재촬영한다.
 기준 URL 은 `http://127.0.0.1:3100` 이다.
 
 ## 공통 화면
@@ -1475,6 +1497,8 @@ erDiagram
 | PresenceService | snapshot cache, dummy overlay, eligibility | 구현/실 장비 확장 계획 |
 | DB 스키마/seed | 사용자/강의/단말/출석/시험 schema 및 seed | 구현됨 |
 | Docker 환경 | Nginx, Front, Backend, PresenceService, PostgreSQL, Redis | 구현됨 |
+| Service runtime | local source mode, GHCR image mode, release manifest, demo deploy script | 구현/검증 진행 |
+| 릴리스 이미지 | Backend/Front/PresenceService/DB GHCR public image publish 및 anonymous pull proof | 구현됨 |
 | 테스트 | Backend pytest, PresenceService pytest, Front lint/build/e2e | 일부 구현 |
 
 # 15.2 최종 산출물
@@ -1484,7 +1508,7 @@ erDiagram
 - 통합 실행 가능한 차세대 사이버캠퍼스 프로토타입
 - 학생/교수/서비스관리자 전체 기능 화면 캡처
 - 출석/시험 신뢰성 강화 시나리오 시연
-- API/DB/인프라/CI/CD 설계 문서
+- API/DB/인프라/CI/CD 설계 및 검증 문서
 - Mermaid 기반 sequence/flowchart/ERD
 - 테스트 결과와 한계 분석
 - 조선대학교 및 타 학교 도입 가능성 정리
@@ -1512,7 +1536,7 @@ erDiagram
 | 3. Presence & Attendance | 4월 | 재실성 판정, 출석 세션 | eligibility, attendance session, audit | 구현/검증 중 |
 | 4. Exam MVP | 4월 | 시험 생성/응시/제출 | exam API/UI/DB | 구현/검증 중 |
 | 5. Full LMS Expansion | 4월~5월 | 자료/영상/과제/성적/문의 | 추가 기능 | 계획 |
-| 6. Infrastructure & CI/CD | 5월 | 자동 빌드/테스트/배포 | CI workflow, staging plan | 계획 |
+| 6. Infrastructure & CI/CD | 5월 | 자동 빌드/테스트/배포 | CI workflow, Service manifest, GHCR image proof | 구현/검증 진행 |
 | 7. Final Report & Demo | 5월~6월 | 최종 보고/시연 | 최종보고서, 캡처, 시연 영상 | 계획 |
 
 # 16.2 WBS
@@ -1534,7 +1558,7 @@ erDiagram
 | 5.0 | Presence 구현 | snapshot/eligibility/overlay/OpenWrt | presence | service + tests | 진행 |
 | 6.0 | DB 구현 | schema/seed/검증 | db-owner | SQL init/seed | 진행 |
 | 7.0 | 테스트 | unit/e2e/docker smoke | team | 테스트 결과 | 진행 |
-| 8.0 | CI/CD | lint/test/build 자동화 | team | workflow 설계/구현 | 계획 |
+| 8.0 | CI/CD | lint/test/build/image release 자동화 | team | workflow, GHCR image, Service manifest | 구현/검증 진행 |
 | 9.0 | 보고서 | 주간/중간/최종 보고서 | team | 08-reports | 진행 |
 
 # 16.3 목표 대비 달성치 작성 방식
@@ -1553,9 +1577,9 @@ erDiagram
 
 # 17.1 현재 상태
 
-현재 프로젝트는 로컬 Docker Compose 로 여러 서비스를 통합 실행하는 구조를 갖추고 있다.
-CI/CD 는 최종 운영 수준으로 완성된 상태는 아니며, 보고서 기준으로는 **설계/계획 항목**으로 분류한다.
-다만 각 repository 에 `.github` 영역이 존재하므로 GitHub Actions 기반 자동화로 확장하기 적합하다.
+현재 프로젝트는 `Service` repository 를 기준으로 local source mode, GHCR image mode, demo deployment mode 를 분리한다.
+CI/CD 는 초기 계획 단계에서 벗어나 component image publish, Release Please 설정, Service release manifest 검증까지 구현되었다.
+다만 실제 Release Please-created release run 과 demo-production 환경의 배포 workflow/server provenance 는 최종 증거로 추가 수집해야 한다.
 
 # 17.2 목표 CI 파이프라인
 
@@ -1583,18 +1607,22 @@ flowchart LR
 | Backend | Python compile, pytest | 전체 테스트 통과 |
 | PresenceService | Python compile, pytest | 전체 테스트 통과 |
 | DB | PostgreSQL container init, schema/seed smoke | init script 성공, 핵심 row count 확인 |
-| CodexKit | compose config validation, nginx config test | compose/nginx 설정 유효 |
+| Service | compose config validation, manifest validation, nginx config test | local/image/demo 설정 유효 |
+| CodexKit | bootstrap/governance helper test | runtime source of truth 를 Service 로 위임 |
 
-# 17.4 CD 계획
+# 17.4 CD 구현 상태
 
 초기 CD 는 운영 배포보다 시연 환경 재현성을 우선한다.
+구현된 흐름은 다음과 같다.
 
-1. main merge 후 Docker image build
-2. 이미지 태그는 repo/commit SHA 기준으로 생성
-3. staging compose 또는 서버에 배포
-4. DB migration/init script 적용 전 backup
-5. health check 통과 후 Front/Nginx 공개
-6. 실패 시 이전 이미지와 DB snapshot 으로 rollback
+1. component repo main/release 에서 Docker image build 및 GHCR publish
+2. Release Please 로 component version, changelog, release tag 관리
+3. Service release manifest 로 Backend/Front/PresenceService/DB image ref 와 digest 고정
+4. image mode 에서 local build context 없이 공개 GHCR 이미지로 실행
+5. demo deploy script 에서 manifest render, DB reset guard, healthcheck 수행
+
+2026-05-03 기준 Backend `v0.2.0`, Front `v0.2.1`, PresenceService `v0.2.0`, DB `v0.2.0` public image 는 로그인 없는 `docker manifest inspect` 가 통과했다.
+기존 Service `v0.1.0` manifest 의 digest 포함 image ref 도 anonymous manifest inspect 가 통과했다.
 
 # 17.5 보안 고려사항
 
@@ -1609,7 +1637,7 @@ flowchart LR
 - 모든 PR 에서 repo별 CI 가 자동 실행된다.
 - DB schema 변경은 container init smoke 를 통과해야 한다.
 - Front e2e 는 로그인/권한/출석/시험 핵심 경로를 포함한다.
-- 최종보고서에는 CI 실행 결과 캡처 또는 workflow run 링크를 첨부한다.
+- 최종보고서에는 CI 실행 결과 캡처, workflow run 링크, Service demo deploy summary, public healthcheck 결과를 첨부한다.
 
 
 # 18. 검증 및 테스트
@@ -1732,7 +1760,7 @@ DB 검증은 PostgreSQL container 에 init script 를 실제 적용해 확인한
 | 개인정보 | 단말 식별자 저장 정책 필요 | 운영 도입 전 보안/법무 검토 필요 |
 | 시험 | 현재 MVP 는 객관식/진위형 중심 | 수동 채점/서술형/성적 공개 확장 필요 |
 | LMS 기능 | 과제/성적/질문/자료 정식 저장은 계획 단계 | 최종 LMS 완성도 보강 필요 |
-| CI/CD | 자동 배포는 아직 설계 단계 | 운영 재현성과 품질 게이트 보강 필요 |
+| CI/CD | component image publish 와 public pull 은 검증됨, demo deploy workflow/server provenance 는 추가 수집 필요 | 최종보고서에 실제 workflow run/healthcheck 증거 보강 필요 |
 | 학교 도입 | 학교별 AP/학사 데이터 연동 방식 상이 | adapter/config 기반 확장 필요 |
 
 # 19.2 기술적 리스크
@@ -1750,8 +1778,8 @@ DB 검증은 PostgreSQL container 에 init script 를 실제 적용해 확인한
 3. 출석 리포트와 통계 고도화
 4. 시험 문제 유형 확장과 수동 채점/성적 공개
 5. 과제 제출, 강의자료, 동영상, 질문/문의 기능 정식 API/DB 연결
-6. GitHub Actions 기반 CI 도입
-7. staging/prod 배포 환경 분리
+6. GitHub Actions workflow run 증거와 demo deploy summary 수집
+7. staging/prod 배포 환경 분리와 운영 secret 정책 보강
 8. 조선대학교 테스트베드 운영 결과 수집
 9. 타 학교 도입을 위한 설정/연동 가이드 작성
 
@@ -1774,9 +1802,9 @@ PresenceService 는 OpenWrt 또는 dummy snapshot 을 통해 재실성 근거를
 DB 는 출석 상태뿐 아니라 변경 이력과 시험 응시 데이터를 구조화하여 추적성을 확보한다.
 
 중간 단계에서는 로그인, 강의/공지 조회, 단말 관리, eligibility, 출석/시험 모델, Docker 실행 환경 등 핵심 기반을 마련했다.
-최종 단계에서는 모든 역할별 화면 캡처, API 상세, Mermaid 다이어그램, DB ERD, 주요 코드 설명, 테스트 결과, CI/CD 설계, 조선대학교 및 타 학교 도입 가능성까지 포함해 완성된 보고서로 정리한다.
+최종 단계에서는 모든 역할별 화면 캡처, API 상세, Mermaid 다이어그램, DB ERD, 주요 코드 설명, 테스트 결과, CI/CD 구현/검증 결과, 조선대학교 및 타 학교 도입 가능성까지 포함해 완성된 보고서로 정리한다.
 
-남은 과제는 실제 OpenWrt 수집 안정화, 과제/성적/질문 등 LMS 기능 확장, CI/CD 자동화, 운영 정책 정리다.
+남은 과제는 실제 OpenWrt 수집 안정화, 과제/성적/질문 등 LMS 기능 확장, demo deploy workflow/server 증거 수집, 운영 정책 정리다.
 이 과제를 해결하면 본 프로젝트는 조선대학교 테스트베드뿐 아니라 다른 학교 환경에도 적용 가능한 재실성 기반 LMS 프로토타입으로 발전할 수 있다.
 
 
@@ -1795,7 +1823,7 @@ DB 는 출석 상태뿐 아니라 변경 이력과 시험 응시 데이터를 �
 | 시험 | [[/01-requirements/req-exam-workflow.md]], [[/04-architecture/exam-mvp-contract.md]], [[/04-architecture/exam-workflow-api.md]] |
 | 서비스 경계 | [[/02-decisions/adr-0002-service-boundary.md]], [[/04-architecture/service-map.md]] |
 | DB | [[/04-architecture/data-model-overview.md]], `DB/postgres/init/*.sql` |
-| 인프라 | [[/04-architecture/local-runtime-topology.md]], `CodexKit/docker-compose.yml` |
+| 인프라 | [[/04-architecture/local-runtime-topology.md]], `Service/compose.yml`, `Service/compose.local.yml`, `Service/compose.image.yml`, `Service/nginx/local.conf` |
 | 네트워크/OpenWrt | [[/04-architecture/network-topology.md]], [[/05-work-items/task-openwrt-gateway-prototype.md]] |
 | 일정/WBS | [[/05-work-items/epic-full-lms-delivery-plan.md]], [[/07-status/implementation-roadmap.md]] |
 
@@ -1827,7 +1855,8 @@ DB 는 출석 상태뿐 아니라 변경 이력과 시험 응시 데이터를 �
 
 - 촬영일: 2026-04-12
 - 촬영 방식: Playwright Chromium headless screenshot
-- 실행 기준: 기존 Docker 컨테이너를 모두 내린 뒤 `CodexKit/docker-compose.yml` 을 현재 워크스페이스 기준으로 `up -d --build`
+- 실행 기준: 2026-04-12 캡처 당시에는 기존 Docker 컨테이너를 모두 내린 뒤 `CodexKit/docker-compose.yml` 을 현재 워크스페이스 기준으로 `up -d --build`
+- 2026-05-03 기준 공식 runtime entrypoint 는 `Service` repository 이며, 후속 캡처는 `Service/compose.local.yml` 또는 `Service/compose.image.yml` 기준으로 재촬영한다.
 - 접속 URL: `http://127.0.0.1:3100`
 - 사용 계정:
   - 학생: `20201239 / devpass123`

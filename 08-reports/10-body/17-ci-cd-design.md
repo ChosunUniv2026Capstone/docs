@@ -2,7 +2,7 @@
 title: CI/CD 설계
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-05-03
 owners:
   - team
 related:
@@ -12,16 +12,19 @@ source:
   - Front/.github
   - PresenceService/.github
   - DB/.github
+  - Service/.github
   - docs/.github
+  - [[/03-conventions/conv-release-and-deployment.md]]
+  - [[/07-status/2026-04-26-ghcr-public-readiness-report.md]]
 ---
 
 # 17. CI/CD 설계
 
 # 17.1 현재 상태
 
-현재 프로젝트는 로컬 Docker Compose 로 여러 서비스를 통합 실행하는 구조를 갖추고 있다.
-CI/CD 는 최종 운영 수준으로 완성된 상태는 아니며, 보고서 기준으로는 **설계/계획 항목**으로 분류한다.
-다만 각 repository 에 `.github` 영역이 존재하므로 GitHub Actions 기반 자동화로 확장하기 적합하다.
+현재 프로젝트는 `Service` repository 를 기준으로 local source mode, GHCR image mode, demo deployment mode 를 분리한다.
+CI/CD 는 초기 계획 단계에서 벗어나 component image publish, Release Please 설정, Service release manifest 검증까지 구현되었다.
+다만 실제 Release Please-created release run 과 demo-production 환경의 배포 workflow/server provenance 는 최종 증거로 추가 수집해야 한다.
 
 # 17.2 목표 CI 파이프라인
 
@@ -49,18 +52,22 @@ flowchart LR
 | Backend | Python compile, pytest | 전체 테스트 통과 |
 | PresenceService | Python compile, pytest | 전체 테스트 통과 |
 | DB | PostgreSQL container init, schema/seed smoke | init script 성공, 핵심 row count 확인 |
-| CodexKit | compose config validation, nginx config test | compose/nginx 설정 유효 |
+| Service | compose config validation, manifest validation, nginx config test | local/image/demo 설정 유효 |
+| CodexKit | bootstrap/governance helper test | runtime source of truth 를 Service 로 위임 |
 
-# 17.4 CD 계획
+# 17.4 CD 구현 상태
 
 초기 CD 는 운영 배포보다 시연 환경 재현성을 우선한다.
+구현된 흐름은 다음과 같다.
 
-1. main merge 후 Docker image build
-2. 이미지 태그는 repo/commit SHA 기준으로 생성
-3. staging compose 또는 서버에 배포
-4. DB migration/init script 적용 전 backup
-5. health check 통과 후 Front/Nginx 공개
-6. 실패 시 이전 이미지와 DB snapshot 으로 rollback
+1. component repo main/release 에서 Docker image build 및 GHCR publish
+2. Release Please 로 component version, changelog, release tag 관리
+3. Service release manifest 로 Backend/Front/PresenceService/DB image ref 와 digest 고정
+4. image mode 에서 local build context 없이 공개 GHCR 이미지로 실행
+5. demo deploy script 에서 manifest render, DB reset guard, healthcheck 수행
+
+2026-05-03 기준 Backend `v0.2.0`, Front `v0.2.1`, PresenceService `v0.2.0`, DB `v0.2.0` public image 는 로그인 없는 `docker manifest inspect` 가 통과했다.
+기존 Service `v0.1.0` manifest 의 digest 포함 image ref 도 anonymous manifest inspect 가 통과했다.
 
 # 17.5 보안 고려사항
 
@@ -75,4 +82,4 @@ flowchart LR
 - 모든 PR 에서 repo별 CI 가 자동 실행된다.
 - DB schema 변경은 container init smoke 를 통과해야 한다.
 - Front e2e 는 로그인/권한/출석/시험 핵심 경로를 포함한다.
-- 최종보고서에는 CI 실행 결과 캡처 또는 workflow run 링크를 첨부한다.
+- 최종보고서에는 CI 실행 결과 캡처, workflow run 링크, Service demo deploy summary, public healthcheck 결과를 첨부한다.
