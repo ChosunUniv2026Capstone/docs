@@ -2,7 +2,7 @@
 title: Assignment Workflow API
 type: architecture
 status: active
-updated: 2026-05-09
+updated: 2026-05-10
 owners:
   - backend-team
   - frontend-team
@@ -11,6 +11,7 @@ related:
   - [[/01-requirements/req-student-features.md]]
   - [[/01-requirements/req-professor-features.md]]
   - [[/04-architecture/assignment-data-model-addendum.md]]
+  - [[/04-architecture/object-storage-architecture.md]]
 source:
   - 2026-05-09 local implementation alignment for course assignment workflow
 ---
@@ -34,7 +35,7 @@ source:
 - A submission contains:
   - free-form text
   - zero or more attached files
-- Attached files are stored on the backend local filesystem in the current local MVP.
+- Attached files are stored behind Backend object-storage APIs. Existing local filesystem rows remain readable during migration, but new durable storage uses the provider-neutral storage metadata contract.
 - Professor detail view shows:
   - roster of who submitted
   - submission timestamp
@@ -97,6 +98,7 @@ source:
   - `mime_type`
   - `file_size_bytes`
   - `uploaded_at`
+  - no public object URL or Garage credential fields
 
 # Validation Rules
 

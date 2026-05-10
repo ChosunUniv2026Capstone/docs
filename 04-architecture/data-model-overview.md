@@ -2,7 +2,7 @@
 title: 데이터 모델 개요
 type: architecture
 status: active
-updated: 2026-05-09
+updated: 2026-05-10
 owners:
   - db-owner
 related:
@@ -12,6 +12,8 @@ related:
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/02-decisions/adr-0012-garage-backed-object-storage.md]]
+  - [[/04-architecture/object-storage-architecture.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
@@ -19,7 +21,10 @@ source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/02-decisions/adr-0012-garage-backed-object-storage.md]]
+  - [[/04-architecture/object-storage-architecture.md]]
   - 2026-05-09 DB/postgres/init/014_assignment_schema.sql
+  - 2026-05-10 DB/postgres/init/015_object_storage_schema.sql
 ---
 
 # 핵심 엔티티
@@ -69,7 +74,20 @@ source:
   - 학생별 과제 제출 본문, 제출 시각, 수정 시각
 - `assignment_submission_attachments`
   - 과제 제출에 연결되는 첨부파일 메타데이터와 내부 저장 키
-
+- `learning_items`
+  - 강의별 학습 자료/영상/파일 항목의 영속 메타데이터
+- `learning_item_attachments`
+  - 학습 자료/영상 파일의 object storage 메타데이터
+- `notice_attachments`
+  - 공지 첨부파일 object storage 메타데이터
+- `exam_question_attachments`
+  - 시험 문제/해설에 연결되는 교수 업로드 미디어 메타데이터
+- `exam_answer_attachments`
+  - 향후 파일 답안형 시험을 위한 학생 답안 첨부 메타데이터
+- `report_exports`
+  - 생성된 리포트 파일 메타데이터; 첫 구현은 출석 CSV export 만 포함
+- `object_deletion_jobs`
+  - metadata 삭제/교체 후 object 삭제를 처리하는 durable outbox
 
 # 관계 요약
 
@@ -99,6 +117,11 @@ source:
 - 하나의 `assignment_submission`은 하나의 학생 `user`에 속한다.
 - 하나의 `assignment_submission`은 여러 `assignment_submission_attachments`를 가진다.
 - 하나의 학생은 같은 과제에 대해 하나의 최신 `assignment_submission`만 가질 수 있다.
+- 하나의 `learning_item`은 여러 `learning_item_attachments`를 가질 수 있다.
+- 하나의 `notice`는 여러 `notice_attachments`를 가질 수 있다.
+- 하나의 `exam_question`은 여러 `exam_question_attachments`를 가질 수 있다.
+- 하나의 `exam_submission_answer`는 여러 `exam_answer_attachments`를 가질 수 있다.
+- 하나의 `course`는 여러 `report_exports`를 가질 수 있으며, 첫 구현은 출석 CSV 리포트만 생성한다.
 
 # 설계 원칙
 
@@ -109,7 +132,9 @@ source:
 - demo mode 의 mutable presence state 는 DB 테이블이 아니라 PresenceService overlay 계층이 소유한다.
 - AP threshold 는 overlay 가 아니라 영속 운영 데이터이며 DB 가 소유한다.
 - refresh token durability / replay detection 을 위한 인증 세션 영속 데이터는 DB 가 소유한다.
-- 과제 업로드 파일 본문은 Postgres에 저장하지 않고, DB 는 첨부파일 메타데이터와 내부 저장 키만 소유한다.
+- 과제/학습자료/공지/시험/리포트 파일 본문은 Postgres에 저장하지 않고, DB 는 object metadata 와 내부 storage key 만 소유한다.
+- `storage_key` 는 public URL 이 아니며 Front 에 노출되는 권한 정보가 아니다.
+- object metadata row 삭제 또는 owner cascade 삭제는 `AFTER DELETE` trigger 를 통해 `object_deletion_jobs` 를 생성해야 한다.
 - 현재 과제 DB 스키마는 채점, 점수 공개 여부, 지각 제출 정책, 허용 파일 형식 정책을 포함하지 않는다.
 
 # Branch 2 출석 모델 규칙
