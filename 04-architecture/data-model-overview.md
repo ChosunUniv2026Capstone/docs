@@ -2,7 +2,7 @@
 title: 데이터 모델 개요
 type: architecture
 status: active
-updated: 2026-04-08
+updated: 2026-05-09
 owners:
   - db-owner
 related:
@@ -19,6 +19,7 @@ source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - 2026-05-09 DB/postgres/init/014_assignment_schema.sql
 ---
 
 # 핵심 엔티티
@@ -62,6 +63,12 @@ source:
   - 학생의 시험 응시 시도, 상태, 시작/제출/만료 시각, 점수
 - `exam_submission_answers`
   - 제출 안의 문제별 답안, 선택 보기, 텍스트 답안, 정오 여부, 획득 점수
+- `assignments`
+  - 강의에 종속되는 과제 마스터 데이터
+- `assignment_submissions`
+  - 학생별 과제 제출 본문, 제출 시각, 수정 시각
+- `assignment_submission_attachments`
+  - 과제 제출에 연결되는 첨부파일 메타데이터와 내부 저장 키
 
 
 # 관계 요약
@@ -87,6 +94,11 @@ source:
 - 하나의 `exam`은 여러 `exam_submissions`를 가진다.
 - 하나의 `exam_submission`은 여러 `exam_submission_answers`를 가진다.
 - 각 `exam_submission_answer`는 같은 시험에 속한 제출과 문제만 참조해야 한다.
+- 하나의 `course`는 여러 `assignments`를 가질 수 있다.
+- 하나의 `assignment`는 여러 `assignment_submissions`를 가진다.
+- 하나의 `assignment_submission`은 하나의 학생 `user`에 속한다.
+- 하나의 `assignment_submission`은 여러 `assignment_submission_attachments`를 가진다.
+- 하나의 학생은 같은 과제에 대해 하나의 최신 `assignment_submission`만 가질 수 있다.
 
 # 설계 원칙
 
@@ -97,6 +109,8 @@ source:
 - demo mode 의 mutable presence state 는 DB 테이블이 아니라 PresenceService overlay 계층이 소유한다.
 - AP threshold 는 overlay 가 아니라 영속 운영 데이터이며 DB 가 소유한다.
 - refresh token durability / replay detection 을 위한 인증 세션 영속 데이터는 DB 가 소유한다.
+- 과제 업로드 파일 본문은 Postgres에 저장하지 않고, DB 는 첨부파일 메타데이터와 내부 저장 키만 소유한다.
+- 현재 과제 DB 스키마는 채점, 점수 공개 여부, 지각 제출 정책, 허용 파일 형식 정책을 포함하지 않는다.
 
 # Branch 2 출석 모델 규칙
 
