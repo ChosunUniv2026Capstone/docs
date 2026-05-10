@@ -30,7 +30,7 @@ source:
 - Professors can create assignments for their own course.
 - Students can only see assignments for courses they are enrolled in.
 - Each student keeps one mutable submission per assignment.
-- Students may re-submit until the assignment closes.
+- Students may submit or re-submit only while the assignment state is `open`.
 - A submission contains:
   - free-form text
   - zero or more attached files
@@ -59,7 +59,7 @@ source:
 - `POST /api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/submission`
   - multipart form fields:
     - `submission_text`
-    - `files[]`
+    - `files`
 - `GET /api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/attachments/{attachment_id}`
 
 # Response Shape
@@ -111,7 +111,6 @@ source:
 - `ASSIGNMENT_INVALID_WINDOW`
 - `ASSIGNMENT_INVALID_PAYLOAD`
 - `ASSIGNMENT_NOT_OPEN`
-- `ASSIGNMENT_SUBMISSION_NOT_ALLOWED`
 - `ASSIGNMENT_ATTACHMENT_NOT_FOUND`
 - `ASSIGNMENT_SUBMISSION_FILE_LIMIT_EXCEEDED`
 - `ASSIGNMENT_SUBMISSION_FILE_TOO_LARGE`
