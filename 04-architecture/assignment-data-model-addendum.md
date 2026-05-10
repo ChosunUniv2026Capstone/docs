@@ -2,11 +2,12 @@
 title: Assignment Data Model Addendum
 type: architecture
 status: active
-updated: 2026-05-09
+updated: 2026-05-10
 owners:
   - db-owner
   - backend-team
 related:
+  - [[/04-architecture/object-storage-architecture.md]]
   - [[/04-architecture/data-model-overview.md]]
   - [[/04-architecture/assignment-workflow-api.md]]
 source:
@@ -41,6 +42,16 @@ source:
 
 # Storage Notes
 
-- The database stores attachment metadata only.
-- The uploaded binary file is stored on the backend local filesystem.
+- The database stores attachment metadata only. Object bytes live behind Backend storage APIs.
+- Existing local uploaded binaries remain on the Backend filesystem until migration; new durable objects use Backend object-storage APIs.
 - The storage key must be treated as an internal implementation field, not a user-facing path.
+
+# Object Storage Extension
+
+`assignment_submission_attachments` keeps the existing response contract while adding:
+
+- `storage_provider`
+- `bucket_name`
+- `checksum_sha256`
+
+`storage_key` remains an internal Backend key and must not be a public URL. Deleting attachment rows, including through submission cascade, enqueues `object_deletion_jobs` through the shared object-storage trigger strategy.
