@@ -2,7 +2,7 @@
 title: Exam Workflow Requirements
 type: requirement
 status: active
-updated: 2026-04-09
+updated: 2026-05-14
 owners:
   - frontend-team
   - backend-team
@@ -14,6 +14,7 @@ related:
   - [[/04-architecture/exam-mvp-contract.md]]
 source:
   - 2026-04-09 local alignment with dd exam workflow
+  - 2026-05-14 issue-resolution contract checkpoint for requires_presence=false
 ---
 
 # Goal
@@ -41,7 +42,7 @@ The local implementation must stay aligned with the shared course-scoped exam sc
   - auto-submit policy
   - shuffle flags
   - max attempts
-- The local professor form does not expose a toggle for exam presence policy because the local exam policy always requires a registered active device.
+- Exams default to `requires_presence=true` for compatibility, and professor create/update flows must preserve an explicit `requires_presence=false` value when that policy is selected.
 - Professors can edit only `draft` exams.
 - Professors can delete owned exams from the course exam page.
 - Professors can publish a `draft` exam.
@@ -81,7 +82,8 @@ The local implementation must stay aligned with the shared course-scoped exam sc
 - Questions should be revealed only after the student presses the start button and the attempt is created.
 - If `shuffle questions` is enabled, the student sees a per-attempt deterministic shuffled question order.
 - Objective question choice order remains fixed.
-- The student start action must confirm that the student has at least one active registered device before the first attempt is created.
+- If `requires_presence=true`, the student start action must confirm that the student has at least one active registered device before the first attempt is created.
+- If `requires_presence=false`, the student start action must not block solely because the student has no active registered device.
 - The current local exam policy does not require the current class window or classroom network observation for exam start.
 - After the start button is pressed, the student UI switches to a dedicated exam-taking page.
 - The dedicated exam-taking page hides the normal LMS navigation and keeps the student inside the exam flow.

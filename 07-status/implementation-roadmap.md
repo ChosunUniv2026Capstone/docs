@@ -2,7 +2,7 @@
 title: 구현 로드맵 상태
 type: status
 status: active
-updated: 2026-04-25
+updated: 2026-05-14
 owners:
   - team
 related:
@@ -15,6 +15,13 @@ source:
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - current code/test audit, 2026-04-25
 ---
+
+
+# 2026-05-14 current issue-resolution checkpoint
+
+Active May 2026 issue-fix branches must use [[/07-status/2026-05-14-current-issue-resolution-contracts.md]] as the docs-first merge checkpoint.
+The checkpoint records which contracts are already source-of-truth, which fixes are evidenced by worker branches, and which DB/Service or PR/merge evidence remains pending.
+Do not close the initial open issues or merge the code branches solely from the checkpoint; attach branch/PR/test evidence for each issue closure.
 
 # 2026-04-25 현재 구현 스냅샷
 
