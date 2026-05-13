@@ -30,9 +30,9 @@ If an implementation branch changes an API/schema/runtime behavior beyond the co
 
 | Lane | Evidence at checkpoint | Merge gate |
 | --- | --- | --- |
-| Backend issues #14/#15/#16/#17/#20/#21/#22 and #19/#23 close-candidates | Worker-1 mapped Backend evidence, then committed `6179caf` and `8ec1ff7` on `Backend/fix/backend-current-issues`; local full Backend pytest later reached `80 passed`. Code review found one remaining overnight-window edge case to fix before merge. | Merge only after the overnight-window regression fix is committed, Backend pytest is rerun, and PR/review/check evidence is attached. |
+| Backend issues #14/#15/#16/#17/#20/#21/#22 and #19/#23 close-candidates | Worker-1 mapped Backend evidence, committed `6179caf`/`8ec1ff7`, and the code-review overnight-window blocker was resolved by `43adb9e`; `PYTHONPATH=. python3 -m pytest -q` returned `81 passed`. | Merge after PR review/check evidence is attached. |
 | Front issues #19/#20/#21 | Worker-3 completed `Front/fix/front-attendance-ux-contract` commit `5c126f7`; reported `npm run build`, scoped lint, and Playwright auth/presence e2e `11 passed`. | Front PR/check evidence still required before merge. |
-| DB #12 and Service #4/#9/#10 plus nginx/upload integration | Worker-2 completed `DB/fix/runtime-task-3` commit `f3fa3df` and `Service/fix/runtime-task-3` commit `73ec6c8`; Service pytest reached `25 passed`. Code review found the DB upgrade path still needs the object-storage metadata/outbox migration before merge. | Merge Service after PR checks/review. Merge DB only after an idempotent object-storage upgrade migration is added and verified. |
+| DB #12 and Service #4/#9/#10 plus nginx/upload integration | Worker-2 completed `DB/fix/runtime-task-3` commit `f3fa3df`; the code-review DB blocker was resolved by `a696fb6` adding the object-storage metadata/outbox upgrade. Worker-2 completed `Service/fix/runtime-task-3` commit `73ec6c8`; Service pytest reached `25 passed`. | Merge DB/Service after PR review/check evidence is attached. |
 | QA coordinator | Worker-4 verified open issue/PR state, docs guard, local Front/Presence/Service/DB smoke checks, and Backend recheck after `6179caf`. | Final whole-system QA waits for task #3/#5 completion and PR/check/merge evidence. |
 
 # Contract checkpoint by issue area
@@ -71,7 +71,7 @@ If an implementation branch changes an API/schema/runtime behavior beyond the co
 - DB #12 — existing Postgres volumes need an idempotent upgrade path for assignment and object-storage schema additions.
 - The migration path must not rely solely on first-run `/docker-entrypoint-initdb.d` initialization when an existing volume is already present.
 - The DB contract must preserve object metadata/deletion outbox tables and trigger behavior documented in [[/04-architecture/object-storage-architecture.md]].
-- The existing-volume path must run the assignment-table upgrade and the object-storage metadata/outbox upgrade in order; do not close DB #12 until both migrations are present, idempotent, and verification evidence is attached.
+- The existing-volume path must run `014_assignment_schema_upgrade.sql` and `015_object_storage_schema_upgrade.sql` in order; do not close DB #12 until the merged PR evidence confirms both migrations and the verification evidence is attached.
 
 ## Service release readiness, demo deploy runner, nginx/upload limit, and Garage runtime
 
@@ -88,11 +88,11 @@ Worker-4 local QA evidence collected before this docs update:
 
 - `docs`: `git pull --ff-only origin main` reported already up to date before branching.
 - Docs guard: required-doc checks returned `docs_gap: no` for backend, frontend, db, and presence/runtime categories.
-- Backend: after worker-1 commits `6179caf` and `8ec1ff7`, `PYTHONPATH=. python3 -m pytest -q` returned `80 passed`; code review requires one additional overnight-window regression fix and rerun before merge.
+- Backend: after worker-1 commits `6179caf`/`8ec1ff7` and review-fix commit `43adb9e`, `PYTHONPATH=. python3 -m pytest -q` returned `81 passed`.
 - Front: previous QA run reported build/lint pass and Playwright e2e pass; worker-3 later reported Front scoped Playwright `11 passed` on commit `5c126f7`.
 - PresenceService: `python3 -m pytest -q` returned `8 passed` with known Pydantic alias warnings.
 - Service: `pytest -q` returned `25 passed` after worker-2 commit `73ec6c8`; compose local/image/demo config rendered successfully in the QA lane.
-- DB: `014_assignment_schema_upgrade.sql` exists after worker-2 commit `f3fa3df`; code review requires an additional object-storage metadata/outbox upgrade migration before merge.
+- DB: `014_assignment_schema_upgrade.sql` exists after worker-2 commit `f3fa3df`; `015_object_storage_schema_upgrade.sql` exists after review-fix commit `a696fb6`; static smoke confirmed assignment object columns, object deletion jobs, deletion function/trigger, learning/notice/exam/report metadata tables, and `git diff --check` passed.
 
 # Open merge gates
 
