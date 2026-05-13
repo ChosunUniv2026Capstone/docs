@@ -2,7 +2,7 @@
 title: Assignment Workflow API
 type: architecture
 status: active
-updated: 2026-05-10
+updated: 2026-05-14
 owners:
   - backend-team
   - frontend-team
@@ -14,6 +14,7 @@ related:
   - [[/04-architecture/object-storage-architecture.md]]
 source:
   - 2026-05-09 local implementation alignment for course assignment workflow
+  - 2026-05-14 current issue-resolution checkpoint for grading/feedback scope
 ---
 
 # Domain Model
@@ -41,6 +42,7 @@ source:
   - submission timestamp
   - submission text
   - attachment metadata
+- Grading and feedback are out of scope for the current assignment API. Adding grade fields, feedback visibility, rubric state, or score publication requires a docs-first contract and DB migration plan.
 - Assignment state is computed from the configured window:
   - `upcoming`
   - `open`

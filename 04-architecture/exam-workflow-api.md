@@ -2,7 +2,7 @@
 title: Exam Workflow API
 type: architecture
 status: active
-updated: 2026-04-10
+updated: 2026-05-14
 owners:
   - backend-team
   - frontend-team
@@ -14,6 +14,7 @@ related:
 source:
   - 2026-04-09 local alignment with dd exam workflow
   - 2026-04-10 docs lane contract hardening against docs/backend/front bundle review
+  - 2026-05-14 issue-resolution contract checkpoint for requires_presence persistence
 ---
 
 # Domain Model
@@ -80,7 +81,7 @@ source:
   - `max_attempts`
   - `question_count`
   - `attempt_count`
-- The response shape may still include `requires_presence` for schema compatibility, but the current local exam policy treats it as always true.
+- The response shape includes `requires_presence`; new exams default to `true` for compatibility, but create/update must preserve an explicit `false` value.
 - Student exam detail also returns:
   - `availability`
   - `attempt`
@@ -90,7 +91,8 @@ source:
   - `submissions`
 - Student detail returns an empty `questions` list before an attempt starts.
 - The start endpoint creates the student attempt and only then reveals the question list.
-- The start endpoint verifies that the student has at least one active registered device before creating the first attempt.
+- When `requires_presence=true`, the start endpoint verifies that the student has at least one active registered device before creating the first attempt.
+- When `requires_presence=false`, the start endpoint skips the registered-device/presence guard for that exam.
 - The exam start check does not require current class-window resolution or classroom network observation.
 - If `late_entry_allowed` is false, the start endpoint rejects the first attempt after the official start time.
 - If `late_entry_allowed` is true, the start endpoint still caps the created attempt deadline at the official exam end time.
