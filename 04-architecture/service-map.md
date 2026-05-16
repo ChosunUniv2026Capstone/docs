@@ -2,13 +2,14 @@
 title: 서비스 맵
 type: architecture
 status: active
-updated: 2026-04-26
+updated: 2026-05-16
 owners:
   - architecture-owner
 related:
   - [[/02-decisions/adr-0002-service-boundary.md]]
   - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
+  - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/01-requirements/req-student-features.md]]
   - [[/04-architecture/local-runtime-topology.md]]
   - [[/02-decisions/adr-0011-service-repo-runtime-orchestration.md]]
@@ -47,10 +48,11 @@ source:
 2. `Nginx` 는 `/` 를 Front 로, `/api/`, `/ws/`, `/health` 를 Backend 로 전달한다.
 3. Front 는 same-origin 경로 기준으로 LMS 도메인 REST 요청과 출석 WebSocket 을 Backend 로 전달한다.
 4. 출석 또는 시험 접근 시 Backend 는 PresenceService 에 `purpose` 포함 eligibility 판정을 요청한다.
-5. PresenceService 는 Redis 의 최근 snapshot 을 재사용하거나, 없으면 OpenWrt 에 요청해 새로 수집한다.
-6. Backend 는 시간표, 강의실, 수강 정보, PresenceService 결과를 결합해 최종 판단한다.
-7. Backend 와 PresenceService 는 필요한 데이터를 DB 또는 해당 데이터 소스에 반영한다.
-8. 인증 복구가 필요한 경우 Front 는 refresh/bootstrap 경로를 통해 Backend 에 세션 복구를 요청한다.
+5. 실제 OpenWrt AP 데이터는 AP local collector 가 주기적으로 PresenceService collector endpoint 로 push 하고, PresenceService 는 Redis 의 최신 collector snapshot 을 읽는다. user-triggered 요청은 routine 경로에서 OpenWrt SSH/pull 수집을 유발하지 않는다.
+6. demo source 를 명시적으로 선택한 경우에만 PresenceService 는 demo baseline/overlay snapshot 을 사용한다. real collector snapshot 과 demo snapshot 은 운영 의미를 섞지 않는다.
+7. Backend 는 시간표, 강의실, 수강 정보, PresenceService 결과를 결합해 최종 판단한다.
+8. Backend 와 PresenceService 는 필요한 데이터를 DB 또는 해당 데이터 소스에 반영한다.
+9. 인증 복구가 필요한 경우 Front 는 refresh/bootstrap 경로를 통해 Backend 에 세션 복구를 요청한다.
 
 # 경계 요약
 

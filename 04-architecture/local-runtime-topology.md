@@ -2,7 +2,7 @@
 title: 로컬 런타임 토폴로지
 type: architecture
 status: active
-updated: 2026-04-26
+updated: 2026-05-16
 owners:
   - architecture-owner
 related:
@@ -10,6 +10,7 @@ related:
   - [[/04-architecture/presence-eligibility-api.md]]
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/02-decisions/adr-0011-service-repo-runtime-orchestration.md]]
+  - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/03-conventions/conv-release-and-deployment.md]]
 source:
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
@@ -60,8 +61,9 @@ source:
 4. Front 는 same-origin 경로로 Backend REST / WebSocket 을 호출한다.
 5. Backend 가 학생 단말과 수강 / 시간표를 검증한다.
 6. Backend 가 PresenceService 에 eligibility 를 요청한다.
-7. PresenceService 는 Redis 캐시를 먼저 보고, 필요 시 더미 OpenWrt snapshot 을 새로 만든다.
-8. Backend 가 최종 허용 / 거부를 반환한다.
+7. PresenceService 는 routine real-data 경로에서 Redis 에 저장된 collector-push snapshot 을 읽는다. snapshot 은 OpenWrt local collector 가 약 3초 주기로 push 하며, user-triggered 요청은 OpenWrt SSH/pull 수집을 유발하지 않는다.
+8. demo source 를 명시한 관리자/demo 흐름만 demo baseline/overlay snapshot 을 사용한다.
+9. Backend 가 최종 허용 / 거부를 반환한다.
 
 # 외부 노출 원칙
 
@@ -93,7 +95,8 @@ source:
 - 강의자료 / 동영상 임시 프론트 스캐폴드
 - 관리자 사용자 / 강의실 / AP 매핑 조회
 - 강의 상세 페이지와 우측 기능 바
-- OpenWrt 더미 snapshot 기반 판정
+- 실제 OpenWrt local collector push snapshot 기반 판정
+- demo mode 전용 baseline/overlay snapshot 기반 관제
 
 # 개발용 seed 데이터
 
@@ -114,6 +117,6 @@ source:
 
 # 후속 작업
 
-- 실 OpenWrt 명령 수집기로 교체
+- OpenWrt collector 운영 안정성 / 장기 장애 대응 검증
 - 정식 인증 / 권한 체계 연결
 - 시험 목적 추가 규칙 세분화
