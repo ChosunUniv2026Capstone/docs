@@ -2,7 +2,7 @@
 title: Presence eligibility API 계약
 type: architecture
 status: active
-updated: 2026-04-07
+updated: 2026-05-16
 owners:
   - backend-team
   - presence-team
@@ -102,12 +102,15 @@ Backend 가 출석 또는 시험 접근 시점에 PresenceService 로부터 재�
 
 1. PresenceService 는 baseline snapshot 과 overlay state 를 합쳐 effective snapshot 을 만든다.
 2. demo mode 에서는 overlay state 의 mutation 결과가 해당 classroom 에 대해 read-after-write 로 바로 보여야 한다.
-3. Redis 에서 60초 이내 effective snapshot 을 조회한다.
-4. effective snapshot 이 없거나 만료되었으면 baseline + overlay 를 기반으로 새 snapshot 을 구성한다.
-5. 학생 등록 단말 중 하나라도 강의실 AP 목록에서 `associated=true` 상태로 관측되면 `eligible=true` 후보가 된다.
-6. AP 별 threshold 가 전달되면 `signalDbm >= signalThresholdDbm` 을 만족해야 한다.
-7. AP threshold 가 비어 있으면 fallback `-65 dBm` 을 사용한다.
-8. PresenceService 는 network / device eligibility 까지만 판단하고 최종 도메인 허용 여부는 Backend 가 결정한다.
+3. Redis 에서 effective snapshot 을 조회한다.
+4. effective snapshot age 가 soft TTL `3초` 이하이면 fresh snapshot 으로 사용한다.
+5. effective snapshot age 가 `3초` 를 초과하고 hard TTL `30초` 이하이면 stale-while-revalidate 로 기존 snapshot 을 사용할 수 있으며, refresh lock 을 획득한 경우에만 새 snapshot 구성을 시도한다.
+6. effective snapshot age 가 `30초` 를 초과했거나 snapshot 이 없으면 새 snapshot 수집/구성이 필요하다.
+7. OpenWrt 기반 refresh 는 cache key 또는 OpenWrt/AP target 단위 lock 을 잡은 요청만 수행한다. lock 을 잡지 못한 동시 요청은 중복 SSH / station dump 를 실행하지 않는다.
+8. 학생 등록 단말 중 하나라도 강의실 AP 목록에서 `associated=true` 상태로 관측되면 `eligible=true` 후보가 된다.
+9. AP 별 threshold 가 전달되면 `signalDbm >= signalThresholdDbm` 을 만족해야 한다.
+10. AP threshold 가 비어 있으면 fallback `-65 dBm` 을 사용한다.
+11. PresenceService 는 network / device eligibility 까지만 판단하고 최종 도메인 허용 여부는 Backend 가 결정한다.
 
 # Demo mode 제어 계약
 
@@ -119,6 +122,6 @@ Backend 가 출석 또는 시험 접근 시점에 PresenceService 로부터 재�
 # 향후 확장
 
 - `purpose=exam` 에 대한 추가 판정 규칙
-- refresh lock / retry 전략 강화
+- refresh lock 구현과 retry / stale-if-error 세부 전략 강화
 - batch eligibility 조회
 - observational field 를 semantic field 로 승격할지 여부 검토

@@ -2,7 +2,7 @@
 title: 재실 판정 로직 확정 요약
 type: meeting-summary
 status: active
-updated: 2026-03-30
+updated: 2026-05-16
 owners:
   - team
 related:
@@ -23,7 +23,7 @@ source:
 - 학생은 최대 5개 단말까지 등록 가능하다.
 - 동일 단말은 여러 학생에게 중복 등록할 수 없다.
 - 강의실에는 여러 AP 가 매핑될 수 있다.
-- Presence snapshot 유효 시간은 60초다.
+- 당시 회의 기준 Presence snapshot 유효 시간은 60초였다. 2026-05-16 현재 규칙은 [[/02-decisions/adr-0005-presence-snapshot-cache.md]] 의 soft TTL `3초`, hard TTL `30초`, refresh lock 정책이 우선한다.
 - OpenWrt 데이터 수집은 요청 시 수행한다.
 - OpenWrt 직접 조회 결과는 Redis 캐시를 두고 재사용한다.
 - 출석과 시험은 동일한 eligibility 가드를 공유하되 목적별 세부 규칙은 분리 가능하게 둔다.

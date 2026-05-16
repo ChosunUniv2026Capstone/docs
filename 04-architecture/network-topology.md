@@ -39,17 +39,21 @@ source:
 
 1. 학생 단말이 강의실 네트워크에 연결된다.
 2. Backend 가 출석 또는 시험 접근 시 PresenceService 에 eligibility 확인을 요청한다.
-3. PresenceService 는 강의실 매핑 기준으로 Redis 의 60초 이내 snapshot 을 먼저 조회한다.
-4. snapshot 이 없거나 만료되었으면 PresenceService 가 OpenWrt 장비에 SSH 로 접속해 station list 를 수집한다.
-5. 수집 결과는 Redis 에 저장된다.
-6. PresenceService 는 강의실 / Wi-Fi / 단말 매칭 결과를 만든다.
-7. Backend 는 이를 수강 정보와 시간표와 결합해 최종 판단한다.
+3. PresenceService 는 강의실 매핑 기준으로 Redis snapshot 을 먼저 조회한다.
+4. snapshot age 가 soft TTL `3초` 이하이면 fresh snapshot 을 바로 사용한다.
+5. snapshot age 가 `3초` 초과, hard TTL `30초` 이하이면 stale-while-revalidate 로 기존 snapshot 을 사용할 수 있고, refresh lock 을 획득한 경우에만 OpenWrt 재수집을 시도한다.
+6. snapshot age 가 `30초` 를 초과했거나 snapshot 이 없으면 PresenceService 가 OpenWrt 장비에 SSH 로 접속해 station list 를 수집한다.
+7. 수집 결과는 Redis 에 저장된다.
+8. PresenceService 는 강의실 / Wi-Fi / 단말 매칭 결과를 만든다.
+9. Backend 는 이를 수강 정보와 시간표와 결합해 최종 판단한다.
 
 # 운영 전제
 
 - OpenWrt 장비는 상단 공유기 내부 대역의 static IP 와 SSH 접근이 가능해야 한다.
 - 동일 서브넷에서 상단 게이트웨이가 IP 를 관리하고 OpenWrt 가 AP / bridge 역할만 할 때는 OpenWrt LAN DHCP 서버를 비활성화해야 한다.
 - PresenceService 는 `iw dev`, `ubus`, `iwinfo <iface> assoclist`, `iw dev <iface> station dump` 계열 명령 결과를 파싱할 수 있어야 한다.
+- OpenWrt 재수집은 cache key 또는 OpenWrt/AP target 단위 refresh lock 을 통해 중복 실행을 막아야 한다.
+- refresh lock 과 soft TTL 이 함께 적용된 경우 동일 key / target 의 OpenWrt 접근은 많아도 약 3초에 1회 수준이어야 한다. 단, 이 제한은 전역 제한이 아니므로 여러 AP / 강의실 refresh 는 각각 발생할 수 있다.
 - 구체적인 테스트베드 연결 절차와 장비별 명령 예시는 `[[/05-work-items/task-openwrt-gateway-prototype.md]]` 에서 관리한다.
 
 # 데모 SDN overlay 구성
@@ -95,4 +99,4 @@ source:
 - 교내 네트워크 정책과 장비 배치 제약을 별도 확인해야 한다.
 - 강의실과 Wi-Fi 매핑 정보는 운영 데이터로 관리해야 한다.
 - 강의실은 여러 AP 와 매핑될 수 있다.
-- 캐시가 만료된 시점의 동시 요청 폭주를 막기 위한 lock 전략이 필요하다.
+- 캐시가 soft TTL 을 넘은 시점의 동시 요청 폭주를 막기 위한 refresh lock 전략이 필수다.

@@ -2,7 +2,7 @@
 title: 리스크와 이슈
 type: status
 status: active
-updated: 2026-04-25
+updated: 2026-05-16
 owners:
   - team
 related:
@@ -16,6 +16,22 @@ source:
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - current code/test audit, 2026-04-25
 ---
+
+# 2026-05-16
+
+## 현재 남은 리스크
+
+- OpenWrt 수집 부하 위험은 soft TTL `3초`, hard TTL `30초`, refresh lock 정책으로 완화한다.
+  - 동일 cache key 또는 동일 OpenWrt/AP target 에 대한 재수집은 많아도 약 3초에 1회 수준이어야 한다.
+  - 이 제한은 전역 제한이 아니므로 여러 AP / 강의실 refresh 는 AP 수와 매핑 구조에 비례한다.
+  - 실제 OpenWrt 장비에서 3초 단위 수집이 안정적인지는 현장 부하 검증이 필요하다.
+- hard TTL `30초` 를 넘은 snapshot 은 새 수집 없이는 eligibility 근거로 사용하지 않는 fail-close 성격을 유지한다.
+
+## 완화되었거나 범위가 좁아진 리스크
+
+- Redis snapshot 캐시 만료 시 동시 요청 폭주 위험
+  - refresh lock 을 필수 정책으로 승격했다.
+  - stale-while-revalidate 를 사용해 soft TTL 이후에도 hard TTL 이내 기존 snapshot 으로 요청 지연을 줄일 수 있다.
 
 # 2026-04-25
 

@@ -2,7 +2,7 @@
 title: OpenWrt 게이트웨이 기반 단말 목록 수집 검토
 type: task
 status: todo
-updated: 2026-04-09
+updated: 2026-05-16
 owners:
   - presence-team
 related:
@@ -39,7 +39,8 @@ iw dev <iface> station dump
 # 확인 항목
 
 - 수집 가능한 식별자 종류
-- 수집 주기와 지연
+- soft TTL `3초`, hard TTL `30초` 정책에서의 수집 주기와 지연
+- refresh lock 적용 시 동일 OpenWrt/AP target 에 대한 실제 최대 수집 빈도
 - 강의실별 네트워크 매핑 방법
 - PresenceService 로 전달할 최소 데이터 형식
 - 장비별 실제 interface 이름과 출력 차이
@@ -49,4 +50,5 @@ iw dev <iface> station dump
 - 테스트베드에서 얻을 수 있는 필드 목록 정리
 - 판정에 사용할 수 있는 필드와 한계 정리
 - 후속 구현에 필요한 API 또는 데이터 계약 초안 정리
+- refresh lock, stale-while-revalidate, stale-if-error 동작의 구현 기준 정리
 - 장비별로 재현 가능한 OpenWrt 확인 절차 정리

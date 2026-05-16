@@ -2,7 +2,7 @@
 title: 오픈 질문
 type: status
 status: active
-updated: 2026-04-25
+updated: 2026-05-16
 owners:
   - team
 related:
@@ -20,6 +20,19 @@ source:
   - [[/06-meetings/raw/2026-04-09-openwrt-ap-mode-dhcp-clarification.md]]
   - current code/test audit, 2026-04-25
 ---
+
+# 2026-05-16
+
+## 해결되었거나 재분류된 질문
+
+- Presence snapshot TTL 과 동시 refresh 정책은 [[/02-decisions/adr-0005-presence-snapshot-cache.md]] 기준으로 재분류했다.
+  - soft TTL 은 `3초`, hard TTL 은 `30초` 다.
+  - OpenWrt 재수집은 cache key 또는 OpenWrt/AP target 단위 refresh lock 을 반드시 사용한다.
+
+## 아직 열려 있는 질문
+
+- 실제 OpenWrt 장비에서 동일 AP target 3초 단위 수집이 장시간 안정적인지는 현장 부하 테스트가 필요하다.
+- refresh 실패 시 hard TTL 이내 stale-if-error 를 어떤 reason/evidence 로 노출할지는 구현 계약에서 더 구체화해야 한다.
 
 # 2026-04-25
 

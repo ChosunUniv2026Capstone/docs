@@ -2,7 +2,7 @@
 title: 재실성 기반 출석 요구사항
 type: requirement
 status: active
-updated: 2026-04-08
+updated: 2026-05-16
 owners:
   - backend-team
   - presence-team
@@ -54,8 +54,9 @@ source:
 - 등록 단말 여부는 재실성 판별과 함께 출석 조건에 반영해야 한다.
 - 재실성 정보가 부족하거나 모순되면 출석은 기본적으로 거부되어야 한다.
 - 강의실에는 여러 AP 또는 공유기가 매핑될 수 있어야 한다.
-- 재실성 snapshot 은 최근 60초 이내 데이터만 유효해야 한다.
+- 재실성 snapshot 은 soft TTL `3초`, hard TTL `30초` 를 가져야 한다.
 - Presence 정보 수집은 요청 시 수행하되, 짧은 캐시를 통해 재사용할 수 있어야 한다.
+- soft TTL 이후 refresh 는 cache key 또는 OpenWrt/AP target 단위 refresh lock 으로 보호되어야 하며, lock 이 이미 잡혀 있으면 중복 OpenWrt 수집을 시작하면 안 된다.
 - 출석과 시험은 같은 eligibility 가드를 공유하되 목적별 추가 규칙은 분리 가능해야 한다.
 
 # 캡스톤 데모용 추가 규칙
