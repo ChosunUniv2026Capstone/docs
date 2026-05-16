@@ -2,7 +2,7 @@
 title: 네트워크 토폴로지 개요
 type: architecture
 status: active
-updated: 2026-04-09
+updated: 2026-05-16
 owners:
   - presence-team
 related:
@@ -16,6 +16,7 @@ source:
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - [[/06-meetings/raw/2026-04-08-openwrt-setup-and-station-inspection.md]]
   - [[/06-meetings/raw/2026-04-09-openwrt-ap-mode-dhcp-clarification.md]]
+  - [[/06-meetings/raw/2026-05-16-openwrt-demo-sdn-tailnet.md]]
 ---
 
 # 목표
@@ -48,6 +49,41 @@ source:
 - 동일 서브넷에서 상단 게이트웨이가 IP 를 관리하고 OpenWrt 가 AP / bridge 역할만 할 때는 OpenWrt LAN DHCP 서버를 비활성화해야 한다.
 - PresenceService 는 `iw dev`, `ubus`, `iwinfo <iface> assoclist`, `iw dev <iface> station dump` 계열 명령 결과를 파싱할 수 있어야 한다.
 - 구체적인 테스트베드 연결 절차와 장비별 명령 예시는 `[[/05-work-items/task-openwrt-gateway-prototype.md]]` 에서 관리한다.
+
+# 데모 SDN overlay 구성
+
+데모 환경에서는 서비스 존과 AP 존이 서로 다른 장소에 있어도 하나의 시연 환경처럼 동작하도록 Tailscale Tailnet 을 SDN overlay 로 사용한다.
+이 구성은 demo service 용 구성이다. 운영망 표준 배포 구조나 보안 경계가 아니라, 분리된 장소의 서비스와 AP 를 시연 목적으로 연결하기 위한 구조다.
+
+## 역할
+
+- `capstone-service` 는 서비스 존의 Tailnet 노드다.
+- `openwrt-a`, `openwrt-b`, `openwrt-c` 는 AP 존을 대표하는 OpenWrt 노드다.
+- 각 OpenWrt 노드는 자신의 AP subnet 을 Tailnet 에 광고하는 subnet router 로 동작한다.
+- 각 OpenWrt 노드는 데모 중 외부 경로 검증을 위해 exit node 로도 광고된다.
+
+## Tailnet 주소
+
+| Machine | Tailscale address | Version | OS / Kernel | Status | Demo role |
+| --- | --- | --- | --- | --- | --- |
+| `openwrt-a` | `100.78.116.89` | `1.80.3-1 (OpenWrt)` | `Linux 6.6.119` | Connected | AP zone A subnet router / exit node |
+| `openwrt-b` | `100.86.49.51` | `1.80.3-1 (OpenWrt)` | `Linux 6.6.119` | Connected | AP zone B subnet router / exit node |
+| `openwrt-c` | `100.99.237.79` | `1.80.3-1 (OpenWrt)` | `Linux 6.6.119` | Connected | AP zone C subnet router / exit node |
+| `capstone-service` | `100.109.206.1` | `1.98.2` | `Linux 6.8.0-110-generic` | Connected | Demo service node |
+
+## 현장 사설망 주소
+
+| Label | OpenWrt management IP | AP subnet advertised to Tailnet |
+| --- | --- | --- |
+| A | `192.168.97.1` | `192.168.97.0/24` |
+| B | `192.168.98.1` | `192.168.98.0/24` |
+| C | `192.168.99.1` | `192.168.99.0/24` |
+
+## 데모 운영 메모
+
+- Tailnet 주소(`100.x.y.z`)는 SDN overlay 접근 주소이며, 현장 사설망 주소(`192.168.x.y`)는 OpenWrt 관리와 AP zone 내부 접근 주소다.
+- Tailscale Admin Console 에서 각 OpenWrt 노드의 subnet route 와 exit node 를 승인해야 원격 클라이언트가 해당 경로를 사용할 수 있다.
+- PresenceService 가 AP 존과 다른 장소에서 실행되더라도 Tailnet route 승인 후에는 광고된 AP subnet 으로 접근할 수 있어야 한다.
 
 # 주의점
 
