@@ -1,13 +1,13 @@
 ---
 title: ADR-0003 OpenWrt 게이트웨이 구조를 단말 정보 수집 경로로 채택
 type: decision
-status: accepted
-updated: 2026-03-30
+status: superseded
+updated: 2026-05-16
 date: 2026-03-30
 deciders:
   - team
 supersedes: []
-superseded_by: null
+superseded_by: [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
 related:
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/01-requirements/req-device-auth.md]]
@@ -26,7 +26,7 @@ source:
 # Decision
 
 강의실별 AP / 게이트웨이 환경에 OpenWrt 기반 장비를 두고, 해당 장비 또는 연계 게이트웨이에서 단말 연결 정보를 수집하는 구조를 우선 채택한다.
-수집 방식은 PresenceService 가 요청 시 SSH 기반으로 OpenWrt 장비에 접속해 단말 목록을 조회하는 형태를 우선한다.
+수집 방식은 초기에는 PresenceService 가 요청 시 SSH 기반으로 OpenWrt 장비에 접속해 단말 목록을 조회하는 형태를 우선했다. 2026-05-16 이후 실제 AP 3개 demo service 연결 단계에서는 [[/02-decisions/adr-0013-openwrt-local-collector-push.md]] 가 이를 대체하며, routine data path 는 OpenWrt local collector push 방식이다.
 
 # Consequences
 

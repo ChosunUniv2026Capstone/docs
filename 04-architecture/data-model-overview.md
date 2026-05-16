@@ -2,7 +2,7 @@
 title: 데이터 모델 개요
 type: architecture
 status: active
-updated: 2026-05-10
+updated: 2026-05-16
 owners:
   - db-owner
 related:
@@ -13,6 +13,7 @@ related:
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/02-decisions/adr-0012-garage-backed-object-storage.md]]
+  - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/04-architecture/object-storage-architecture.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
 source:
@@ -22,6 +23,7 @@ source:
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/02-decisions/adr-0012-garage-backed-object-storage.md]]
+  - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/04-architecture/object-storage-architecture.md]]
   - 2026-05-09 DB/postgres/init/014_assignment_schema.sql
   - 2026-05-10 DB/postgres/init/015_object_storage_schema.sql
@@ -42,6 +44,10 @@ source:
 - `classroom_networks`
   - 강의실별 허용 Wi-Fi / AP / 게이트웨이 정보
   - AP 별 signal threshold 운영 데이터 포함
+- `access_points`
+  - 물리 OpenWrt collector node registry, token hash, revoke/rotate metadata
+- `access_point_interfaces`
+  - 물리 AP collector interface/BSS 와 `classroom_networks` mapping
 - `registered_devices`
   - 사용자 등록 단말
 - `network_snapshots`
@@ -95,6 +101,8 @@ source:
 - 한 강의는 여러 시간표 슬롯을 가질 수 있다.
 - 한 시간표 슬롯은 하나의 강의실에 연결된다.
 - 한 강의실은 하나 이상의 허용 네트워크를 가질 수 있다.
+- 하나의 `access_point` 는 여러 `access_point_interfaces` 를 가질 수 있다.
+- 하나의 `access_point_interface` 는 하나의 `classroom_networks` row 와 연결되어 threshold/evidence AP ID 를 제공한다.
 - 한 사용자는 하나 이상의 등록 단말을 가질 수 있다.
 - 한 사용자는 최대 5개의 등록 단말을 가질 수 있다.
 - 하나의 등록 단말 MAC 은 하나의 사용자에게만 속해야 한다.
@@ -163,3 +171,13 @@ source:
 - `classroom_networks` 는 `signal_threshold_dbm` 같은 AP 별 운영 threshold 값을 가질 수 있어야 한다.
 - `signal_threshold_dbm` 이 null 이면 fallback `-65 dBm` 을 사용한다.
 - 관리자 UI 의 device dropdown source 는 등록 디바이스와 현재 관측 station 의 union 이다.
+
+
+# OpenWrt collector registry 모델 규칙
+
+- `access_points.collector_ap_id` 는 물리 OpenWrt node 의 stable ID 이며 unique 해야 한다.
+- `access_points.token_hash` 는 plaintext token 이 아니어야 하며, token + server-side pepper/secret 기반 digest 여야 한다.
+- token revoke/rotate 는 row 삭제보다 metadata 갱신을 우선한다.
+- `access_point_interfaces.interface_id` 는 collector payload 의 interface ID 와 매칭된다.
+- `access_point_interfaces.classroom_network_id` 는 canonical classroom/network mapping 이며 collector payload 의 classroom field 보다 우선한다.
+- `classroom_networks.collection_mode` 은 collector push 대상에서 `openwrt-push` 를 사용한다.

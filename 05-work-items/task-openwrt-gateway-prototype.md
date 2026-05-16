@@ -50,3 +50,13 @@ iw dev <iface> station dump
 - 판정에 사용할 수 있는 필드와 한계 정리
 - 후속 구현에 필요한 API 또는 데이터 계약 초안 정리
 - 장비별로 재현 가능한 OpenWrt 확인 절차 정리
+
+
+# 2026-05-16 Local collector push implementation target
+
+- Actual demo APs: `openwrt-a`, `openwrt-b`, `openwrt-c`.
+- Each AP runs a local collector that reads local OpenWrt station/client data and pushes snapshots to PresenceService about every 3 seconds.
+- Backend/DB own canonical AP registry and token lifecycle; PresenceService validates collector pushes using that registry.
+- AP offline threshold is about 10 seconds without a valid push/heartbeat.
+- Smart attendance is disabled/rejected with exact reason `AP_OFFLINE` only when a classroom has zero online mapped APs.
+- SSH remains an installation/diagnostic channel, not the routine data collection path.
