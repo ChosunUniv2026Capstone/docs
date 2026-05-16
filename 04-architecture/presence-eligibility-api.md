@@ -123,9 +123,12 @@ Backend 가 출석 또는 시험 접근 시점에 PresenceService 로부터 재�
 - Front 는 Backend 의 admin presence snapshot endpoint 만 호출하고 PresenceService 를 직접 호출하지 않는다.
 - Backend 는 PresenceService snapshot 에 등록 단말 소유자/학생 정보를 결합해 관리자 UI 에 반환한다.
 - 관리자 UI 는 classroom 목록과 AP mapping 목록을 먼저 표시하고, 사용자가 강의실을 선택할 때 해당 classroom snapshot 을 lazy loading 한다.
+- 관리자 UI 는 여러 classroom snapshot 을 동시에 펼칠 수 있다.
 - 수동 새로고침과 10초 자동 새로고침은 classroom 단위로 동작한다.
 - 새로고침은 OpenWrt SSH polling 이 아니라 PresenceService 가 Redis collector snapshot 을 다시 읽어 classroom snapshot 을 합성하는 동작이어야 한다.
 - Collector push mode 에서 관리자 snapshot 은 Redis 의 AP snapshot 을 우선 사용하고, collector registry 가 없을 때만 demo baseline/overlay snapshot 으로 fallback 한다.
+- demo AP 모니터링은 명시적인 demo source 조회로 collector 우선순위를 우회해 dummy baseline/overlay snapshot 을 반환한다.
+- demo AP 전체 OFF 는 해당 classroom demo snapshot 의 관측 station 을 모두 `present=false` overlay 로 바꾸는 방식이며, 실제 OpenWrt collector health 나 Redis collector key 를 변경하지 않는다.
 
 # 향후 확장
 
