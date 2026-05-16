@@ -10,6 +10,7 @@ related:
   - [[/04-architecture/local-runtime-topology.md]]
   - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
   - [[/05-work-items/task-openwrt-gateway-prototype.md]]
+  - [[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]
 source:
   - [[/06-meetings/raw/2026-05-16-openwrt-demo-sdn-tailnet.md]]
 ---
@@ -23,12 +24,13 @@ OpenWrt 기반 AP 존과 demo service 존이 물리적으로 다른 위치에 �
 - 데모 환경에서는 Tailscale Tailnet 을 SDN overlay 로 사용해 서비스 존과 AP 존을 묶는다.
 - 이 구성은 demo service 용 구성이다. 운영망 표준 배포 구조나 보안 경계가 아니라, 분리된 장소의 서비스와 AP 를 시연 목적으로 연결하기 위한 구조다.
 - `openwrt-a`, `openwrt-b`, `openwrt-c` 는 각각 자신의 AP subnet 을 Tailnet 에 광고하고 exit node 로도 노출한다.
+- Linux 클라이언트에서 AP subnet 으로 접근하려면 Tailnet route 승인과 별도로 `--accept-routes` 클라이언트 설정이 필요하다.
 - `capstone-service` 는 서비스 존의 Tailnet 노드로 문서화한다.
 
 # 새 요구사항
 
 - 데모 문서에서는 서비스와 AP 존이 서로 다른 장소에 있어도 SDN overlay 로 연결 가능하다는 전제를 명시해야 한다.
-- OpenWrt 장비별 Tailnet IP, 현장 관리 IP, AP subnet, exit node / subnet route 역할을 함께 기록해야 한다.
+- OpenWrt 장비별 Tailnet IP, 현장 관리 IP, AP subnet, exit node / subnet route 역할과 실제 접근 검증 결과를 함께 기록해야 한다.
 
 # 새 규약
 
@@ -42,11 +44,12 @@ OpenWrt 기반 AP 존과 demo service 존이 물리적으로 다른 위치에 �
 
 # 작업 항목 / 담당자 / 기한
 
-- `[[/05-work-items/task-openwrt-gateway-prototype.md]]`: OpenWrt 장비별 실제 subnet route 승인 상태와 PresenceService 접근 경로를 검증한다. / 담당: presence-team / 기한: 미정
+- `[[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]`: OpenWrt A/B/C subnet route, exit node 후보, 관리 IP 접근성을 검증했다. / 담당: presence-team / 완료: 2026-05-16
+- `[[/05-work-items/task-openwrt-gateway-prototype.md]]`: 실제 station list 수집 필드와 PresenceService 수집 계약 검증은 계속 추적한다. / 담당: presence-team / 기한: 미정
 
 # 리스크
 
-- Tailnet Admin Console 에서 subnet route 또는 exit node 승인이 빠지면 장비는 연결되어 있어도 원격 subnet 접근이 되지 않을 수 있다.
+- Tailnet Admin Console 에서 subnet route 또는 exit node 승인이 빠지거나 Linux 클라이언트의 `--accept-routes` 설정이 꺼져 있으면 장비는 연결되어 있어도 원격 subnet 접근이 되지 않을 수 있다.
 - 데모용 exit node 구성은 운영 보안 정책과 별도로 검토해야 한다.
 - OpenWrt 장비 overlay 여유 공간이 제한적이므로 추가 패키지 설치 여유가 작다.
 
@@ -58,4 +61,3 @@ OpenWrt 기반 AP 존과 demo service 존이 물리적으로 다른 위치에 �
 # source
 
 - [[/06-meetings/raw/2026-05-16-openwrt-demo-sdn-tailnet.md]]
-

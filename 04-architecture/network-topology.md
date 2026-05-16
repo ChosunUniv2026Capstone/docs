@@ -10,6 +10,7 @@ related:
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/05-work-items/task-openwrt-gateway-prototype.md]]
+  - [[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
@@ -17,6 +18,7 @@ source:
   - [[/06-meetings/raw/2026-04-08-openwrt-setup-and-station-inspection.md]]
   - [[/06-meetings/raw/2026-04-09-openwrt-ap-mode-dhcp-clarification.md]]
   - [[/06-meetings/raw/2026-05-16-openwrt-demo-sdn-tailnet.md]]
+  - [[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]
 ---
 
 # 목표
@@ -60,7 +62,8 @@ source:
 - `capstone-service` 는 서비스 존의 Tailnet 노드다.
 - `openwrt-a`, `openwrt-b`, `openwrt-c` 는 AP 존을 대표하는 OpenWrt 노드다.
 - 각 OpenWrt 노드는 자신의 AP subnet 을 Tailnet 에 광고하는 subnet router 로 동작한다.
-- 각 OpenWrt 노드는 데모 중 외부 경로 검증을 위해 exit node 로도 광고된다.
+- 각 OpenWrt 노드는 `0.0.0.0/0`, `::/0` 도 광고해 데모 중 외부 경로 검증용 exit node 후보로 동작한다.
+- 현재 OpenWrt 노드는 IP forwarding 이 켜져 있고, Tailscale subnet route 는 기본 SNAT 모드로 동작한다. 따라서 AP subnet 에서 보는 원격 접근 출발지는 원 단말 IP 가 아니라 OpenWrt subnet router 쪽으로 보일 수 있다.
 
 ## Tailnet 주소
 
@@ -83,7 +86,8 @@ source:
 
 - Tailnet 주소(`100.x.y.z`)는 SDN overlay 접근 주소이며, 현장 사설망 주소(`192.168.x.y`)는 OpenWrt 관리와 AP zone 내부 접근 주소다.
 - Tailscale Admin Console 에서 각 OpenWrt 노드의 subnet route 와 exit node 를 승인해야 원격 클라이언트가 해당 경로를 사용할 수 있다.
-- PresenceService 가 AP 존과 다른 장소에서 실행되더라도 Tailnet route 승인 후에는 광고된 AP subnet 으로 접근할 수 있어야 한다.
+- Linux 기반 원격 클라이언트는 승인된 subnet route 를 실제 라우팅 테이블에 반영하려면 `sudo tailscale set --accept-routes=true` 가 필요하다. 이 설정이 꺼져 있으면 Tailnet 에 route 가 보여도 `192.168.97.0/24`, `192.168.98.0/24`, `192.168.99.0/24` 로 직접 접근할 수 없다.
+- PresenceService 가 AP 존과 다른 장소에서 실행되더라도 Tailnet route 승인과 클라이언트 route 수락 후에는 광고된 AP subnet 으로 접근할 수 있어야 한다. 2026-05-16 검증에서는 `192.168.97.1`, `192.168.98.1`, `192.168.99.1` 의 ICMP, SSH `22/tcp`, HTTP `80/tcp` 접근이 성공했다.
 
 # 주의점
 
