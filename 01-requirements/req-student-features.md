@@ -13,6 +13,7 @@ related:
   - [[/04-architecture/service-map.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/exam-mvp-contract.md]]
+  - [[/04-architecture/selected-lms-subset-contract.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
@@ -39,10 +40,10 @@ source:
 
 # 선택 구현 대상
 
-- 성적 확인
-- 과제 채점 결과 / 피드백 확인
-- 질문게시판 / 문의 작성 및 답변 확인
-- 강의자료 / 동영상 기반 진도율 확인
+- 성적 확인: 본인 수강 강의의 과제/시험 점수와 단순 평균 summary 를 확인한다.
+- 과제 채점 결과 / 피드백 확인: 과제 상세와 성적 화면에서 점수, 채점 상태, 피드백을 확인한다.
+- 질문게시판 / 문의 작성 및 답변 확인: 본인이 작성한 문의와 교수 답변을 강의 단위로 확인한다.
+- 강의자료 / 동영상 기반 진도율 확인: 자료별 진행률과 완료 상태를 확인하고 데모 UI 에서 갱신할 수 있다.
 
 # 후속 backlog
 
@@ -73,6 +74,7 @@ source:
 # 수용 기준
 
 - 학생은 자신의 강의와 무관한 자료나 시험에 접근할 수 없어야 한다.
+- 학생은 자신의 강의와 무관한 성적, 과제 피드백, Q&A, 학습 진도에 접근할 수 없어야 한다.
 - 학생은 공지 목록에서 상세 화면으로 이동해 제목, 본문, 작성자, 등록일을 확인할 수 있어야 한다.
 - 출석 가능 여부는 수업 시간표, 강의실, 재실성 판별 결과를 반영해야 한다.
 - 정상 상태와 실패 상태가 UI 에서 구분 가능해야 한다.
