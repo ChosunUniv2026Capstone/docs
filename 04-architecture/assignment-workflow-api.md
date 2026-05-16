@@ -15,6 +15,7 @@ related:
 source:
   - 2026-05-09 local implementation alignment for course assignment workflow
   - 2026-05-14 current issue-resolution checkpoint for grading/feedback scope
+  - 2026-05-16 selected LMS subset contract
 ---
 
 # Domain Model
@@ -42,7 +43,7 @@ source:
   - submission timestamp
   - submission text
   - attachment metadata
-- Grading and feedback are out of scope for the current assignment API. Adding grade fields, feedback visibility, rubric state, or score publication requires a docs-first contract and DB migration plan.
+- Grading and feedback are in scope for the selected LMS subset only as defined in [[/04-architecture/selected-lms-subset-contract.md]]. The first pass supports numeric score, grading status, and student-visible feedback on assignment submissions; rubric state and final grade publication remain future work.
 - Assignment state is computed from the configured window:
   - `upcoming`
   - `open`

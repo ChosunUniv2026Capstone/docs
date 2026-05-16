@@ -13,6 +13,7 @@ related:
   - [[/04-architecture/service-map.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/exam-mvp-contract.md]]
+  - [[/04-architecture/selected-lms-subset-contract.md]]
 source:
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
@@ -42,10 +43,10 @@ source:
 
 # 선택 구현 대상
 
-- 채점 / 피드백
-- 출석과 별개의 학습 진도율 확인
-- 성적 관리
-- 질문게시판 / 문의 답변
+- 채점 / 피드백: 담당 강의의 과제 제출물에 점수, 상태, 피드백을 기록한다.
+- 출석과 별개의 학습 진도율 확인: 담당 강의 학생별/자료별 진도 snapshot 을 조회한다.
+- 성적 관리: 과제와 시험 점수 기반 단순 summary 를 조회한다.
+- 질문게시판 / 문의 답변: 담당 강의 문의에 답변하고 필요 시 닫는다.
 
 # 후속 backlog
 
@@ -76,6 +77,7 @@ source:
 # 수용 기준
 
 - 교수는 자신이 담당하는 강의 범위 안에서만 운영 기능을 수행할 수 있어야 한다.
+- 교수는 자신이 담당하지 않는 강의의 성적, 과제 채점, Q&A, 학습 진도 기능을 수행할 수 없어야 한다.
 - 교수는 자신이 조회 가능한 공지의 상세 내용을 같은 강의 흐름 안에서 확인할 수 있어야 한다.
 - 과제와 시험은 시작 / 종료 시점과 대상 강의를 기준으로 제어되어야 한다.
 - 출석과 진도율 조회는 강의 단위로 집계 가능해야 한다.

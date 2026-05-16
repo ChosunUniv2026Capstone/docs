@@ -181,3 +181,19 @@ source:
 - `access_point_interfaces.interface_id` 는 collector payload 의 interface ID 와 매칭된다.
 - `access_point_interfaces.classroom_network_id` 는 canonical classroom/network mapping 이며 collector payload 의 classroom field 보다 우선한다.
 - `classroom_networks.collection_mode` 은 collector push 대상에서 `openwrt-push` 를 사용한다.
+
+## 선택 LMS 서브셋 추가 테이블/컬럼
+
+2026-05-16 선택 구현 범위는 [[/04-architecture/selected-lms-subset-contract.md]] 를 따른다.
+
+- `assignments.max_score`: 과제 만점. 기존 row 는 `100.00` 기본값으로 보정한다.
+- `assignment_submissions.score`, `feedback`, `graded_by_user_id`, `graded_at`, `grading_status`: 과제 제출물 채점/피드백 상태.
+- `course_qna_threads`: 강의별 학생 문의 thread.
+- `course_qna_posts`: thread 별 질문/답변/comment post.
+- `learning_progress`: 학생별 학습자료 진도율 snapshot.
+
+관계:
+- 하나의 `course` 는 여러 `course_qna_threads` 를 가진다.
+- 하나의 `course_qna_thread` 는 여러 `course_qna_posts` 를 가진다.
+- 하나의 `learning_item` 과 하나의 student `user` 조합은 하나의 `learning_progress` row 만 가진다.
+- 과제 채점자는 `users.id` 로 추적하며, course ownership 검증은 Backend API 에서 수행한다.
