@@ -12,6 +12,7 @@ related:
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/05-work-items/task-openwrt-gateway-prototype.md]]
   - [[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]
+  - [[/07-status/2026-05-16-openwrt-unified-ssid-current-config.md]]
 source:
   - [[/06-meetings/raw/2026-03-19-capstone-proposal.md]]
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
@@ -20,6 +21,7 @@ source:
   - [[/06-meetings/raw/2026-04-09-openwrt-ap-mode-dhcp-clarification.md]]
   - [[/06-meetings/raw/2026-05-16-openwrt-demo-sdn-tailnet.md]]
   - [[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]
+  - [[/07-status/2026-05-16-openwrt-unified-ssid-current-config.md]]
 ---
 
 # 목표
@@ -79,18 +81,35 @@ source:
 
 ## 현장 사설망 주소
 
-| Label | OpenWrt management IP | AP subnet advertised to Tailnet |
-| --- | --- | --- |
-| A | `192.168.97.1` | `192.168.97.0/24` |
-| B | `192.168.98.1` | `192.168.98.0/24` |
-| C | `192.168.99.1` | `192.168.99.0/24` |
+2026-05-16 unified SSID 전환 이후 현재 demo AP client/management LAN 은 `192.168.97.0/24` 하나로 통일한다.
+`openwrt-a` 가 외부망으로 나가는 gateway / DHCP owner 이며, `openwrt-b` 와 `openwrt-c` 는 WAN 포트를 `br-lan` 에 포함한 bridge AP 로 동작한다.
+
+| Label | OpenWrt management IP | Tailnet address | Role | AP subnet advertised to Tailnet |
+| --- | --- | --- | --- | --- |
+| A | `192.168.97.1` | `100.78.116.89` | Gateway / DHCP owner / AP | `192.168.97.0/24` |
+| B | `192.168.97.2` | `100.86.49.51` | Bridge AP, DHCP disabled | `192.168.97.0/24` |
+| C | `192.168.97.3` | `100.99.237.79` | Bridge AP, DHCP disabled | `192.168.97.0/24` |
+
+### Legacy demo subnet note
+
+Before the unified SSID conversion, B and C used `192.168.98.1/24` and `192.168.99.1/24`. Those addresses are historical only. Current DB seed / AP registry metadata should use `192.168.97.2` and `192.168.97.3` for B/C.
+
+## 현재 unified SSID / radio 설정
+
+| AP | SSID | Security | Radio | Channel | Width | DHCP | Bridge ports | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `openwrt-a` | `SmartClass-Demo` | `sae-mixed`, key `capstone_D2V` | 5 GHz `radio1` / `phy1-ap0` | 36 | HE20 | enabled, range `192.168.97.100-249` | `lan1`-`lan4` | WAN remains DHCP uplink. |
+| `openwrt-b` | `SmartClass-Demo` | `sae-mixed`, key `capstone_D2V` | 5 GHz `radio1` / `phy1-ap0` | 44 | HE20 | disabled (`dhcp.lan.ignore=1`) | `lan1`-`lan4`, `wan` | Default route / DNS via `192.168.97.1`. |
+| `openwrt-c` | `SmartClass-Demo` | `sae-mixed`, key `capstone_D2V` | 5 GHz `radio1` / `phy1-ap0` | 48 | HE20 | disabled (`dhcp.lan.ignore=1`) | `lan1`-`lan4`, `wan` | Default route / DNS via `192.168.97.1`. |
+
+2.4 GHz `radio0` remains disabled on the current demo APs. 802.11k neighbor / beacon report flags are enabled, but `bss_transition` and `wnm_sleep_mode` must not be set on this OpenWrt build because they produce hostapd `unknown configuration item` errors and prevent the AP interface from starting. `openwrt-c` must not use channel 149 in the current regulatory/driver state because hostapd reports `Primary frequency not allowed`; channel 48 is the current working value.
 
 ## 데모 운영 메모
 
 - Tailnet 주소(`100.x.y.z`)는 SDN overlay 접근 주소이며, 현장 사설망 주소(`192.168.x.y`)는 OpenWrt 관리와 AP zone 내부 접근 주소다.
 - Tailscale Admin Console 에서 각 OpenWrt 노드의 subnet route 와 exit node 를 승인해야 원격 클라이언트가 해당 경로를 사용할 수 있다.
-- Linux 기반 원격 클라이언트는 승인된 subnet route 를 실제 라우팅 테이블에 반영하려면 `sudo tailscale set --accept-routes=true` 가 필요하다. 이 설정이 꺼져 있으면 Tailnet 에 route 가 보여도 `192.168.97.0/24`, `192.168.98.0/24`, `192.168.99.0/24` 로 직접 접근할 수 없다.
-- PresenceService 가 AP 존과 다른 장소에서 실행되더라도 Tailnet route 승인과 클라이언트 route 수락 후에는 광고된 AP subnet 으로 접근할 수 있어야 한다. 2026-05-16 검증에서는 `192.168.97.1`, `192.168.98.1`, `192.168.99.1` 의 ICMP, SSH `22/tcp`, HTTP `80/tcp` 접근이 성공했다.
+- Linux 기반 원격 클라이언트는 승인된 subnet route 를 실제 라우팅 테이블에 반영하려면 `sudo tailscale set --accept-routes=true` 가 필요하다. 이 설정이 꺼져 있으면 Tailnet 에 route 가 보여도 `192.168.97.0/24` 로 직접 접근할 수 없다.
+- PresenceService 가 AP 존과 다른 장소에서 실행되더라도 Tailnet route 승인과 클라이언트 route 수락 후에는 광고된 AP subnet 으로 접근할 수 있어야 한다. 2026-05-16 초기 Tailnet 검증에서는 `192.168.97.1`, `192.168.98.1`, `192.168.99.1` 의 ICMP, SSH `22/tcp`, HTTP `80/tcp` 접근이 성공했다. 같은 날 unified SSID 전환 이후에는 `192.168.97.1`, `192.168.97.2`, `192.168.97.3` 의 ICMP 와 SSH `22/tcp` 접근을 확인했다.
 
 # 주의점
 
