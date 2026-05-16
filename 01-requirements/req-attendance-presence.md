@@ -2,7 +2,7 @@
 title: 재실성 기반 출석 요구사항
 type: requirement
 status: active
-updated: 2026-04-08
+updated: 2026-05-16
 owners:
   - backend-team
   - presence-team
@@ -15,6 +15,7 @@ related:
   - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
   - [[/02-decisions/adr-0004-attendance-authorization-flow.md]]
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
+  - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
   - [[/04-architecture/network-topology.md]]
@@ -40,7 +41,7 @@ source:
 - 강의실 정보
 - 강의실별 허용 Wi-Fi / AP / 게이트웨이 정보
 - 사용자 현재 Wi-Fi 정보
-- 공유기 또는 게이트웨이에서 수집한 단말 연결 정보
+- OpenWrt local collector 가 push 한 AP/interface 별 단말 연결 snapshot
 - 사용자 등록 단말 정보
 - 요청 목적(`attendance` 또는 `exam`)
 - 교수의 출석 세션 오픈 상태
@@ -52,10 +53,12 @@ source:
 - 학생은 자신이 수강 중인 강의에만 출석 요청을 할 수 있어야 한다.
 - 출석 허용 여부는 강의실 매핑 정보와 네트워크 기반 재실성 판별 결과를 반영해야 한다.
 - 등록 단말 여부는 재실성 판별과 함께 출석 조건에 반영해야 한다.
-- 재실성 정보가 부족하거나 모순되면 출석은 기본적으로 거부되어야 한다.
+- 재실성 정보가 부족하거나 모순되면 출석은 기본적으로 거부되어야 한다. AP 연결 자체가 끊긴 경우 reason 은 `AP_OFFLINE` 이어야 한다.
 - 강의실에는 여러 AP 또는 공유기가 매핑될 수 있어야 한다.
-- 재실성 snapshot 은 최근 60초 이내 데이터만 유효해야 한다.
-- Presence 정보 수집은 요청 시 수행하되, 짧은 캐시를 통해 재사용할 수 있어야 한다.
+- OpenWrt collector push snapshot 은 기본 3초 주기로 갱신되어야 한다.
+- AP 가 약 10초 동안 유효 snapshot/heartbeat 를 보내지 않으면 offline 으로 간주해야 한다.
+- 강의실에 매핑된 online AP 가 0개이면 스마트 출석은 `AP_OFFLINE` 으로 거부되어야 한다.
+- Presence 정보 수집은 사용자 요청 시 OpenWrt SSH polling 을 수행하지 않고, collector 가 push 한 최신 snapshot 을 사용해야 한다.
 - 출석과 시험은 같은 eligibility 가드를 공유하되 목적별 추가 규칙은 분리 가능해야 한다.
 
 # 캡스톤 데모용 추가 규칙
@@ -109,7 +112,7 @@ source:
 - 강의실과 무관한 네트워크에서의 요청은 허용되면 안 된다.
 - 미등록 단말 또는 비정상 접속은 별도 사유 코드로 구분되어야 한다.
 - Backend 와 PresenceService 의 역할이 문서화된 경계 안에서 유지되어야 한다.
-- 강의실에 매핑된 AP 중 하나라도 학생 등록 단말이 관측되면 재실 후보로 판정할 수 있어야 한다.
+- 강의실에 매핑된 AP 중 하나라도 online 이고 학생 등록 단말이 관측되면 재실 후보로 판정할 수 있어야 한다. 강의실에 online AP 가 0개이면 `AP_OFFLINE` 으로 거부해야 한다.
 - 관리자는 더미 모드에서 특정 학생/단말의 재실 입력값을 바꾼 뒤 학생 화면에서 eligibility 결과가 바뀌는 것을 시연할 수 있어야 한다.
 - 관리자 패널은 `사용자 현황`, `강의실 및 네트워크 현황`, `재실 시연 제어(demo)` 탭으로 분리되어야 한다.
 - `강의실 및 네트워크 현황` 의 관측 시각은 시:분:초까지 표시되어야 한다.

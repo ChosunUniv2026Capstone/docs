@@ -8,6 +8,7 @@ owners:
 related:
   - [[/02-decisions/adr-0003-openwrt-device-collection.md]]
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
+  - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/05-work-items/task-openwrt-gateway-prototype.md]]
   - [[/07-status/2026-05-16-openwrt-demo-tailnet-verification.md]]
@@ -40,16 +41,18 @@ source:
 1. 학생 단말이 강의실 네트워크에 연결된다.
 2. Backend 가 출석 또는 시험 접근 시 PresenceService 에 eligibility 확인을 요청한다.
 3. PresenceService 는 강의실 매핑 기준으로 Redis 의 60초 이내 snapshot 을 먼저 조회한다.
-4. snapshot 이 없거나 만료되었으면 PresenceService 가 OpenWrt 장비에 SSH 로 접속해 station list 를 수집한다.
-5. 수집 결과는 Redis 에 저장된다.
-6. PresenceService 는 강의실 / Wi-Fi / 단말 매칭 결과를 만든다.
-7. Backend 는 이를 수강 정보와 시간표와 결합해 최종 판단한다.
+4. OpenWrt local collector 는 각 AP 에서 로컬 `ubus` / hostapd client 정보를 읽어 약 3초마다 PresenceService 로 push 한다.
+5. PresenceService 는 AP token, timestamp/nonce, DB registry 기반 AP/interface mapping 을 검증한 뒤 Redis 에 AP snapshot 과 health 를 저장한다.
+6. Backend 의 eligibility 요청은 OpenWrt 에 직접 접근하지 않고 PresenceService 의 최신 AP snapshot 을 사용한다.
+7. PresenceService 는 online AP 기준으로 강의실 / Wi-Fi / 단말 매칭 결과를 만들며, online AP 가 없으면 `AP_OFFLINE` 을 반환한다.
+8. Backend 는 이를 수강 정보와 시간표와 결합해 최종 판단한다.
 
 # 운영 전제
 
-- OpenWrt 장비는 상단 공유기 내부 대역의 static IP 와 SSH 접근이 가능해야 한다.
+- OpenWrt 장비는 local collector 를 실행할 수 있어야 하며, routine presence data path 는 SSH pull 이 아니라 collector push 다.
+- SSH 접근은 설치, key 등록, 진단, 수동 복구 용도로 유지할 수 있다.
 - 동일 서브넷에서 상단 게이트웨이가 IP 를 관리하고 OpenWrt 가 AP / bridge 역할만 할 때는 OpenWrt LAN DHCP 서버를 비활성화해야 한다.
-- PresenceService 는 `iw dev`, `ubus`, `iwinfo <iface> assoclist`, `iw dev <iface> station dump` 계열 명령 결과를 파싱할 수 있어야 한다.
+- Collector 는 가능하면 `ubus call hostapd.<iface> get_clients` 결과를 사용하고, 필요 시 `iwinfo <iface> assoclist`, `iw dev <iface> station dump` 계열 명령을 fallback 진단에 사용할 수 있다.
 - 구체적인 테스트베드 연결 절차와 장비별 명령 예시는 `[[/05-work-items/task-openwrt-gateway-prototype.md]]` 에서 관리한다.
 
 # 데모 SDN overlay 구성
@@ -95,4 +98,5 @@ source:
 - 교내 네트워크 정책과 장비 배치 제약을 별도 확인해야 한다.
 - 강의실과 Wi-Fi 매핑 정보는 운영 데이터로 관리해야 한다.
 - 강의실은 여러 AP 와 매핑될 수 있다.
-- 캐시가 만료된 시점의 동시 요청 폭주를 막기 위한 lock 전략이 필요하다.
+- AP snapshot freshness 는 collector push cadence 로 유지한다. 사용자 요청 경로가 OpenWrt polling 을 유발하지 않아야 한다.
+- 강의실 online 판단은 mapped AP 중 online AP 존재 여부로 계산하며, 모든 mapped AP 가 offline 이면 `AP_OFFLINE` 으로 fail closed 해야 한다.
