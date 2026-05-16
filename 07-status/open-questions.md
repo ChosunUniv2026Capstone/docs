@@ -2,7 +2,7 @@
 title: 오픈 질문
 type: status
 status: active
-updated: 2026-04-25
+updated: 2026-05-16
 owners:
   - team
 related:
@@ -26,8 +26,8 @@ source:
 ## 아직 열려 있는 질문
 
 - 실제 교내 Wi-Fi 환경에서 안정적으로 사용할 수 있는 식별자와 수집 범위는 어디까지인가?
-  - 로컬 dummy OpenWrt-shaped snapshot 과 Redis cache 흐름은 구현/테스트됐지만, 현장 AP/게이트웨이 수집 안정성은 별도 검증이 필요하다.
-- OpenWrt 수집 실패 시 재시도와 fail-close 정책을 어느 수준까지 둘 것인가?
+  - 데모 AP 3대는 collector push 와 Redis collector snapshot 경로로 연결됐지만, 교내/장기 운영 AP 모델별 station 정보 안정성은 별도 검증이 필요하다.
+- OpenWrt collector push 실패 시 재시도와 fail-close 정책을 어느 수준까지 둘 것인가?
   - 현재 로컬 MVP는 PresenceService eligibility 응답과 Backend 최종 판단 경계를 유지한다.
   - 운영 정책 수준의 retry/backoff/fail-close 기준은 아직 확정되지 않았다.
 - 수강신청 기능을 프로토타입 MVP 범위에 포함할 것인가?

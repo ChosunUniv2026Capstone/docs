@@ -2,7 +2,7 @@
 title: 구현 로드맵 상태
 type: status
 status: active
-updated: 2026-05-14
+updated: 2026-05-16
 owners:
   - team
 related:
@@ -39,7 +39,7 @@ Do not close the initial open issues or merge the code branches solely from the 
   - `PYTHONPATH=. pytest -q` 기준 60개 테스트 통과.
 - PresenceService
   - health, classroom snapshot, eligibility, admin dummy overlay/reset API가 구현되어 있다.
-  - Redis snapshot cache, dummy OpenWrt-shaped snapshot provider, AP threshold 판정 흐름이 있다.
+  - Redis collector snapshot cache, OpenWrt local collector push ingestion/health, demo baseline/overlay provider, AP threshold 판정 흐름이 있다.
   - `PYTHONPATH=. pytest -q` 기준 8개 테스트 통과.
 - DB
   - 초기 schema/seed, presence threshold patch, attendance demo seed, exam MVP schema가 init asset 으로 존재한다.
@@ -58,11 +58,12 @@ Do not close the initial open issues or merge the code branches solely from the 
 - Objective exam workflow: 완료(로컬 MVP)
   - 교수 시험 생성/수정/삭제/게시/마감, 학생 시험 목록/상세/시작/답안 저장/제출, start guard, per-attempt deadline, deterministic question shuffle 흐름이 구현되어 있다.
   - 시험은 현재 로컬 정책상 `requires_presence=true` schema compatibility 를 유지하지만 start guard 의 세부 정책은 [[/04-architecture/exam-workflow-api.md]] 와 [[/04-architecture/exam-mvp-contract.md]] 를 따른다.
-- Phase 3+ 정식 학습 콘텐츠 / 과제 / 성적: 계획 유지, 미구현 또는 후속 단계
-  - 강의자료 업로드/다운로드, 동영상 메타데이터/재생 계약, 과제 제출/피드백, 성적 조회/관리, 관리자 운영 지표는 향후 구현 범위다.
+- Phase 3+ 선택 LMS 보강: 계획 유지, 일부 선택 구현 대상
+  - 이미 구현된 과제/시험/공지/학습자료/출석 흐름 위에 성적 조회/관리, 과제 채점/피드백, Q&A/문의, 학습 진도율을 선택 구현 대상으로 둔다.
+  - 회원가입/self-registration, 수강신청/승인 workflow, 전체 관리자 CRUD 는 후속 backlog 로 유지한다.
 
 ## 주의할 검증 경계
 
 - Python 서비스 테스트는 현재 `PYTHONPATH=. pytest -q` 형태로 검증했다. plain `pytest -q` 는 import path 설정 없이 실행하면 `ModuleNotFoundError: No module named 'app'` 로 실패한다.
 - PresenceService 테스트는 통과하지만 Pydantic alias 관련 warning 이 남아 있다.
-- 실제 OpenWrt/교내 Wi-Fi 현장 수집 안정성은 로컬 dummy/Redis 검증과 별개의 후속 검증 항목이다.
+- 실제 OpenWrt/교내 Wi-Fi 현장 장기 수집 안정성은 데모 AP 3대 collector push 검증과 별개의 후속 검증 항목이다.

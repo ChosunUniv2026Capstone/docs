@@ -2,7 +2,7 @@
 title: 교수 기능 요구사항
 type: requirement
 status: active
-updated: 2026-04-09
+updated: 2026-05-16
 owners:
   - frontend-team
   - backend-team
@@ -24,18 +24,14 @@ source:
 
 교수 사용자는 자신의 강의를 운영하기 위한 학습 자료, 과제, 시험, 공지, 출석, 성적 기능을 사용할 수 있어야 한다.
 
-# 필수 기능
+# 현재 구현 / 유지 기능
 
-- 강의자료 업로드
-- 동영상 업로드
+- 강의자료 / 동영상 learning item 생성 / 삭제 / 첨부 다운로드
 - 과제 생성 / 마감일 설정
 - 시험 / 퀴즈 출제
 - 학생 제출물 확인
-- 채점 / 피드백
 - 공지 작성
 - 공지 상세 조회
-- 출석 / 진도율 확인
-- 성적 관리
 - 날짜 / 강의실 / 강의 기준 projected slot 조회
 - projected slot 기반 bundle session 열기 / 닫기 / 휴강 / 재오픈
 - bundle timer / roster / history / report 조회
@@ -43,6 +39,19 @@ source:
 - 학생별 차시 이력 조회
 - 학기 전체 출석 타임라인 조회
 - 출석 리포트 / 대시보드 조회
+
+# 선택 구현 대상
+
+- 채점 / 피드백
+- 출석과 별개의 학습 진도율 확인
+- 성적 관리
+- 질문게시판 / 문의 답변
+
+# 후속 backlog
+
+- 회원가입 / 계정 생성 self-service
+- 수강신청 / 승인 workflow
+- 전체 LMS / 관리자 CRUD 로의 확장
 
 # 출석 운영 요구
 
