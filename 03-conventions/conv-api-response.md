@@ -2,7 +2,7 @@
 title: API 응답 규약
 type: convention
 status: active
-updated: 2026-04-10
+updated: 2026-05-17
 owners:
   - backend-team
 applies_to:
@@ -66,6 +66,7 @@ source:
 - `SESSION_SLOT_INVALID`
 - `SESSION_ALREADY_OPEN`
 - `PRESENCE_INELIGIBLE`
+- `PRESENCE_SERVICE_UNAVAILABLE`
 - `ATTENDANCE_CHECK_IN_OK`
 - `ATTENDANCE_REASON_REQUIRED`
 - `TOKEN_EXPIRED`
@@ -86,3 +87,10 @@ source:
 
 - `ATTENDANCE_CHECK_IN_OK` 는 성공 코드이며, repeated self check-in 의 idempotent success 에도 사용될 수 있다.
 - 같은 의미의 실패를 endpoint 마다 다른 `code` 로 중복 생성하면 안 된다.
+
+# Presence dependency failure 규칙
+
+- `PRESENCE_SERVICE_UNAVAILABLE` 은 Backend 가 PresenceService 에 연결할 수 없거나, PresenceService 가 Backend AP registry 의존 경로를 일시적으로 확인할 수 없는 경우 사용한다.
+- 이 코드는 출석/시험/인접성 확인에서 실패 폐쇄(`eligible=false`) reason 으로 저장될 수 있다.
+- 원인을 알 수 없는 generic 5xx 는 이 코드로 숨기지 않는다. 명시적인 timeout/request failure 또는 `COLLECTOR_REGISTRY_UNAVAILABLE` 계열 dependency unavailable 만 `PRESENCE_SERVICE_UNAVAILABLE` reason 으로 변환하고, upstream code 는 evidence 에 보존한다.
+- `AP_OFFLINE` 은 강의실/AP registry 매핑은 확인됐지만 해당 강의실에 online AP snapshot 이 0개인 경우에만 사용한다.
