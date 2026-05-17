@@ -2,7 +2,7 @@
 title: Presence eligibility API 계약
 type: architecture
 status: active
-updated: 2026-05-16
+updated: 2026-05-17
 owners:
   - backend-team
   - presence-team
@@ -94,6 +94,7 @@ Backend 가 출석 또는 시험 접근 시점에 PresenceService 로부터 재�
 - `OK`
 - `CLASSROOM_NOT_MAPPED`
 - `AP_OFFLINE`
+- `PRESENCE_SERVICE_UNAVAILABLE`
 - `SNAPSHOT_UNAVAILABLE`
 - `SNAPSHOT_STALE`
 - `DEVICE_NOT_REGISTERED`
@@ -105,11 +106,19 @@ Backend 가 출석 또는 시험 접근 시점에 PresenceService 로부터 재�
 1. PresenceService 는 OpenWrt collector 가 push 한 AP snapshot 과 demo baseline/overlay mode 를 명시적으로 분리한다.
 2. demo mode 에서는 overlay state 의 mutation 결과가 해당 classroom 에 대해 read-after-write 로 바로 보여야 한다.
 3. Collector push mode 에서는 Redis 의 AP health/snapshot 을 조회한다. AP health 는 기본 3초 push cadence 와 약 10초 offline grace 를 따른다.
-4. 강의실에 mapped online AP 가 0개이면 `AP_OFFLINE` 으로 반환한다. user-triggered request 는 OpenWrt SSH polling 을 수행하지 않는다.
+4. 강의실에 mapped online AP 가 0개이면 `AP_OFFLINE` 으로 반환한다. user-triggered request 는 OpenWrt SSH polling 을 수행하지 않는다. AP registry 의존 경로가 timeout/일시 장애 상태이면 `PRESENCE_SERVICE_UNAVAILABLE` 또는 `COLLECTOR_REGISTRY_UNAVAILABLE` 로 실패 폐쇄하며, 이를 `AP_OFFLINE` 으로 단정하지 않는다.
 5. 학생 등록 단말 중 하나라도 online 강의실 AP 목록에서 `associated=true` 상태로 관측되면 `eligible=true` 후보가 된다.
 6. AP 별 threshold 가 전달되면 `signalDbm >= signalThresholdDbm` 을 만족해야 한다.
 7. AP threshold 가 비어 있으면 fallback `-65 dBm` 을 사용한다.
 8. PresenceService 는 network / device eligibility 까지만 판단하고 최종 도메인 허용 여부는 Backend 가 결정한다.
+
+
+# Registry dependency fallback 규칙
+
+- PresenceService 는 Backend canonical AP registry 를 cache/read 하되, registry refresh timeout 이 발생해도 즉시 raw 500 을 반환하면 안 된다.
+- 이미 로드된 registry cache 가 있으면 최대 60초까지 bounded stale registry 를 관리자 snapshot / AP health 같은 read-only 표시 경로에만 사용할 수 있다.
+- Collector ingest auth 와 출석/시험/인접성 eligibility 는 보안 민감 경로이므로 registry refresh 실패 후 stale registry 로 허용 판정을 만들면 안 된다. 이 경우 dependency unavailable 로 실패 폐쇄한다.
+- Backend 는 `PRESENCE_SERVICE_UNAVAILABLE` 을 사용자/domain denial reason 으로 사용하고, `COLLECTOR_REGISTRY_UNAVAILABLE` 같은 upstream code 는 evidence 에 보존한다. Generic 5xx/contract/auth 오류를 정상 denial 로 숨기면 안 된다.
 
 # Demo mode 제어 계약
 
