@@ -39,8 +39,8 @@ If an implementation branch changes an API/schema/runtime behavior beyond the co
 
 ## Backend attendance, exam, notice, device, assignment, and PresenceService-facing behavior
 
-- Backend #14 — manual attendance changes must reject empty audit reasons with `ATTENDANCE_REASON_REQUIRED`.
-  - Source of truth: [[/01-requirements/req-attendance-presence.md]] records the required reason and audit history contract.
+- Backend #14 — manual attendance changes must reject empty audit reasons with `ATTENDANCE_REASON_REQUIRED` only when the target status is `official`/공결.
+  - Source of truth: [[/01-requirements/req-attendance-presence.md]] records that 공결 requires a reason, while present/late/absent/sick updates may store `NULL` reason.
 - Backend #15 — exam answer save/submit must respect the effective per-attempt `expires_at` deadline.
   - Source of truth: [[/01-requirements/req-exam-workflow.md]] and [[/04-architecture/exam-workflow-api.md]] define `expires_at` as the stored attempt deadline.
 - Backend #21 — `requires_presence` is a real exam policy field.

@@ -159,7 +159,7 @@ source:
 - bundle overwrite / bundle check-in write 는 slot fan-out 으로 저장해야 한다.
 - `attendance_records.final_status` 는 `present|absent|late|official|sick` 만 허용한다.
 - `attendance_records` 는 `projection_key` 를 가져야 한다.
-- `attendance_records` 는 `attendance_reason`, `finalized_by_user_id`, `finalized_at` 을 가져야 한다.
+- `attendance_records` 는 nullable `attendance_reason`, `finalized_by_user_id`, `finalized_at` 을 가져야 한다. `attendance_reason` 은 공결(official) 최종 상태에서만 필수 의미를 가지며, non-official 상태에서는 `NULL` 이어야 한다.
 - `attendance_status_audit_logs` 는 `projection_key` 를 가져야 한다.
 - `attendance_status_audit_logs` 는 `actor_user_id`, `actor_role`, `change_source`, `previous_status`, `new_status`, `reason`, `changed_at`, `version` 을 가져야 한다.
 - bundle overwrite 는 실제 값이 달라진 slot 에만 changed-only audit row 를 남겨야 한다.

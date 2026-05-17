@@ -69,6 +69,7 @@ source:
 - `PRESENCE_SERVICE_UNAVAILABLE`
 - `ATTENDANCE_CHECK_IN_OK`
 - `ATTENDANCE_REASON_REQUIRED`
+  - 공결(official) 수동 출석 변경에서 사유가 비어 있을 때만 사용한다. `present|late|absent|sick` 수동 변경은 reason 없이 성공해야 하며, 전달된 reason 도 저장하지 않고 `NULL` 로 정규화한다.
 - `TOKEN_EXPIRED`
 - `TOKEN_REVOKED`
 - `REFRESH_REPLAY_DETECTED`

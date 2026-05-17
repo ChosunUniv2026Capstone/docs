@@ -66,8 +66,8 @@ source:
 - bundle roster 의 기본값은 anchor slot 기록을 따르고, anchor slot 기록이 없으면 `absent` 를 기본값으로 사용해야 한다.
 - 일반출석은 session open 직후 미수정 학생을 `absent` 로 집계해야 한다.
 - 스마트출석은 active 동안 미체크 학생을 `pending` 으로 보고, close / expire 시점에만 `absent` 로 확정해야 한다.
-- 교수는 상태를 `출석`, `결석`, `지각`, `공가`, `병가` 로 수정할 수 있어야 한다.
-- 교수의 상태 변경은 항상 사유를 포함해야 한다.
+- 교수는 상태를 `출석`, `결석`, `지각`, `공결`, `병가` 로 수정할 수 있어야 한다.
+- 교수의 상태 변경 사유는 `공결(official)` 처리 시에만 필수이다. `출석/지각/결석/병가` 저장은 사유 없이 가능해야 하며, Backend 는 non-official reason 을 저장하지 않는다.
 - 교수의 수동 수정은 audit history 로 남아야 한다.
 - 교수는 학생 self check-in 이후에도 최신 판단으로 최종 상태를 덮어쓸 수 있어야 하며, 이전 이력은 남아야 한다.
 - bundle overwrite 는 실제 값이 달라진 차시에만 changed-only audit 를 남겨야 한다.
