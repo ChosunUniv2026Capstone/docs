@@ -142,6 +142,7 @@ source:
 - `PRESENCE_INELIGIBLE`
 - `ATTENDANCE_CHECK_IN_OK`
 - `ATTENDANCE_REASON_REQUIRED`
+  - 공결(official) 변경 사유가 비어 있을 때만 발생한다. non-official 상태 변경은 reason 없이 허용하고 reason 필드는 `NULL` 로 저장한다.
 
 # 구현 전 필수 산출물
 

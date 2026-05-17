@@ -86,8 +86,8 @@ source:
   2. 현재 재실 판정이 eligible 이다.
 - 학생 화면은 열린 smart bundle 을 차시별 카드 여러 개가 아니라 bundle 카드 1개로 보여줘야 한다.
 - 학생의 bundle check-in 1회는 bundle 대상 차시 전체에 fan-out 적용되어야 한다.
-- 교수는 출석 상태를 `출석`, `결석`, `지각`, `공가`, `병가` 로 수정할 수 있어야 한다.
-- 교수의 수동 상태 변경에는 항상 사유가 포함되어야 한다.
+- 교수는 출석 상태를 `출석`, `결석`, `지각`, `공결`, `병가` 로 수정할 수 있어야 한다.
+- 교수의 수동 상태 변경 사유는 `공결(official)` 처리 시에만 필수이다. `출석(present)`, `지각(late)`, `결석(absent)`, `병가(sick)` 저장은 사유 없이 가능해야 하며, Backend 는 non-official 상태의 사유를 저장하지 않고 `NULL` 로 정규화해야 한다.
 - bundle roster 편집 기본값은 선택 anchor slot 기준으로 로드해야 하며, anchor slot 기록이 없으면 `결석(absent)` 을 기본값으로 사용해야 한다.
 - 일반출석은 세션을 시작한 직후부터 미수정 학생을 `결석(absent)` 으로 간주해야 한다.
 - 스마트출석은 진행 중 미체크 학생을 `pending` 으로 간주하고, 교수 종료 또는 만료 시점에만 `결석(absent)` 으로 확정해야 한다.
@@ -104,7 +104,7 @@ source:
 - 거부 시 사유 코드를 남겨야 한다.
 - 이후 감사와 분석을 위해 판정 근거를 저장할 수 있어야 한다.
 - 어떤 AP 와 어떤 단말 매칭으로 판단했는지 추적 가능해야 한다.
-- 출석 상태 변경 이력에는 actor, reason, changed_at, previous_status, new_status 가 포함되어야 한다.
+- 출석 상태 변경 이력에는 actor, reason, changed_at, previous_status, new_status 가 포함되어야 한다. `reason` 은 공결 처리 이력에만 필수이며, non-official 상태 변경 이력의 reason 은 `NULL` 일 수 있다.
 - bundle session 이 포함한 slot membership 과 anchor projection key 를 추적할 수 있어야 한다.
 - 출석 리포트 / 대시보드 집계는 attendance record 의 최종 상태를 기준으로 계산되어야 한다.
 
@@ -133,5 +133,5 @@ source:
 - 교수가 허용되지 않은 시간표 밖 차시를 열려고 하면 `SESSION_SLOT_INVALID` 로 거부되어야 한다.
 - 같은 projection_key 에 이미 active session 이 있으면 `SESSION_ALREADY_OPEN` 으로 거부되어야 한다.
 - 열린 세션이 있어도 재실 판정이 부적합하면 `PRESENCE_INELIGIBLE` 로 거부되어야 한다.
-- 교수가 상태 변경 사유 없이 수동 수정하려고 하면 `ATTENDANCE_REASON_REQUIRED` 로 거부되어야 한다.
+- 교수가 `공결(official)` 로 수동 수정하면서 사유를 비워 두면 `ATTENDANCE_REASON_REQUIRED` 로 거부되어야 한다. `출석/지각/결석/병가` 수동 수정은 사유 없이 저장 가능해야 한다.
 - bundle 화면과 별도로 projection-key 기반 예외 수정 경로가 유지되어야 한다.
