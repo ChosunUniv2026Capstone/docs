@@ -2,7 +2,7 @@
 title: 출석 세션 및 projected slot 아키텍처
 type: architecture
 status: active
-updated: 2026-04-08
+updated: 2026-05-21
 owners:
   - backend-team
   - frontend-team
@@ -133,6 +133,11 @@ source:
 1. Backend 는 attendance record final state 를 기준으로 slot aggregate 와 dashboard summary 를 계산한다.
 2. professor update / student self check-in / lifecycle transition 이 발생하면 Backend 는 updated aggregate 를 event 로 발행한다.
 3. report surface 는 bootstrap + incremental event 를 통해 동일 aggregate 를 유지한다.
+4. 교수 attendance report export 는 같은 최종 상태 / 화면 해석을 사용해 CSV 를 생성한다.
+   - `summary` CSV 는 학생별 `학번`, `이름`, `출석 차시`, `결석 차시`, `지각 차시`, `공결 차시` 누계를 출력한다.
+   - `full` CSV 는 summary 컬럼 뒤에 projected slot 순서의 차시별 상태 컬럼을 추가한다.
+   - `sick` 은 report/dashboard 와 동일하게 공결에 합산하며, 전체본의 `pending`, `upcoming`, `canceled` 성격 상태는 화면 라벨과 같은 의미로 표기한다.
+   - CSV 생성은 기존 report export / authenticated download 경로를 사용하며, CSV variant 때문에 attendance final-state authority 나 DB schema 를 바꾸면 안 된다.
 
 # 이유 코드
 
