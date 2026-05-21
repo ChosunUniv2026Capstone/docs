@@ -2,7 +2,7 @@
 title: Garage-backed Object Storage Requirements
 type: requirement
 status: active
-updated: 2026-05-10
+updated: 2026-05-21
 owners:
   - backend-team
   - db-owner
@@ -26,7 +26,7 @@ Provide durable object storage for LMS files while keeping authorization and fil
 - Learning materials and lecture videos.
 - Notice attachments.
 - Exam question/explanation media.
-- First-pass attendance CSV report exports.
+- First-pass attendance CSV report exports, including professor summary/full attendance variants.
 - Local/demo Service-generated backup artifacts.
 
 # Out of Scope
@@ -64,4 +64,4 @@ Provide durable object storage for LMS files while keeping authorization and fil
 - New learning, notice, exam, and report metadata tables can capture object keys without storing object bytes in Postgres.
 - `object_deletion_jobs` records pending deletion work when metadata rows are deleted directly or by owner cascade.
 - DB trigger tests prove deletion jobs are created for assignment, learning, notice, exam question, exam answer, and report export metadata.
-- Report export implementation starts with attendance CSV only.
+- Report export implementation starts with attendance CSV only; professor attendance CSV may have summary/full generation variants without adding PDF/XLSX or public object URLs.

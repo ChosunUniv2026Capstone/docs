@@ -2,7 +2,7 @@
 title: Object storage architecture
 type: architecture
 status: active
-updated: 2026-05-10
+updated: 2026-05-21
 owners:
   - architecture-owner
   - backend-team
@@ -35,7 +35,7 @@ The schema extends assignment attachments and adds metadata tables for the new o
 - `notice_attachments`: notice attachment object metadata.
 - `exam_question_attachments`: professor-authored exam prompt/explanation media metadata.
 - `exam_answer_attachments`: future-compatible answer file metadata.
-- `report_exports`: generated report file metadata; first pass is attendance CSV.
+- `report_exports`: generated report file metadata; first pass is attendance CSV, including professor summary/full attendance variants.
 - `object_deletion_jobs`: durable deletion outbox.
 
 # Trigger Strategy
