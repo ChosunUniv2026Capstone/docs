@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2241" viewBox="0 0 1440 2241">
+  <image href="../../student-07-attendance-before-check.png" x="0" y="0" width="1440" height="2241" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="100" y="358" width="1238" height="1523" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="100" y="310" width="660" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="112" y="337" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 17 / Fig. 20: attendance eligibility card and semester matrix</text>
+</svg>

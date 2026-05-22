@@ -2,13 +2,14 @@
 title: 캡스톤 보고서 목차
 type: report
 status: draft
-updated: 2026-04-12
+updated: 2026-05-22
 owners:
   - team
 related:
   - [[/00-overview/project-summary.md]]
   - [[/04-architecture/service-map.md]]
   - [[/05-work-items/epic-full-lms-delivery-plan.md]]
+  - [[/03-conventions/conv-final-report-writing.md]]
 source:
   - [[/00-overview/project-summary.md]]
   - [[/01-requirements/req-student-features.md]]
@@ -20,19 +21,28 @@ source:
   - [[/04-architecture/data-model-overview.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/exam-mvp-contract.md]]
+  - [[/03-conventions/conv-final-report-writing.md]]
 ---
 
 # 캡스톤 보고서 목차
 
-`08-reports` 는 차세대 사이버캠퍼스 프로젝트의 캡스톤 **주간 / 중간 / 최종 보고서**를 작성하기 위한 보고서 영역이다.
+`08-reports` 는 차세대 사이버캠퍼스 프로젝트의 캡스톤 보고서를 제출용 형식으로 재구성하는 영역이다.
 기존 `00-overview` ~ `07-status` 문서는 프로젝트 source of truth 이고, 이 영역은 그 내용을 제출용 보고서 형식으로 재구성한다.
+
+현재 보고서 작성의 current truth 는 [[/03-conventions/conv-final-report-writing.md]] 이다.
+앞으로 새 보고서는 **최종보고서**만 작성하며, 과거 주간보고서 파일은 historical snapshot 으로만 유지한다.
 
 # 작성 원칙
 
 - 보고서는 **본문**과 **부록**으로 나눈다.
-- 주간보고서, 중간보고서, 최종보고서는 같은 양식을 공유한다.
-- 중간보고서는 목표 대비 달성치 중심으로 작성한다.
-- 최종보고서는 같은 틀에서 모든 항목이 최종 완료 상태로 정리된 문서로 마무리한다.
+- 앞으로 새 주간보고서는 작성하지 않고, 최종보고서 형식으로만 정리한다.
+- 최종보고서는 교수님 기준의 서론 / 관련 연구·기술 / 시스템 설계 / 구현 / 실험 및 결과 / 결론 / 참고문헌 구조를 유지한다.
+- 최종보고서의 1순위 논리축은 **구현 완성도 중심**이다.
+- 구현 완성도는 단순 기능 나열이 아니라 **기능별 종합 증거 매트릭스**로 입증한다.
+- 목차는 작성 시점에 따라 변경할 수 있으나, 교수님 기준과 구현 완성도 중심 방향은 유지한다.
+- 목차 바로 뒤에는 `이번 주 진행사항 및 전체 완성도 자체평가`를 둔다.
+- 이번 주 진행사항은 KST 기준 직전 월요일 09:00부터 보고서 작성 현재 시각까지의 변경사항을 대상으로 한다.
+- 변경사항과 현재 상태는 모든 레포의 `main` 브랜치를 기준으로 작성한다.
 - 섹션별 파일은 편집 단위이고, `99-combined-report.md` 는 본문과 부록 내용을 한 파일에 모은 제출/검토용 통합본이다.
 - 구현 완료와 설계/계획은 반드시 구분해서 적는다.
 - 전체 소스코드 원문, 회의록 원문, 커밋 로그 전체는 본문에 복붙하지 않고 필요한 핵심 요약과 링크만 둔다.
@@ -45,8 +55,9 @@ source:
 ## 공통
 
 - [[/08-reports/00-index.md]]: 보고서 영역 목차와 작성 원칙
-- [[/08-reports/01-report-template.md]]: 주간/중간/최종 공통 보고서 양식
+- [[/08-reports/01-report-template.md]]: 최종보고서 기본 양식
 - [[/08-reports/99-combined-report.md]]: 본문/부록 통합본
+- [[/03-conventions/conv-final-report-writing.md]]: 최종보고서 작성 규약 current truth
 
 ## 본문
 
@@ -73,9 +84,9 @@ source:
 
 ## 제출 인스턴스
 
-- [[/08-reports/20-weekly/00-weekly-report-template.md]]
-- [[/08-reports/20-weekly/2026-04-12-weekly-report-draft.md]]
-- [[/08-reports/30-midterm/midterm-report-draft.md]]
+- [[/08-reports/20-weekly/00-weekly-report-template.md]]: historical template
+- [[/08-reports/20-weekly/2026-04-12-weekly-report-draft.md]]: historical snapshot
+- [[/08-reports/30-midterm/midterm-report-draft.md]]: historical snapshot
 - [[/08-reports/40-final/final-report-draft.md]]
 
 ## 부록

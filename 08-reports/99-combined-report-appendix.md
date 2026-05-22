@@ -1,108 +1,41 @@
 ---
-title: 차세대 사이버캠퍼스 Smart Class 최종보고서
-type: final-report
-status: final-report-body
+title: Smart Class 최종보고서 부록
+type: final-report-appendix
+status: final-appendix
 updated: 2026-05-22
 owners:
   - team
-primary_deliverables:
-  - docs/08-reports/99-combined-report.md
-  - docs/08-reports/99-combined-report-appendix.md
 ---
 
-# 차세대 사이버캠퍼스 Smart Class 최종보고서
+# Smart Class 최종보고서 부록
 
-> 최종 독자가 열어야 하는 문서 산출물은 이 보고서와 `docs/08-reports/99-combined-report-appendix.md` 두 파일이다. 본문은 평가자가 프로젝트 목표, 설계, 구현, 화면 흐름, 코드, DB/ERD, 검증, 한계를 독립적으로 이해할 수 있도록 핵심 근거를 직접 재수록한다. 부록은 같은 근거를 더 촘촘하게 찾기 위한 색인·원장 파일이다. 화면과 ERD 이미지는 두 문서에 직접 연결된 증거 asset이며, 독자가 보조 문서 탐색을 하지 않아도 본문 흐름 안에서 확인되도록 배치했다.
+> 이 파일은 최종보고서의 두 번째이자 유일한 부록 문서 산출물이다. 최종보고서 본문(`99-combined-report.md`)과 이 부록만 열면 프로젝트의 화면, ERD, API, 코드, DB, 검증 근거를 모두 확인할 수 있도록 구성했다. 화면/ERD asset은 두 문서에 직접 연결된 증거 자료이며, 기존 작성 근거 문서는 내부 검증 자료로만 유지한다. 최종 독자가 프로젝트를 이해하기 위해 열어야 하는 문서 산출물은 보고서와 이 부록 두 파일뿐이다.
 
-## 보고서 정보
+# A. 두 파일 산출물 계약
 
-| 항목 | 내용 |
-|---|---|
-| 보고서 종류 | 최종보고서 |
-| 기준 시각 | 2026-05-22 14:02 KST |
-| 이번 주 변경사항 기간 | 2026-05-18 09:00 KST ~ 2026-05-22 14:02 KST |
-| 기준 브랜치/PR | `main`으로 merge된 PR branch 기준; merge 시각이 보고 기간 안이면 이번 주 개발내용으로 포함 |
-| 보고서 산출물 | `docs/08-reports/99-combined-report.md` |
-| 부록 산출물 | `docs/08-reports/99-combined-report-appendix.md` |
-| 작성 원칙 | 교수님 rubric 순서, 논리성, 자세한 기술 설명, 객관적 근거, 표/그림 캡션, 참고문헌 형식 준수 |
+- 보고서 문서 산출물: `docs/08-reports/99-combined-report.md`
+- 부록 문서 산출물: `docs/08-reports/99-combined-report-appendix.md`
+- 증거 asset: 화면/ERD SVG·PNG는 위 두 문서에 직접 연결되어 본문 흐름 안에서 표시되는 보조 증거 자료다.
+- 산출물 원칙: 보고서에서 필요한 스크린샷은 본문 가까이에 직접 이미지로 연결하고, 코드 근거는 코드블록으로 삽입하며, DB 설계는 ERD 이미지와 SQL excerpt로 즉시 확인 가능하게 둔다.
+- 비범위: 상용 운영 배포, 장기 교내 Wi-Fi 현장 검증, 학사시스템 정식 연동, 네이티브 모바일 앱 구현은 완료 성과가 아니라 한계/개선 방향이다.
 
-## 초록
+# B. 기준 시각, repo baseline, 기능별 증거 매트릭스
 
-Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으로 재구성하고, Wi-Fi 기반 재실성 판정과 등록 단말 인증을 결합하여 출석과 시험 접근의 신뢰성을 높이는 시스템이다. 프로젝트는 `Front`, `Backend`, `PresenceService`, `DB`, `Service`의 다섯 실행/설계 경계로 나뉜다. Front는 학생·교수·서비스관리자 UI와 사용 흐름을 제공하고, Backend는 인증·권한·LMS·출석·시험 도메인 판단을 수행한다. PresenceService는 강의실 AP snapshot, 등록 단말 매칭, RSSI threshold, snapshot freshness를 이용해 eligibility 근거를 제공한다. DB는 사용자, 강의, 수강, 강의실/AP, 등록 단말, 출석 세션/기록/audit, 시험/문항/답안, 과제, Q&A, 학습진도, 운영 메타데이터를 저장한다. Service repo는 Docker Compose/Nginx 기반 로컬·이미지 실행 구조와 release manifest를 관리한다.
-
-완성도는 “로컬/테스트베드 MVP”로 평가한다. 인증/세션, 역할별 UI, 강의·공지·선택 LMS read model, 출석 workflow, 객관식 시험 workflow, PresenceService eligibility, DB schema/ERD는 구현·화면·테스트 근거를 갖는다. 반면 상용 운영 배포, 장기 교내 Wi-Fi 현장 검증, 학사시스템 정식 연동, 네이티브 모바일 앱 구현은 완료 성과가 아니라 한계와 향후 개선 방향으로 분리한다.
-
-## 목차
-
-1. 이번 주 진행사항 및 전체 완성도 자체평가
-   1.1 기준 시각과 보고 기간
-   1.2 PR 기준 weekly merged branch와 repo baseline
-   1.3 기능별 완성도 자체평가
-   1.4 증거 매트릭스와 한계 분리 원칙
-2. 서론
-   2.1 연구 배경
-   2.2 필요성
-   2.3 목적
-   2.4 범위와 비범위
-3. 관련 연구 및 기술
-   3.1 기존 LMS와 출석 관리 방식
-   3.2 QR/GPS/Wi-Fi/단말 기반 인증 비교
-   3.3 Smart Class의 차별성
-   3.4 기술 선택 근거
-4. 시스템 설계
-   4.1 전체 구조
-   4.2 서비스 책임과 데이터 흐름
-   4.3 핵심 알고리즘
-   4.4 DB 설계와 ERD
-   4.5 DB schema excerpt
-   4.6 UML/sequence 흐름
-5. 구현
-   5.1 사용 기술과 개발 환경
-   5.2 코드 구조
-   5.3 UI 사용 흐름과 화면 증거
-   5.4 API request/response 근거
-   5.5 코드 구현 excerpt
-   5.6 기능별 구현 상세
-6. 실험 및 결과
-   6.1 테스트 방법
-   6.2 기능 검증 결과
-   6.3 성능·운영성 평가
-   6.4 한계점
-7. 결론
-   7.1 성과
-   7.2 문제 해결 과정
-   7.3 개선 방향
-8. 참고문헌
-   8.1 프로젝트 산출물
-   8.2 기술 문서
-   8.3 코드/테스트 출처
-9. 부록 안내
-   9.1 두 파일 산출물 관계
-   9.2 부록 사용법
-
-# 1. 이번 주 진행사항 및 전체 완성도 자체평가
-
-## 1.1 기준 시각과 보고 기간
-
-이번 주 진행사항은 KST 기준 2026-05-18 09:00 KST부터 2026-05-22 14:02 KST까지의 변경을 대상으로 한다. 이번 주 개발내용은 각 레포의 `main`에 merge된 PR branch를 기준으로 보며, PR merge 시각이 보고 기간 안에 있으면 해당 PR의 첫 commit 시각부터 merge 시각까지를 개발 기간으로 산정한다. docs 레포는 보고서 작성 브랜치가 포함되어 있으므로, 기능 완성 주장과 문서 작성 작업을 분리하여 평가했다.
-
-## 1.2 repo main baseline 및 기능별 증거 매트릭스
-
-### 1.2.1 기준 시각과 보고 기간
+## 1. 기준 시각과 보고 기간
 
 - 기준 시각: 2026-05-22 14:02 KST
 - 보고 기간 시작: 2026-05-18 09:00 KST
 - 보고 기간 종료: 2026-05-22 14:02 KST
 - 시간 표기 원칙: 모든 보고서 시간은 KST 기준 `YYYY-MM-DD HH:MM KST` 형식으로 적고, UTC offset 표기는 본문 기준 시각 표기에서 제외한다.
 
-### 1.2.2 제출본 source-of-truth
+## 2. 제출본 source-of-truth
 
 - 보고서 산출물: `docs/08-reports/99-combined-report.md`
 - 부록 산출물: `docs/08-reports/99-combined-report-appendix.md`
 - 신규 주간보고서는 작성하지 않는다.
 - 현재 `docs` 작업 브랜치가 `main`이 아니면, 최종보고서 작성 규약 변경은 병합 전까지 `사용자 승인 작성 지시`로 취급하고 완료 증거와 분리한다.
 
-### 1.2.3 Repo main baseline
+## 3. Repo main baseline
 
 | Repo | Current branch | HEAD | local `main` | `origin/main` | Dirty status | Weekly merged PRs | Note |
 |---|---|---|---|---|---|---:|---|
@@ -115,11 +48,11 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 | CodexKit | `main` | `a5a68c1` | `a5a68c1` | `a5a68c1` | clean | 0 | no merged PR in period |
 | DocsQuartz | `main` | `90d012b` | `90d012b` | `90d012b` | clean | 0 | no merged PR in period |
 
-### 1.2.4 이번 주 개발 진행 내용(PR branch 기준)
+## 4. 이번 주 개발 진행 내용(PR branch 기준)
 
 이번 주 개발내용은 단순히 `origin/main`에 찍힌 commit 시각만 보지 않고, **main으로 merge된 PR branch**를 기준으로 산정한다. PR의 merge 시각이 보고 기간 안에 있으면 이번 주 개발내용으로 포함하고, 개발 기간은 해당 PR branch의 첫 commit 시각부터 PR merge 시각까지로 적는다. 아래에서는 먼저 평가자가 바로 이해할 수 있도록 자연어로 진행 내용을 설명하고, 그 뒤에 추적 가능한 PR 근거 표를 둔다.
 
-#### 1.2.4.1 이번 주 진행사항 요약
+### 4.1 이번 주 진행사항 요약
 
 이번 주의 핵심 개발은 출석 기능의 운영 안정성 보강과 교수자용 CSV export 완성이다. 먼저 Backend에서는 출석 화면을 열거나 학생이 체크인할 때 PresenceService 응답이 느려지면 Backend의 DB connection이 오래 점유되고, 단일 worker demo 환경에서 `/health`, `/api/auth/bootstrap`, attendance WebSocket까지 함께 지연되는 문제가 확인되었다. 이 문제를 Backend #48에서 해결했다. `/health`를 DB 의존 없는 liveness endpoint로 분리하고, `/ready`를 DB readiness 확인용으로 따로 두었으며, SQLAlchemy pool timeout을 구조화된 503 오류로 바꾸었다. 또한 출석 hot path에서 느린 PresenceService 호출이나 WebSocket publish를 기다리는 동안 request DB session을 붙잡지 않도록 정리했고, 학생 check-in은 eligibility를 먼저 수집한 뒤 durable DB write를 수행하도록 조정했다. 결과적으로 출석 bootstrap과 realtime socket 연결이 느린 presence 경로에 의해 함께 멈추는 위험을 줄였다.
 
@@ -131,7 +64,7 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 
 마지막으로 docs #36과 현재 최종보고서 작업에서 교수 출석 CSV export의 요구사항, non-goal, UI 배치, report-export 경로, 증거 매트릭스를 맞췄다. 특히 이번 최종보고서는 단순 PR 나열이 아니라, “어떤 문제를 발견했고 → 어떤 구현으로 고쳤고 → 어떤 화면/코드/DB/API/테스트 근거가 있는지”가 드러나도록 본문과 부록을 재구성했다.
 
-#### 1.2.4.2 기능/문제 중심 상세 내용
+### 4.2 기능/문제 중심 상세 내용
 
 | 구분 | 이번 주 진행 내용 | 고친 부분 / 구현 포인트 | 사용자에게 보이는 변화 | 근거 PR |
 |---|---|---|---|---|
@@ -142,7 +75,7 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 | 문서/보고서 정렬 | 기능 요구사항, architecture boundary, 보고서 증거를 최신 구현과 맞춤 | CSV export scope, non-goal(PDF/XLSX/filter/history 제외), 학생별 누계 표 위치, object-storage report export 경로 문서화 | 교수님이 최종보고서에서 이번 주 개발 내용을 PR 번호가 아니라 기능 변화로 읽을 수 있음 | docs #36, 현재 보고서 작업 |
 | 변화 없음으로 확인한 영역 | PresenceService, DB, CodexKit, DocsQuartz는 이번 주 보고 기간 안에 main merge PR 없음 | 기존 구현/ERD/test 근거는 유지하되 이번 주 신규 개발 성과로 과장하지 않음 | 완료도 평가는 기존 로컬 MVP 근거를 유지하고, 신규 변경 없음은 명확히 분리 | PR 없음 |
 
-#### 1.2.4.3 PR 추적 근거 표
+### 4.3 PR 추적 근거 표
 
 아래 표는 위 자연어 설명의 추적 근거다. 평가자가 기능 변화를 먼저 읽고, 필요할 때 PR 번호와 개발 기간을 확인하는 용도다.
 
@@ -157,14 +90,14 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 | Service | [#26](https://github.com/ChosunUniv2026Capstone/Service/pull/26) | `fix/attendance-csv-demo-release` | fix(service): pin attendance CSV demo manifest | 2026-05-22 00:56 KST ~ 2026-05-22 00:57 KST | 1 | `e89dcdb` | attendance CSV demo rollout용 Backend/Front image digest와 DB reset 불필요 조건 고정 |
 | Service | [#27](https://github.com/ChosunUniv2026Capstone/Service/pull/27) | `release-please--branches--main` | chore(main): release 0.4.1 | 2026-05-22 00:58 KST ~ 2026-05-22 00:58 KST | 1 | `c36a432` | Service v0.4.1 release로 demo manifest 변경 고정 |
 
-### 1.2.5 검증 경계와 caveat
+## 5. 검증 경계와 caveat
 
 - Backend / PresenceService Python 테스트는 `PYTHONPATH=. pytest -q` 형태를 기준으로 기록한다. plain `pytest -q`는 import path 문제로 실패할 수 있으므로 실패 자체를 기능 실패로 과장하지 않는다.
 - PresenceService 테스트 통과 시에도 Pydantic alias 관련 warning은 주의 항목으로 분리한다.
 - OpenWrt / 교내 Wi-Fi 장기 현장 검증, 상용 운영 배포, 학사시스템 정식 연동, 네이티브 모바일 앱은 완료 성과가 아니라 한계 또는 후속 과제로 기록한다.
 - `Service` image manifest / compose 검증은 실행 가능성 근거이지만, workflow run 또는 demo server provenance 없이는 상용 배포 근거가 아니다.
 
-### 1.3 기능별 종합 증거 매트릭스
+## 6. 기능별 종합 증거 매트릭스
 
 | Evidence ID | 기능 영역 | 완료도 | 화면 근거 | API / 코드 근거 | DB 근거 | 테스트 / 실행 근거 | 한계 / 후속 과제 |
 |---|---|---|---|---|---|---|---|
@@ -178,1095 +111,8 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 | E-SVC-01 | Service runtime / CI-CD | 부분 완료 | Service runtime은 diagram/manifest 중심; UI 화면 아님 | `Service/compose.yml`, `compose.local.yml`, `compose.image.yml`, `nginx/local.conf`, workflows `ci.yml`, `deploy-demo.yml` | DB 직접 테이블 없음; `report_exports` 등 ops metadata는 ERD-8 | `Service/tests/test_release_manifest_contract.py:27`, `:45`; `test_workspace_release_readiness.py:81`, `:98`; weekly merged PRs Service #26/#27 (`e89dcdb`, `c36a432`) | workflow run / demo server provenance 없이는 상용 배포로 쓰지 않음 |
 | E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/08-reports/99-combined-report.md`, `docs/08-reports/99-combined-report-appendix.md` | N/A | `git -C docs diff --check`, markdown/link sanity | docs가 feature branch/dirty 상태라 기능 완료 증거와 작성 지시를 분리 |
 
-## 1.5 자체평가 결론
 
-전체적으로 시스템은 “강의실 Wi-Fi 기반 재실성 판정이 결합된 LMS 로컬 MVP”라는 목표에 도달했다. 핵심 사용자는 학생, 교수, 서비스관리자이며, 각 역할의 주요 화면과 API 흐름, DB 저장 구조가 서로 연결되어 있다. 이번 주에는 출석 운영 안정성 개선과 교수 출석 CSV export 완성이 가장 큰 변화다. Backend는 PresenceService 지연으로 DB connection과 WebSocket handshake가 함께 밀리는 문제를 고쳤고, Front/Backend는 교수자가 출석 화면에서 학생별 누계를 확인한 뒤 요약본/전체본 CSV를 바로 내려받는 흐름을 완성했다. Service는 이 기능이 들어간 Backend/Front image 조합을 demo manifest와 release로 고정했다. 다만 실제 학교 운영망에서 장기간 수집한 Wi-Fi 품질 지표, 학사시스템 정식 SSO/SIS 연동, 네이티브 앱은 후속 과제로 남긴다.
-
-# 2. 서론
-
-## 2.1 연구 배경
-
-대학 LMS는 강의자료 배포, 공지, 과제, 시험, 출석, 성적 확인을 담당하는 핵심 학사 플랫폼이다. 그러나 많은 LMS는 사용자가 “로그인했다”는 사실과 “수업 공간에 실제로 있었다”는 사실을 강하게 연결하지 못한다. 특히 출석은 수업 운영의 핵심 데이터인데도, 교수 수기 입력이나 학생 자가 체크 버튼만으로 운영되면 대리출석, 원격 출석, 사후 이의 제기 대응 문제가 발생할 수 있다.
-
-Smart Class는 기존 LMS를 단순히 복제하는 것이 아니라, LMS 기능과 재실성 판정을 결합하는 실험적 시스템이다. 사용자는 웹 UI에서 일반적인 LMS 기능을 사용하고, 출석이나 시험 접근처럼 물리적 참석성이 중요한 순간에는 등록 단말과 강의실 Wi-Fi 관측 정보를 함께 사용한다. 이 접근은 “계정 인증”과 “공간·단말 근거”를 분리해 기록하고, 문제가 생겼을 때 어느 조건이 실패했는지 reason code와 audit log로 추적할 수 있게 한다.
-
-## 2.2 필요성
-
-첫째, 출석 데이터는 성적·학습관리·수업 참여 분석에 사용되므로 신뢰성이 필요하다. 단순 클릭형 출석은 UX는 좋지만 대리출석을 방지하기 어렵다. 둘째, QR이나 위치 기반 방식은 단기 인증에 유용하지만 QR 공유, GPS 실내 정확도, 개인정보 문제를 가진다. 셋째, 교수자는 출석 세션을 열고 닫고, 학생별 상태를 확인·수정하고, CSV로 내보낼 수 있어야 한다. 넷째, 운영자는 강의실/AP/단말 매핑과 threshold를 관리하며, real snapshot과 demo overlay를 구분할 수 있어야 한다.
-
-## 2.3 목적
-
-본 프로젝트의 목적은 학생·교수·서비스관리자 세 역할을 지원하는 웹 기반 LMS 프로토타입을 구현하고, 등록 단말과 강의실 Wi-Fi 관측 정보를 결합한 재실성 기반 출석/시험 접근 제어를 로컬 테스트베드에서 검증하는 것이다. 구체적으로는 다음 목표를 둔다.
-
-1. 학생은 강의, 공지, 학습자료, 과제, 성적/피드백, Q&A, 학습진도, 출석, 시험, 등록 단말을 한 UI에서 사용할 수 있어야 한다.
-2. 교수는 강의 운영, 자료·공지·과제·시험 관리, 출석 세션 운영, 수동 보정, audit 확인, CSV export를 수행할 수 있어야 한다.
-3. 서비스관리자는 사용자·강의실·AP·presence snapshot·threshold·demo overlay를 관리할 수 있어야 한다.
-4. Backend와 PresenceService는 도메인 판단과 네트워크 재실성 판단을 분리하고, API/DB/test로 계약을 검증해야 한다.
-5. 보고서는 완료 성과와 잔여·후속 과제를 명확히 분리해야 한다.
-
-## 2.4 범위와 비범위
-
-완료 범위는 로컬/테스트베드 MVP다. 본 보고서에서 완료 성과로 주장하는 것은 구현된 코드, 화면 캡처, ERD/SQL, API request/response, 테스트 파일/명령 근거가 있는 기능에 한정한다. 상용 운영 배포, 장기 교내 Wi-Fi 현장 검증, 학사시스템 정식 연동, 네이티브 모바일 앱 구현은 의도적으로 완료 주장에 포함하지 않는다. 이 항목들은 한계점과 개선 방향에서 다룬다.
-
-# 3. 관련 연구 및 기술
-
-## 3.1 기존 LMS와 출석 관리 방식
-
-기존 LMS는 대체로 강의자료, 공지, 과제, 시험, 성적, 출석 관리 기능을 제공한다. 출석은 교수 수기, 학생 클릭, QR, 비콘, GPS, Wi-Fi 등 다양한 방식으로 운영된다. 각 방식은 구현 난이도, 사용자 편의성, 부정행위 방지 능력, 개인정보 위험이 다르다. 본 프로젝트는 웹 기반 LMS의 접근성을 유지하면서, 출석과 시험 접근에 필요한 순간에만 강의실 Wi-Fi 관측과 등록 단말 근거를 결합하는 방향을 선택했다.
-
-## 3.2 QR/GPS/Wi-Fi/단말 기반 인증 비교
-
-| 방식 | 장점 | 한계 | Smart Class와의 관계 |
-|---|---|---|---|
-| 교수 수기 출석 | 운영자가 직접 확인 | 시간 소모, 실시간성 낮음 | 교수 수동 보정과 audit log로 보완 |
-| 학생 버튼 클릭 | 구현과 UX가 단순 | 대리출석 방지 약함 | Wi-Fi/단말 eligibility를 추가 조건으로 둠 |
-| QR 인증 | 짧은 시간 내 인증 쉬움 | QR 공유/캡처 위험 | 현재 MVP 범위 밖, 후속 보조 인증 후보 |
-| GPS | 실외 위치 판단 가능 | 실내 강의실 정확도와 개인정보 문제 | 강의실 AP 기반 판단을 우선 |
-| Wi-Fi 관측 | 강의실 네트워크 근거 사용 | 랜덤 MAC, AP 품질, snapshot freshness 필요 | PresenceService 핵심 근거 |
-| 등록 단말 인증 | 사용자와 단말 연결 | 단말 변경 정책 필요 | registered_devices와 collector snapshot 매칭 |
-
-## 3.3 Smart Class의 차별성
-
-Smart Class의 차별성은 LMS 기능, 도메인 권한, 출석 세션, 시험 접근, Wi-Fi presence evidence를 단일 서버에 섞지 않고 서비스 경계로 분리한 점이다. Backend는 “이 학생이 이 강의에 대해 이 시간에 출석/시험을 수행할 권리가 있는가”를 판단하고, PresenceService는 “등록 단말이 지정 강의실 네트워크에서 신선한 snapshot으로 관측되는가”를 판단한다. 이 분리는 네트워크 관측 실패와 학사 도메인 실패를 구분하고, demo overlay가 real collector 결과를 오염시키지 않도록 만든다.
-
-## 3.4 기술 선택 근거
-
-FastAPI는 Python 기반 API와 테스트 작성이 빠르고, WebSocket과 REST endpoint를 동시에 구성하기 쉽기 때문에 Backend와 PresenceService에 사용했다. React/Vite/TypeScript는 역할별 화면과 Playwright 기반 e2e 검증에 적합해 Front에 사용했다. PostgreSQL은 관계형 데이터 모델과 FK/audit/history 구조를 명확히 표현할 수 있어 DB에 사용했다. Docker Compose/Nginx는 로컬 통합 실행과 단일 origin routing을 구성하기 위해 Service repo에 배치했다.
-
-# 4. 시스템 설계
-
-## 4.1 전체 구조
-
-Smart Class의 실행 구조는 다음과 같다.
-
-```mermaid
-flowchart LR
-    User[Student / Professor / Admin Browser]
-    Nginx[Nginx single origin]
-    Front[Front React/Vite]
-    Backend[Backend FastAPI]
-    Presence[PresenceService FastAPI]
-    Redis[(Redis snapshot cache)]
-    DB[(PostgreSQL)]
-    Collector[OpenWrt collector or demo overlay]
-
-    User --> Nginx
-    Nginx --> Front
-    Nginx -->|/api| Backend
-    Nginx -->|/ws/attendance| Backend
-    Backend --> DB
-    Backend --> Presence
-    Presence --> Redis
-    Presence --> DB
-    Collector --> Presence
-```
-
-Nginx는 단일 origin에서 정적 Front, `/api`, `/ws/attendance`, `/health`를 라우팅한다. Front는 사용자 입력과 화면 상태를 관리하고, Backend는 인증·권한·LMS·출석·시험 도메인 API를 제공한다. PresenceService는 collector snapshot과 demo overlay를 기반으로 eligibility를 계산한다. DB는 모든 장기 상태와 audit history를 저장한다.
-
-## 4.2 서비스 책임과 데이터 흐름
-
-| 서비스 | 주요 책임 | 저장/외부 의존 | 실패 시 영향과 완화 |
-|---|---|---|---|
-| Front | 역할별 UI, API 호출, e2e 사용자 흐름 | Browser state, API client | API 실패 banner와 route guard로 사용자에게 표시 |
-| Backend | Auth/RBAC/LMS/Attendance/Exam API, WebSocket | PostgreSQL, PresenceService | timeout/fallback, audit log, CSV export, envelope error |
-| PresenceService | snapshot ingest/cache, eligibility reason | Redis, PostgreSQL registry | snapshot freshness와 reason code로 실패를 명시 |
-| DB | schema, seed, FK, audit/history | PostgreSQL | migration/init SQL과 ERD로 관계 검증 |
-| Service | compose/nginx/image manifest | Docker, Nginx | manifest/compose contract test로 실행 구조 검증 |
-
-## 4.3 핵심 알고리즘
-
-### 4.3.1 인증 및 세션 복구 알고리즘
-
-1. 사용자가 로그인 폼에 계정/비밀번호를 입력한다.
-2. Backend `/api/auth/login`은 계정 상태와 password hash를 확인한다.
-3. 성공 시 access token과 refresh session을 발급하고, role을 bootstrap 정보와 함께 반환한다.
-4. Front는 role에 따라 학생/교수/관리자 대시보드로 이동한다.
-5. access token 만료 시 refresh endpoint를 통해 세션을 갱신한다.
-6. 권한이 맞지 않는 route 접근은 Front route guard와 Backend RBAC에서 모두 거부된다.
-
-### 4.3.2 출석 eligibility 알고리즘
-
-```mermaid
-sequenceDiagram
-    participant S as Student Front
-    participant B as Backend
-    participant P as PresenceService
-    participant D as PostgreSQL
-    participant R as Redis snapshot cache
-
-    S->>B: POST /api/attendance/sessions/<built-in function id>/check-in
-    B->>D: enrollment, session, slot, device 조회
-    B->>P: GET /presence/eligibility?user&course&classroom&purpose=attendance
-    P->>R: latest classroom snapshot 조회
-    P->>D: registered device / AP registry 조회
-    P-->>B: eligible, reason, matched_device, signal, freshness
-    B->>D: attendance_records upsert + audit log append
-    B-->>S: status, reason, record summary
-```
-
-핵심은 Backend가 수강/시간표/출석 세션을 확인하고, PresenceService가 AP online, 등록 단말 MAC, RSSI threshold, snapshot freshness를 확인한 뒤, Backend가 두 결과를 결합해 최종 출석 상태를 기록한다는 점이다.
-
-### 4.3.3 시험 workflow 알고리즘
-
-1. 교수는 시험 draft를 만들고 문항/선택지를 구성한다.
-2. 교수는 시험을 publish하여 학생에게 노출한다.
-3. 학생은 시험 목록에서 “응시 시작”을 누른다.
-4. Backend는 수강 여부, 시험 상태, 응시 가능 시간, 기존 제출 여부를 확인한다.
-5. 학생은 각 문항의 선택지를 저장한다.
-6. 미응답 문항이 있으면 제출 guard가 경고한다.
-7. 제출 완료 후 교수는 제출 상태와 성적을 확인한다.
-
-### 4.3.4 출석 audit 및 CSV export 알고리즘
-
-교수 수동 보정은 단순 update가 아니라 audit log append로 처리한다. 출석 record의 현재 상태와 변경 이력은 분리되어, 누가 언제 어떤 사유로 상태를 바꾸었는지 확인할 수 있다. CSV export는 교수 권한과 강의 소유권을 확인한 뒤 학생별 출석 통계와 raw record를 report export metadata와 함께 제공한다.
-
-## 4.4 DB 설계와 ERD
-
-DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제·Q&A·운영 메타데이터를 하나의 관계형 모델로 연결한다. 전체 ERD와 각 부분 ERD를 모두 본문에 재수록한다. raw 이미지는 전체 구조 확인용이고, redbox 이미지는 보고서에서 설명하는 핵심 관계를 빨간 사각형으로 강조한 버전이다.
-
-### 4.4.1 ERD 전체/부분 갤러리
-
-#### ERD-1 — Full Smart Class PostgreSQL ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg`
-- 강조 대상: LMS + presence/attendance + assessment domains
-- 포함 테이블/노드: users, courses, course_enrollments, course_schedules, classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, refresh_sessions, attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, presence_eligibility_logs, exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, assignments, assignment_submissions, learning_items, learning_progress, course_qna_threads, course_qna_posts, report_exports, object_deletion_jobs
-
-![ERD-1 raw](assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
-
-![ERD-1 redbox](assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg)
-
-#### ERD-2 — User / auth / registered-device ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-2-user-auth-device.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg`
-- 강조 대상: users.id relationships to sessions/devices
-- 포함 테이블/노드: users, refresh_sessions, registered_devices
-
-![ERD-2 raw](assets/diagrams/final/raw/erd-2-user-auth-device.svg)
-
-![ERD-2 redbox](assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg)
-
-#### ERD-3 — Course / enrollment / notice / material ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg`
-- 강조 대상: course ownership/enrollment and attachment relations
-- 포함 테이블/노드: courses, course_enrollments, course_schedules, notices, learning_items, learning_item_attachments, notice_attachments
-
-![ERD-3 raw](assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg)
-
-![ERD-3 redbox](assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg)
-
-#### ERD-4 — Device / classroom / AP / presence ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg`
-- 강조 대상: classroom network mapping and AP registry evidence
-- 포함 테이블/노드: classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, presence_eligibility_logs
-
-![ERD-4 raw](assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg)
-
-![ERD-4 redbox](assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg)
-
-#### ERD-5 — Attendance session / record / audit ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg`
-- 강조 대상: bundle parent, slot fan-out, record/audit history
-- 포함 테이블/노드: attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, users, courses, classrooms
-
-![ERD-5 raw](assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg)
-
-![ERD-5 redbox](assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg)
-
-#### ERD-6 — Exam / question / submission / answer ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg`
-- 강조 대상: exam-question-option and submission-answer consistency
-- 포함 테이블/노드: exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, exam_question_attachments, exam_answer_attachments
-
-![ERD-6 raw](assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg)
-
-![ERD-6 redbox](assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg)
-
-#### ERD-7 — Selected LMS / assignment / Q&A / progress ERD
-
-- raw SVG: `assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg`
-- 강조 대상: grading fields, Q&A threads/posts, progress ownership
-- 포함 테이블/노드: assignments, assignment_submissions, assignment_submission_attachments, course_qna_threads, course_qna_posts, learning_progress, learning_items, users, courses
-
-![ERD-7 raw](assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg)
-
-![ERD-7 redbox](assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg)
-
-#### ERD-8 — Service / ops metadata ERD and N/A boundary
-
-- raw SVG: `assets/diagrams/final/raw/erd-8-service-ops-metadata.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg`
-- 강조 대상: report exports, object deletion outbox, Service runtime N/A boundary
-- 포함 테이블/노드: report_exports, object_deletion_jobs, learning_item_attachments, notice_attachments, assignment_submission_attachments, Service runtime: N/A PostgreSQL entity
-
-![ERD-8 raw](assets/diagrams/final/raw/erd-8-service-ops-metadata.svg)
-
-![ERD-8 redbox](assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg)
-
-## 4.5 DB schema excerpt
-
-ERD가 그림으로 관계를 보여준다면, 다음 SQL excerpt는 실제 저장 구조와 제약 조건을 보여준다. 출석 기록·audit, 시험 제출·답안, selected LMS subset, object metadata가 실제 table로 존재함을 확인할 수 있다.
-
-### 4.5.1 DB schema excerpt
-
-#### H.1 users/classrooms/courses/enrollments/schedules/notices
-
-Source: `DB/postgres/init/001_schema.sql:1-59`
-
-```sql
-0001: CREATE TABLE IF NOT EXISTS users (
-0002:     id BIGSERIAL PRIMARY KEY,
-0003:     student_id VARCHAR(32) UNIQUE,
-0004:     professor_id VARCHAR(32) UNIQUE,
-0005:     admin_id VARCHAR(32) UNIQUE,
-0006:     name VARCHAR(120) NOT NULL,
-0007:     role VARCHAR(20) NOT NULL CHECK (role IN ('student', 'professor', 'admin')),
-0008:     password VARCHAR(120) NOT NULL,
-0009:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0010:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0011: );
-0012:
-0013: CREATE TABLE IF NOT EXISTS classrooms (
-0014:     id BIGSERIAL PRIMARY KEY,
-0015:     classroom_code VARCHAR(32) NOT NULL UNIQUE,
-0016:     name VARCHAR(120) NOT NULL,
-0017:     building VARCHAR(120),
-0018:     floor_label VARCHAR(32),
-0019:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0020:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0021: );
-0022:
-0023: CREATE TABLE IF NOT EXISTS courses (
-0024:     id BIGSERIAL PRIMARY KEY,
-0025:     course_code VARCHAR(32) NOT NULL UNIQUE,
-0026:     title VARCHAR(200) NOT NULL,
-0027:     professor_user_id BIGINT REFERENCES users(id),
-0028:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0029:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0030: );
-0031:
-0032: CREATE TABLE IF NOT EXISTS course_enrollments (
-0033:     id BIGSERIAL PRIMARY KEY,
-0034:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0035:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0036:     status VARCHAR(20) NOT NULL DEFAULT 'active',
-0037:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0038:     UNIQUE (course_id, student_user_id)
-0039: );
-0040:
-0041: CREATE TABLE IF NOT EXISTS course_schedules (
-0042:     id BIGSERIAL PRIMARY KEY,
-0043:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0044:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
-0045:     day_of_week SMALLINT NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
-0046:     starts_at TIME NOT NULL,
-0047:     ends_at TIME NOT NULL,
-0048:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0049: );
-0050:
-0051: CREATE TABLE IF NOT EXISTS notices (
-0052:     id BIGSERIAL PRIMARY KEY,
-0053:     course_id BIGINT REFERENCES courses(id) ON DELETE CASCADE,
-0054:     author_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0055:     title VARCHAR(200) NOT NULL,
-0056:     body TEXT NOT NULL,
-0057:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0058: );
-0059:
-```
-
-#### H.2 classroom networks / devices / presence logs / refresh sessions
-
-Source: `DB/postgres/init/001_schema.sql:60-115`
-
-```sql
-0060: CREATE TABLE IF NOT EXISTS classroom_networks (
-0061:     id BIGSERIAL PRIMARY KEY,
-0062:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
-0063:     ap_id VARCHAR(64) NOT NULL,
-0064:     ssid VARCHAR(120) NOT NULL,
-0065:     gateway_host VARCHAR(120),
-0066:     signal_threshold_dbm INTEGER,
-0067:     collection_mode VARCHAR(40) NOT NULL DEFAULT 'openwrt-ssh',
-0068:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0069:     UNIQUE (classroom_id, ap_id)
-0070: );
-0071:
-0072: CREATE TABLE IF NOT EXISTS registered_devices (
-0073:     id BIGSERIAL PRIMARY KEY,
-0074:     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0075:     label VARCHAR(120),
-0076:     mac_address VARCHAR(17) NOT NULL UNIQUE,
-0077:     status VARCHAR(20) NOT NULL DEFAULT 'active',
-0078:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0079:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0080: );
-0081:
-0082: CREATE INDEX IF NOT EXISTS idx_registered_devices_user_id
-0083:     ON registered_devices (user_id);
-0084:
-0085: CREATE TABLE IF NOT EXISTS presence_eligibility_logs (
-0086:     id BIGSERIAL PRIMARY KEY,
-0087:     student_user_id BIGINT REFERENCES users(id),
-0088:     course_id BIGINT REFERENCES courses(id),
-0089:     classroom_id BIGINT REFERENCES classrooms(id),
-0090:     purpose VARCHAR(20) NOT NULL,
-0091:     eligible BOOLEAN NOT NULL,
-0092:     reason_code VARCHAR(64) NOT NULL,
-0093:     matched_device_mac VARCHAR(17),
-0094:     evidence JSONB NOT NULL DEFAULT '{}'::jsonb,
-0095:     observed_at TIMESTAMPTZ,
-0096:     snapshot_age_seconds INTEGER,
-0097:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0098: );
-0099:
-0100: CREATE TABLE IF NOT EXISTS refresh_sessions (
-0101:     id BIGSERIAL PRIMARY KEY,
-0102:     session_key VARCHAR(128) NOT NULL UNIQUE,
-0103:     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0104:     current_token_hash VARCHAR(64) NOT NULL,
-0105:     expires_at TIMESTAMPTZ NOT NULL,
-0106:     revoked_at TIMESTAMPTZ,
-0107:     replay_detected_at TIMESTAMPTZ,
-0108:     last_rotated_at TIMESTAMPTZ,
-0109:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0110:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0111: );
-0112:
-0113: CREATE INDEX IF NOT EXISTS idx_refresh_sessions_user_id
-0114:     ON refresh_sessions (user_id);
-0115:
-```
-
-#### H.3 attendance sessions / slots / records / audit / AP registry
-
-Source: `DB/postgres/init/001_schema.sql:116-225`
-
-```sql
-0116: CREATE TABLE IF NOT EXISTS attendance_sessions (
-0117:     id BIGSERIAL PRIMARY KEY,
-0118:     projection_key VARCHAR(255) NOT NULL,
-0119:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0120:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
-0121:     session_date DATE NOT NULL,
-0122:     slot_start_at TIME NOT NULL,
-0123:     slot_end_at TIME NOT NULL,
-0124:     mode VARCHAR(16) NOT NULL CHECK (mode IN ('manual', 'smart', 'canceled')),
-0125:     status VARCHAR(16) NOT NULL CHECK (status IN ('active', 'closed', 'expired', 'canceled')),
-0126:     opened_by_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-0127:     opened_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0128:     closed_at TIMESTAMPTZ,
-0129:     expires_at TIMESTAMPTZ,
-0130:     latest_version INTEGER NOT NULL DEFAULT 0,
-0131:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0132:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0133: );
-0134:
-0135: CREATE TABLE IF NOT EXISTS attendance_session_slots (
-0136:     id BIGSERIAL PRIMARY KEY,
-0137:     attendance_session_id BIGINT NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
-0138:     projection_key VARCHAR(255) NOT NULL,
-0139:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
-0140:     session_date DATE NOT NULL,
-0141:     slot_start_at TIME NOT NULL,
-0142:     slot_end_at TIME NOT NULL,
-0143:     slot_order INTEGER NOT NULL,
-0144:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0145:     UNIQUE (attendance_session_id, projection_key)
-0146: );
-0147:
-0148: CREATE TABLE IF NOT EXISTS attendance_records (
-0149:     id BIGSERIAL PRIMARY KEY,
-0150:     attendance_session_id BIGINT NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
-0151:     projection_key VARCHAR(255) NOT NULL,
-0152:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0153:     final_status VARCHAR(16) NOT NULL CHECK (final_status IN ('present', 'absent', 'late', 'official', 'sick')),
-0154:     attendance_reason VARCHAR(500),
-0155:     finalized_by_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-0156:     finalized_at TIMESTAMPTZ,
-0157:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0158:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0159:     UNIQUE (attendance_session_id, projection_key, student_user_id)
-0160: );
-0161:
-0162: CREATE TABLE IF NOT EXISTS attendance_status_audit_logs (
-0163:     id BIGSERIAL PRIMARY KEY,
-0164:     attendance_session_id BIGINT NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
-0165:     projection_key VARCHAR(255) NOT NULL,
-0166:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0167:     actor_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-0168:     actor_role VARCHAR(16) NOT NULL,
-0169:     change_source VARCHAR(32) NOT NULL,
-0170:     previous_status VARCHAR(16),
-0171:     new_status VARCHAR(16),
-0172:     reason VARCHAR(500),
-0173:     changed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0174:     version INTEGER NOT NULL
-0175: );
-0176:
-0177: CREATE INDEX IF NOT EXISTS idx_attendance_session_slots_session_order
-0178:     ON attendance_session_slots (attendance_session_id, slot_order);
-0179:
-0180: CREATE INDEX IF NOT EXISTS idx_attendance_session_slots_projection
-0181:     ON attendance_session_slots (projection_key);
-0182:
-0183: CREATE INDEX IF NOT EXISTS idx_attendance_sessions_course_date
-0184:     ON attendance_sessions (course_id, session_date);
-0185:
-0186: CREATE INDEX IF NOT EXISTS idx_attendance_records_student_session_projection
-0187:     ON attendance_records (student_user_id, attendance_session_id, projection_key);
-0188:
-0189: CREATE INDEX IF NOT EXISTS idx_attendance_status_audit_logs_student_changed_at
-0190:     ON attendance_status_audit_logs (student_user_id, changed_at DESC);
-0191:
-0192: CREATE INDEX IF NOT EXISTS idx_attendance_status_audit_logs_session_projection
-0193:     ON attendance_status_audit_logs (attendance_session_id, projection_key, changed_at DESC);
-0194:
-0195: CREATE TABLE IF NOT EXISTS access_points (
-0196:     id BIGSERIAL PRIMARY KEY,
-0197:     collector_ap_id VARCHAR(64) NOT NULL UNIQUE,
-0198:     label VARCHAR(120) NOT NULL,
-0199:     management_ip VARCHAR(64),
-0200:     tailnet_ip VARCHAR(64),
-0201:     status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
-0202:     token_hash VARCHAR(128),
-0203:     token_version INTEGER NOT NULL DEFAULT 0,
-0204:     token_revoked_at TIMESTAMPTZ,
-0205:     last_rotated_at TIMESTAMPTZ,
-0206:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0207:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0208: );
-0209:
-0210: CREATE TABLE IF NOT EXISTS access_point_interfaces (
-0211:     id BIGSERIAL PRIMARY KEY,
-0212:     access_point_id BIGINT NOT NULL REFERENCES access_points(id) ON DELETE CASCADE,
-0213:     interface_id VARCHAR(64) NOT NULL,
-0214:     bssid VARCHAR(32),
-0215:     ssid VARCHAR(120),
-0216:     classroom_network_id BIGINT NOT NULL REFERENCES classroom_networks(id) ON DELETE CASCADE,
-0217:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0218:     UNIQUE (access_point_id, interface_id),
-0219:     UNIQUE (classroom_network_id)
-0220: );
-0221:
-0222: CREATE INDEX IF NOT EXISTS idx_access_point_interfaces_network_id
-0223:     ON access_point_interfaces (classroom_network_id);
-```
-
-#### H.4 exam schema
-
-Source: `DB/postgres/init/013_exam_schema.sql:1-140`
-
-```sql
-0001: -- Exam domain schema
-0002: -- Each attempt expires at:
-0003: -- min(started_at + time_limit_snapshot_minutes, exams.ends_at)
-0004: -- Exam ownership is derived from courses.professor_user_id.
-0005:
-0006: CREATE TABLE IF NOT EXISTS exams (
-0007:     id BIGSERIAL PRIMARY KEY,
-0008:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0009:     title VARCHAR(200) NOT NULL,
-0010:     description TEXT,
-0011:     exam_type VARCHAR(20) NOT NULL DEFAULT 'quiz'
-0012:         CHECK (exam_type IN ('quiz', 'midterm', 'final', 'practice', 'custom')),
-0013:     status VARCHAR(20) NOT NULL DEFAULT 'draft'
-0014:         CHECK (status IN ('draft', 'published', 'open', 'closed', 'archived')),
-0015:     starts_at TIMESTAMPTZ NOT NULL,
-0016:     ends_at TIMESTAMPTZ NOT NULL,
-0017:     duration_minutes INTEGER NOT NULL CHECK (duration_minutes > 0),
-0018:     requires_presence BOOLEAN NOT NULL DEFAULT TRUE,
-0019:     late_entry_allowed BOOLEAN NOT NULL DEFAULT TRUE,
-0020:     auto_submit_enabled BOOLEAN NOT NULL DEFAULT TRUE,
-0021:     shuffle_questions BOOLEAN NOT NULL DEFAULT FALSE,
-0022:     shuffle_options BOOLEAN NOT NULL DEFAULT FALSE,
-0023:     max_attempts INTEGER NOT NULL DEFAULT 1 CHECK (max_attempts > 0),
-0024:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0025:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0026:     CHECK (ends_at > starts_at)
-0027: );
-0028:
-0029: COMMENT ON TABLE exams IS 'Exam master records bound to a course. Ownership is derived from the course owner.';
-0030: COMMENT ON COLUMN exams.duration_minutes IS 'Per-student time budget in minutes before the global ends_at cap is applied.';
-0031: COMMENT ON COLUMN exams.late_entry_allowed IS 'When false, students may not start after starts_at.';
-0032: COMMENT ON COLUMN exams.auto_submit_enabled IS 'When true, in-progress attempts should be auto-submitted at expires_at.';
-0033:
-0034: CREATE INDEX IF NOT EXISTS idx_exams_course_status_starts_at
-0035:     ON exams (course_id, status, starts_at);
-0036:
-0037: CREATE TABLE IF NOT EXISTS exam_questions (
-0038:     id BIGSERIAL PRIMARY KEY,
-0039:     exam_id BIGINT NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
-0040:     question_order INTEGER NOT NULL CHECK (question_order > 0),
-0041:     question_type VARCHAR(30) NOT NULL
-0042:         CHECK (question_type IN ('multiple_choice', 'true_false')),
-0043:     prompt TEXT NOT NULL,
-0044:     points NUMERIC(6,2) NOT NULL DEFAULT 1.00 CHECK (points >= 0),
-0045:     correct_answer_text TEXT,
-0046:     explanation TEXT,
-0047:     is_required BOOLEAN NOT NULL DEFAULT TRUE,
-0048:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0049:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0050:     UNIQUE (exam_id, question_order),
-0051:     UNIQUE (id, exam_id)
-0052: );
-0053:
-0054: COMMENT ON TABLE exam_questions IS 'Questions that belong to an exam.';
-0055: COMMENT ON COLUMN exam_questions.correct_answer_text IS 'Canonical answer text for auto-gradable question types.';
-0056:
-0057: CREATE INDEX IF NOT EXISTS idx_exam_questions_exam_order
-0058:     ON exam_questions (exam_id, question_order);
-0059:
-0060: CREATE TABLE IF NOT EXISTS exam_question_options (
-0061:     id BIGSERIAL PRIMARY KEY,
-0062:     question_id BIGINT NOT NULL REFERENCES exam_questions(id) ON DELETE CASCADE,
-0063:     option_order INTEGER NOT NULL CHECK (option_order > 0),
-0064:     option_text TEXT NOT NULL,
-0065:     is_correct BOOLEAN NOT NULL DEFAULT FALSE,
-0066:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0067:     UNIQUE (question_id, option_order),
-0068:     UNIQUE (id, question_id)
-0069: );
-0070:
-0071: COMMENT ON TABLE exam_question_options IS 'Answer choices for multiple-choice and true-false questions.';
-0072:
-0073: CREATE INDEX IF NOT EXISTS idx_exam_question_options_question_order
-0074:     ON exam_question_options (question_id, option_order);
-0075:
-0076: CREATE UNIQUE INDEX IF NOT EXISTS uniq_exam_question_options_one_correct
-0077:     ON exam_question_options (question_id)
-0078:     WHERE is_correct;
-0079:
-0080: CREATE TABLE IF NOT EXISTS exam_submissions (
-0081:     id BIGSERIAL PRIMARY KEY,
-0082:     exam_id BIGINT NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
-0083:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0084:     attempt_no INTEGER NOT NULL DEFAULT 1 CHECK (attempt_no > 0),
-0085:     status VARCHAR(20) NOT NULL DEFAULT 'in_progress'
-0086:         CHECK (status IN ('in_progress', 'submitted', 'auto_submitted', 'graded', 'expired')),
-0087:     started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0088:     submitted_at TIMESTAMPTZ,
-0089:     expires_at TIMESTAMPTZ NOT NULL,
-0090:     time_limit_snapshot_minutes INTEGER NOT NULL CHECK (time_limit_snapshot_minutes > 0),
-0091:     score NUMERIC(8,2) CHECK (score >= 0),
-0092:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0093:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0094:     UNIQUE (exam_id, student_user_id, attempt_no),
-0095:     UNIQUE (id, exam_id),
-0096:     CHECK (submitted_at IS NULL OR submitted_at >= started_at),
-0097:     CHECK (expires_at >= started_at)
-0098: );
-0099:
-0100: COMMENT ON TABLE exam_submissions IS 'One student attempt for one exam.';
-0101: COMMENT ON COLUMN exam_submissions.expires_at IS 'Application-computed personal deadline capped by the exam ends_at.';
-0102: COMMENT ON COLUMN exam_submissions.time_limit_snapshot_minutes IS 'Duration copied at attempt start so later exam edits do not rewrite past attempts.';
-0103:
-0104: CREATE INDEX IF NOT EXISTS idx_exam_submissions_exam_student
-0105:     ON exam_submissions (exam_id, student_user_id);
-0106:
-0107: CREATE INDEX IF NOT EXISTS idx_exam_submissions_student_status
-0108:     ON exam_submissions (student_user_id, status);
-0109:
-0110: CREATE UNIQUE INDEX IF NOT EXISTS uniq_exam_submissions_one_in_progress
-0111:     ON exam_submissions (exam_id, student_user_id)
-0112:     WHERE status = 'in_progress';
-0113:
-0114: CREATE TABLE IF NOT EXISTS exam_submission_answers (
-0115:     id BIGSERIAL PRIMARY KEY,
-0116:     exam_id BIGINT NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
-0117:     submission_id BIGINT NOT NULL,
-0118:     question_id BIGINT NOT NULL,
-0119:     selected_option_id BIGINT,
-0120:     answer_text TEXT,
-0121:     is_correct BOOLEAN,
-0122:     awarded_score NUMERIC(8,2) CHECK (awarded_score >= 0),
-0123:     answered_at TIMESTAMPTZ,
-0124:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0125:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0126:     UNIQUE (submission_id, question_id),
-0127:     CONSTRAINT fk_exam_submission_answers_submission_exam
-0128:         FOREIGN KEY (submission_id, exam_id)
-0129:         REFERENCES exam_submissions(id, exam_id)
-0130:         ON DELETE CASCADE,
-0131:     CONSTRAINT fk_exam_submission_answers_question_exam
-0132:         FOREIGN KEY (question_id, exam_id)
-0133:         REFERENCES exam_questions(id, exam_id)
-0134:         ON DELETE CASCADE,
-0135:     CONSTRAINT fk_exam_submission_answers_option_question
-0136:         FOREIGN KEY (selected_option_id, question_id)
-0137:         REFERENCES exam_question_options(id, question_id)
-0138:         ON DELETE SET NULL
-0139: );
-0140:
-```
-
-#### H.5 assignment schema
-
-Source: `DB/postgres/init/014_assignment_schema.sql:1-80`
-
-```sql
-0001: -- Assignment domain schema
-0002: -- One mutable submission row per assignment and student.
-0003: -- Files are stored on the backend local filesystem and only metadata is stored here.
-0004:
-0005: CREATE TABLE IF NOT EXISTS assignments (
-0006:     id BIGSERIAL PRIMARY KEY,
-0007:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0008:     title VARCHAR(200) NOT NULL,
-0009:     description TEXT,
-0010:     opens_at TIMESTAMPTZ NOT NULL,
-0011:     due_at TIMESTAMPTZ NOT NULL,
-0012:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0013:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0014:     CHECK (due_at > opens_at)
-0015: );
-0016:
-0017: COMMENT ON TABLE assignments IS 'Course assignment master records.';
-0018:
-0019: CREATE INDEX IF NOT EXISTS idx_assignments_course_due_at
-0020:     ON assignments (course_id, due_at DESC);
-0021:
-0022: CREATE TABLE IF NOT EXISTS assignment_submissions (
-0023:     id BIGSERIAL PRIMARY KEY,
-0024:     assignment_id BIGINT NOT NULL REFERENCES assignments(id) ON DELETE CASCADE,
-0025:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0026:     submission_text TEXT,
-0027:     submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0028:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0029:     UNIQUE (assignment_id, student_user_id)
-0030: );
-0031:
-0032: COMMENT ON TABLE assignment_submissions IS 'Latest submission per assignment and student.';
-0033:
-0034: CREATE INDEX IF NOT EXISTS idx_assignment_submissions_assignment_student
-0035:     ON assignment_submissions (assignment_id, student_user_id);
-0036:
-0037: CREATE INDEX IF NOT EXISTS idx_assignment_submissions_student_submitted_at
-0038:     ON assignment_submissions (student_user_id, submitted_at DESC);
-0039:
-0040: CREATE TABLE IF NOT EXISTS assignment_submission_attachments (
-0041:     id BIGSERIAL PRIMARY KEY,
-0042:     submission_id BIGINT NOT NULL REFERENCES assignment_submissions(id) ON DELETE CASCADE,
-0043:     original_filename VARCHAR(255) NOT NULL,
-0044:     stored_filename VARCHAR(255) NOT NULL,
-0045:     mime_type VARCHAR(120),
-0046:     file_size_bytes INTEGER NOT NULL CHECK (file_size_bytes >= 0),
-0047:     storage_key VARCHAR(500) NOT NULL,
-0048:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0049: );
-0050:
-0051: COMMENT ON TABLE assignment_submission_attachments IS 'Attachment metadata for assignment submissions.';
-0052: COMMENT ON COLUMN assignment_submission_attachments.storage_key IS 'Internal backend storage path or key, not a public URL.';
-0053:
-0054: CREATE INDEX IF NOT EXISTS idx_assignment_submission_attachments_submission
-0055:     ON assignment_submission_attachments (submission_id, created_at ASC);
-```
-
-#### H.6 object storage / report export / deletion jobs
-
-Source: `DB/postgres/init/015_object_storage_schema.sql:49-205`
-
-```sql
-0049: CREATE TABLE IF NOT EXISTS learning_items (
-0050:     id BIGSERIAL PRIMARY KEY,
-0051:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0052:     created_by_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-0053:     title VARCHAR(200) NOT NULL,
-0054:     description TEXT,
-0055:     item_type VARCHAR(20) NOT NULL DEFAULT 'file'
-0056:         CHECK (item_type IN ('document', 'video', 'file', 'link')),
-0057:     external_url TEXT,
-0058:     sort_order INTEGER NOT NULL DEFAULT 0,
-0059:     is_published BOOLEAN NOT NULL DEFAULT FALSE,
-0060:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0061:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0062:     CHECK ((item_type = 'link' AND external_url IS NOT NULL) OR (item_type <> 'link'))
-0063: );
-0064:
-0065: COMMENT ON TABLE learning_items IS 'Persisted course learning materials owned by Backend; Front no longer treats learning content as local-only state.';
-0066: COMMENT ON COLUMN learning_items.external_url IS 'Optional external link for link-type learning items; uploaded files use learning_item_attachments.';
-0067:
-0068: CREATE INDEX IF NOT EXISTS idx_learning_items_course_published_sort
-0069:     ON learning_items (course_id, is_published, sort_order, created_at DESC);
-0070:
-0071: CREATE TABLE IF NOT EXISTS learning_item_attachments (
-0072:     id BIGSERIAL PRIMARY KEY,
-0073:     learning_item_id BIGINT NOT NULL REFERENCES learning_items(id) ON DELETE CASCADE,
-0074:     original_filename VARCHAR(255) NOT NULL,
-0075:     stored_filename VARCHAR(255) NOT NULL,
-0076:     mime_type VARCHAR(120),
-0077:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
-0078:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
-0079:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
-0080:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
-0081:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
-0082:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0083: );
-0084:
-0085: COMMENT ON TABLE learning_item_attachments IS 'Object metadata for course learning materials and lecture videos.';
-0086: COMMENT ON COLUMN learning_item_attachments.storage_key IS 'Internal object key, for example learning/{course_code}/{item_id}/{uuid}_{filename}.';
-0087:
-0088: CREATE INDEX IF NOT EXISTS idx_learning_item_attachments_item
-0089:     ON learning_item_attachments (learning_item_id, created_at ASC);
-0090:
-0091: CREATE TABLE IF NOT EXISTS notice_attachments (
-0092:     id BIGSERIAL PRIMARY KEY,
-0093:     notice_id BIGINT NOT NULL REFERENCES notices(id) ON DELETE CASCADE,
-0094:     original_filename VARCHAR(255) NOT NULL,
-0095:     stored_filename VARCHAR(255) NOT NULL,
-0096:     mime_type VARCHAR(120),
-0097:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
-0098:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
-0099:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
-0100:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
-0101:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
-0102:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0103: );
-0104:
-0105: COMMENT ON TABLE notice_attachments IS 'Object metadata for course or global notice attachments.';
-0106: COMMENT ON COLUMN notice_attachments.storage_key IS 'Internal object key, for example notices/{notice_id}/{uuid}_{filename}.';
-0107:
-0108: CREATE INDEX IF NOT EXISTS idx_notice_attachments_notice
-0109:     ON notice_attachments (notice_id, created_at ASC);
-0110:
-0111: CREATE TABLE IF NOT EXISTS exam_question_attachments (
-0112:     id BIGSERIAL PRIMARY KEY,
-0113:     question_id BIGINT NOT NULL REFERENCES exam_questions(id) ON DELETE CASCADE,
-0114:     attachment_role VARCHAR(20) NOT NULL DEFAULT 'prompt'
-0115:         CHECK (attachment_role IN ('prompt', 'explanation')),
-0116:     original_filename VARCHAR(255) NOT NULL,
-0117:     stored_filename VARCHAR(255) NOT NULL,
-0118:     mime_type VARCHAR(120),
-0119:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
-0120:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
-0121:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
-0122:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
-0123:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
-0124:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0125: );
-0126:
-0127: COMMENT ON TABLE exam_question_attachments IS 'Object metadata for professor-authored exam question or explanation media.';
-0128: COMMENT ON COLUMN exam_question_attachments.storage_key IS 'Internal object key, for example exams/{exam_id}/questions/{question_id}/{uuid}_{filename}.';
-0129:
-0130: CREATE INDEX IF NOT EXISTS idx_exam_question_attachments_question
-0131:     ON exam_question_attachments (question_id, created_at ASC);
-0132:
-0133: CREATE TABLE IF NOT EXISTS exam_answer_attachments (
-0134:     id BIGSERIAL PRIMARY KEY,
-0135:     answer_id BIGINT NOT NULL REFERENCES exam_submission_answers(id) ON DELETE CASCADE,
-0136:     original_filename VARCHAR(255) NOT NULL,
-0137:     stored_filename VARCHAR(255) NOT NULL,
-0138:     mime_type VARCHAR(120),
-0139:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
-0140:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
-0141:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
-0142:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
-0143:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
-0144:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0145: );
-0146:
-0147: COMMENT ON TABLE exam_answer_attachments IS 'Future-compatible object metadata for student exam answer files; first-pass objective exams do not require file-answer UI.';
-0148: COMMENT ON COLUMN exam_answer_attachments.storage_key IS 'Internal object key, for example exams/{exam_id}/submissions/{submission_id}/answers/{answer_id}/{uuid}_{filename}.';
-0149:
-0150: CREATE INDEX IF NOT EXISTS idx_exam_answer_attachments_answer
-0151:     ON exam_answer_attachments (answer_id, created_at ASC);
-0152:
-0153: CREATE TABLE IF NOT EXISTS report_exports (
-0154:     id BIGSERIAL PRIMARY KEY,
-0155:     course_id BIGINT REFERENCES courses(id) ON DELETE SET NULL,
-0156:     requested_by_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-0157:     report_domain VARCHAR(20) NOT NULL DEFAULT 'attendance'
-0158:         CHECK (report_domain IN ('attendance', 'grade', 'assignment', 'exam')),
-0159:     export_format VARCHAR(20) NOT NULL DEFAULT 'csv'
-0160:         CHECK (export_format IN ('csv', 'pdf')),
-0161:     original_filename VARCHAR(255) NOT NULL,
-0162:     stored_filename VARCHAR(255) NOT NULL,
-0163:     mime_type VARCHAR(120),
-0164:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
-0165:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
-0166:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
-0167:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
-0168:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
-0169:     status VARCHAR(20) NOT NULL DEFAULT 'ready'
-0170:         CHECK (status IN ('pending', 'ready', 'failed', 'deleted')),
-0171:     generated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0172:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0173: );
-0174:
-0175: COMMENT ON TABLE report_exports IS 'Metadata for generated report files; first pass stores attendance CSV exports only, other domains are future-compatible.';
-0176: COMMENT ON COLUMN report_exports.storage_key IS 'Internal object key, for example reports/{domain}/{course_code}/{yyyy}/{mm}/{uuid}_{filename}.';
-0177:
-0178: CREATE INDEX IF NOT EXISTS idx_report_exports_course_domain_created
-0179:     ON report_exports (course_id, report_domain, created_at DESC);
-0180:
-0181: CREATE TABLE IF NOT EXISTS object_deletion_jobs (
-0182:     id BIGSERIAL PRIMARY KEY,
-0183:     storage_provider VARCHAR(20) NOT NULL CHECK (storage_provider IN ('local', 's3')),
-0184:     bucket_name VARCHAR(120) NOT NULL CHECK (bucket_name <> ''),
-0185:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
-0186:     owner_domain VARCHAR(80) NOT NULL,
-0187:     owner_id BIGINT,
-0188:     reason VARCHAR(80) NOT NULL DEFAULT 'metadata_deleted',
-0189:     status VARCHAR(20) NOT NULL DEFAULT 'pending'
-0190:         CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
-0191:     attempt_count INTEGER NOT NULL DEFAULT 0 CHECK (attempt_count >= 0),
-0192:     last_error TEXT,
-0193:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0194:     completed_at TIMESTAMPTZ,
-0195:     CHECK ((status = 'completed' AND completed_at IS NOT NULL) OR (status <> 'completed'))
-0196: );
-0197:
-0198: COMMENT ON TABLE object_deletion_jobs IS 'Durable outbox for DB-driven immediate object deletion after metadata delete/replace.';
-0199: COMMENT ON COLUMN object_deletion_jobs.owner_domain IS 'Domain/table context that owned the deleted object metadata.';
-0200: COMMENT ON COLUMN object_deletion_jobs.owner_id IS 'Owning domain row id captured from the deleted metadata row when available.';
-0201:
-0202: CREATE INDEX IF NOT EXISTS idx_object_deletion_jobs_status_created
-0203:     ON object_deletion_jobs (status, created_at ASC);
-0204:
-0205: CREATE INDEX IF NOT EXISTS idx_object_deletion_jobs_object_active
-```
-
-#### H.7 selected LMS Q&A / learning progress
-
-Source: `DB/postgres/init/016_selected_lms_subset.sql:84-160`
-
-```sql
-0084: CREATE TABLE IF NOT EXISTS course_qna_threads (
-0085:     id BIGSERIAL PRIMARY KEY,
-0086:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
-0087:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0088:     title VARCHAR(200) NOT NULL,
-0089:     body TEXT NOT NULL,
-0090:     status VARCHAR(20) NOT NULL DEFAULT 'open'
-0091:         CHECK (status IN ('open', 'answered', 'closed')),
-0092:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0093:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0094:     CHECK (btrim(title) <> ''),
-0095:     CHECK (btrim(body) <> '')
-0096: );
-0097:
-0098: COMMENT ON TABLE course_qna_threads IS 'Student-authored course Q&A/inquiry threads for the selected LMS subset.';
-0099: COMMENT ON COLUMN course_qna_threads.status IS 'Thread state visible to students and professors: open, answered, or closed.';
-0100:
-0101: CREATE INDEX IF NOT EXISTS idx_course_qna_threads_course_status_updated
-0102:     ON course_qna_threads (course_id, status, updated_at DESC);
-0103:
-0104: CREATE INDEX IF NOT EXISTS idx_course_qna_threads_student_updated
-0105:     ON course_qna_threads (student_user_id, updated_at DESC);
-0106:
-0107: CREATE TABLE IF NOT EXISTS course_qna_posts (
-0108:     id BIGSERIAL PRIMARY KEY,
-0109:     thread_id BIGINT NOT NULL REFERENCES course_qna_threads(id) ON DELETE CASCADE,
-0110:     author_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0111:     body TEXT NOT NULL,
-0112:     post_type VARCHAR(20) NOT NULL DEFAULT 'comment'
-0113:         CHECK (post_type IN ('question', 'answer', 'comment')),
-0114:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0115:     CHECK (btrim(body) <> '')
-0116: );
-0117:
-0118: COMMENT ON TABLE course_qna_posts IS 'Posts inside a course Q&A thread: initial question, professor answer, or comments.';
-0119: COMMENT ON COLUMN course_qna_posts.post_type IS 'Q&A post type: question, answer, or comment.';
-0120:
-0121: CREATE INDEX IF NOT EXISTS idx_course_qna_posts_thread_created
-0122:     ON course_qna_posts (thread_id, created_at ASC);
-0123:
-0124: CREATE INDEX IF NOT EXISTS idx_course_qna_posts_author_created
-0125:     ON course_qna_posts (author_user_id, created_at DESC);
-0126:
-0127: CREATE TABLE IF NOT EXISTS learning_progress (
-0128:     id BIGSERIAL PRIMARY KEY,
-0129:     learning_item_id BIGINT NOT NULL REFERENCES learning_items(id) ON DELETE CASCADE,
-0130:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-0131:     progress_percent NUMERIC(5,2) NOT NULL DEFAULT 0.00
-0132:         CHECK (progress_percent >= 0 AND progress_percent <= 100),
-0133:     status VARCHAR(20) NOT NULL DEFAULT 'not_started'
-0134:         CHECK (status IN ('not_started', 'in_progress', 'completed')),
-0135:     last_viewed_at TIMESTAMPTZ,
-0136:     completed_at TIMESTAMPTZ,
-0137:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0138:     UNIQUE (learning_item_id, student_user_id),
-0139:     CHECK (status <> 'completed' OR progress_percent = 100.00)
-0140: );
-0141:
-0142: COMMENT ON TABLE learning_progress IS 'Per-student learning material progress snapshot for selected LMS progress APIs.';
-0143: COMMENT ON COLUMN learning_progress.progress_percent IS 'Progress percentage from 0 through 100.';
-0144: COMMENT ON COLUMN learning_progress.status IS 'Learning progress state: not_started, in_progress, or completed.';
-0145:
-0146: CREATE INDEX IF NOT EXISTS idx_learning_progress_student_status
-0147:     ON learning_progress (student_user_id, status, updated_at DESC);
-0148:
-0149: CREATE INDEX IF NOT EXISTS idx_learning_progress_item_status
-0150:     ON learning_progress (learning_item_id, status, updated_at DESC);
-```
-
-#### H.8 OpenWrt collector registry migration
-
-Source: `DB/postgres/migrations/016_openwrt_collector_registry.sql:1-70`
-
-```sql
-0001: CREATE TABLE IF NOT EXISTS access_points (
-0002:     id BIGSERIAL PRIMARY KEY,
-0003:     collector_ap_id VARCHAR(64) NOT NULL UNIQUE,
-0004:     label VARCHAR(120) NOT NULL,
-0005:     management_ip VARCHAR(64),
-0006:     tailnet_ip VARCHAR(64),
-0007:     status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
-0008:     token_hash VARCHAR(128),
-0009:     token_version INTEGER NOT NULL DEFAULT 0,
-0010:     token_revoked_at TIMESTAMPTZ,
-0011:     last_rotated_at TIMESTAMPTZ,
-0012:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0013:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-0014: );
-0015:
-0016: CREATE TABLE IF NOT EXISTS access_point_interfaces (
-0017:     id BIGSERIAL PRIMARY KEY,
-0018:     access_point_id BIGINT NOT NULL REFERENCES access_points(id) ON DELETE CASCADE,
-0019:     interface_id VARCHAR(64) NOT NULL,
-0020:     bssid VARCHAR(32),
-0021:     ssid VARCHAR(120),
-0022:     classroom_network_id BIGINT NOT NULL REFERENCES classroom_networks(id) ON DELETE CASCADE,
-0023:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-0024:     UNIQUE (access_point_id, interface_id),
-0025:     UNIQUE (classroom_network_id)
-0026: );
-0027:
-0028: CREATE INDEX IF NOT EXISTS idx_access_point_interfaces_network_id
-0029:     ON access_point_interfaces (classroom_network_id);
-0030:
-0031: UPDATE classroom_networks
-0032: SET collection_mode = 'openwrt-push',
-0033:     ssid = 'SmartClass-Demo',
-0034:     gateway_host = CASE
-0035:         WHEN ap_id LIKE 'phy0-%' OR ap_id LIKE 'phy1-%' THEN '192.168.97.1'
-0036:         WHEN ap_id LIKE 'phy4-%' OR ap_id LIKE 'phy5-%' THEN '192.168.97.2'
-0037:         WHEN ap_id LIKE 'phy7-%' OR ap_id LIKE 'phy8-%' THEN '192.168.97.3'
-0038:         ELSE gateway_host
-0039:     END
-0040: WHERE ap_id IN ('phy0-ap0','phy1-ap0','phy4-ap0','phy5-ap0','phy7-ap0','phy8-ap0');
-0041:
-0042: INSERT INTO access_points (collector_ap_id, label, management_ip, tailnet_ip, status)
-0043: VALUES
-0044:     ('openwrt-a', 'Demo AP A / B101', '192.168.97.1', '100.78.116.89', 'active'),
-0045:     ('openwrt-b', 'Demo AP B / B102', '192.168.97.2', '100.86.49.51', 'active'),
-0046:     ('openwrt-c', 'Demo AP C / C201', '192.168.97.3', '100.99.237.79', 'active')
-0047: ON CONFLICT (collector_ap_id) DO UPDATE
-0048: SET label = EXCLUDED.label,
-0049:     management_ip = EXCLUDED.management_ip,
-0050:     tailnet_ip = EXCLUDED.tailnet_ip,
-0051:     status = EXCLUDED.status,
-0052:     updated_at = NOW();
-0053:
-0054: DELETE FROM access_point_interfaces api
-0055: USING access_points ap
-0056: WHERE api.access_point_id = ap.id
-0057:   AND ap.collector_ap_id IN ('openwrt-a', 'openwrt-b', 'openwrt-c')
-0058:   AND api.interface_id <> 'phy1-ap0';
-0059:
-0060: INSERT INTO access_point_interfaces (access_point_id, interface_id, ssid, classroom_network_id)
-0061: SELECT ap.id, mapping.interface_id, cn.ssid, cn.id
-0062: FROM (VALUES
-0063:     ('openwrt-a', 'phy1-ap0', 'phy1-ap0'),
-0064:     ('openwrt-b', 'phy1-ap0', 'phy4-ap0'),
-0065:     ('openwrt-c', 'phy1-ap0', 'phy7-ap0')
-0066: ) AS mapping(collector_ap_id, interface_id, classroom_ap_id)
-0067: JOIN access_points ap ON ap.collector_ap_id = mapping.collector_ap_id
-0068: JOIN classroom_networks cn ON cn.ap_id = mapping.classroom_ap_id
-0069: ON CONFLICT (access_point_id, interface_id) DO UPDATE
-0070: SET ssid = EXCLUDED.ssid,
-```
-
-## 4.6 UML/sequence 흐름
-
-### 4.6.1 사용자 역할별 route 흐름
-
-```mermaid
-flowchart TD
-    Login[로그인 화면]
-    Auth{인증 성공?}
-    Role{role}
-    Student[학생 대시보드]
-    Professor[교수 대시보드]
-    Admin[서비스관리자 대시보드]
-    Denied[권한 없음 화면]
-
-    Login --> Auth
-    Auth -- 실패 --> Login
-    Auth -- 성공 --> Role
-    Role -- student --> Student
-    Role -- professor --> Professor
-    Role -- admin --> Admin
-    Student -->|교수/admin route 접근| Denied
-    Professor -->|admin route 접근| Denied
-```
-
-### 4.6.2 출석 세션 운영 흐름
-
-```mermaid
-stateDiagram-v2
-    [*] --> Draft
-    Draft --> Open: 교수 출석 시작
-    Open --> StudentCheckIn: 학생 체크인
-    StudentCheckIn --> Recorded: eligibility + DB 기록
-    Open --> ManualEdit: 교수 수동 보정
-    ManualEdit --> Recorded: audit append
-    Recorded --> Exported: CSV 다운로드
-    Open --> Closed: 교수 종료 또는 timer 만료
-    Closed --> [*]
-```
-
-# 5. 구현
-
-## 5.1 사용 기술과 개발 환경
-
-| 계층 | 사용 기술 | 선택 이유 | 검증 방식 |
-|---|---|---|---|
-| Front | React, Vite, TypeScript, Playwright | 역할별 SPA와 e2e 흐름 검증 | lint/build/e2e spec |
-| Backend | FastAPI, SQLAlchemy, pytest, WebSocket | REST+WebSocket 도메인 API와 테스트 작성 | pytest, endpoint contract test |
-| PresenceService | FastAPI, Redis, pytest | snapshot/cache/eligibility 분리 | service/registry pytest |
-| DB | PostgreSQL, SQL init/migration | 관계형 도메인·audit log 표현 | schema SQL, ERD, DB tests |
-| Service | Docker Compose, Nginx, release manifest | 로컬/이미지 실행 구조 관리 | compose config, manifest test |
-| 문서 | Markdown, Mermaid, SVG redbox | 보고서/부록 증거화 | diff-check, link audit |
-
-## 5.2 코드 구조
-
-```text
-smart-class/
-├── Front/                 # React/Vite UI, API client, Playwright e2e
-├── Backend/               # FastAPI LMS/Auth/Attendance/Exam API
-├── PresenceService/       # Wi-Fi snapshot, collector, eligibility API
-├── DB/                    # PostgreSQL init/migration/test SQL
-├── Service/               # Docker Compose, Nginx, image/release manifest
-├── docs/                  # 최종보고서, 부록, 캡처/ERD assets
-├── CodexKit/              # 보조 runtime/tooling repo
-└── DocsQuartz/            # 문서 사이트 보조 repo
-```
-
-구현상 중요한 구조적 결정은 다음과 같다.
-
-- 인증·권한·학사 도메인 판단은 Backend가 소유한다.
-- Wi-Fi snapshot과 등록 단말 기반 eligibility reason은 PresenceService가 소유한다.
-- DB는 출석 상태의 현재값과 변경 이력(audit)을 분리한다.
-- Front는 API envelope를 공통 처리하고, 역할별 route guard로 UX 수준의 권한 오류를 먼저 보여준다.
-- Service repo는 실행 구조를 코드와 분리하여 compose/nginx/release manifest를 관리한다.
-
-## 5.3 UI 사용 흐름과 화면 증거
-
-이 절은 “어디를 눌러야 하는지”를 평가자가 바로 따라갈 수 있도록 정확한 클릭 흐름과 redbox 화면을 함께 둔다. 각 그림 제목 자체가 캡션 역할을 하며, redbox는 설명 대상 UI 요소를 표시한다.
-
-### 5.3.1 UI 클릭 흐름 전체표
+# C. UI 사용 흐름 전체표
 
 | 흐름 | 정확한 클릭/입력 경로 | 화면에서 확인할 것 | 관련 그림 |
 |---|---|---|---|
@@ -1283,11 +129,11 @@ smart-class/
 | 교수 출석 운영 | 교수 로그인 → 강의 상세 → `출석` 탭 클릭 → timeline에서 차시 선택 → 출석 열기 modal에서 일반/스마트/휴강 선택 → timer/roster 이동 → 학생 상태 radio와 사유 입력 후 저장 → 이력 확인 | bundle session, timer, roster, slot exception, 저장 결과, immutable audit history가 표시된다. | Fig. 40, 41, 42, 43, 44, 45, 46, 47 |
 | 서비스관리자 네트워크/재실성 운영 | 관리자 로그인 → dashboard → 사용자/강의실/네트워크 탭 이동 → AP mapping/station/threshold 확인 → demo overlay control에서 값을 바꾼 뒤 적용/초기화 클릭 | 강의실/AP 매핑, observed station, demo overlay 적용/초기화 결과, real/demo snapshot 분리가 보인다. | Fig. 48, 49-55 |
 
-### 5.3.2 전체 화면 캡처 및 redbox 갤러리
+# D. 전체 화면 캡처 및 redbox 갤러리
 
 모든 그림은 원본 PNG와 redbox 주석 SVG를 함께 둔다. 보고서 본문에서 특정 기능을 설명할 때는 이 부록의 그림 번호를 그대로 사용한다.
 
-#### Fig. 1 — login form and service title
+## Fig. 1 — login form and service title
 
 - 원본: `01-login.png`
 - redbox: `assets/screenshots/final/annotated/fig-1-01-login-redbox.svg`
@@ -1295,7 +141,7 @@ smart-class/
 
 ![Fig. 1 redbox](assets/screenshots/final/annotated/fig-1-01-login-redbox.svg)
 
-#### Fig. 2 — inline login failure banner
+## Fig. 2 — inline login failure banner
 
 - 원본: `common-02-login-failure.png`
 - redbox: `assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg`
@@ -1303,7 +149,7 @@ smart-class/
 
 ![Fig. 2 redbox](assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg)
 
-#### Fig. 3 — authorization denied message
+## Fig. 3 — authorization denied message
 
 - 원본: `common-03-authorization-denied.png`
 - redbox: `assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg`
@@ -1311,7 +157,7 @@ smart-class/
 
 ![Fig. 3 redbox](assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg)
 
-#### Fig. 4 — student course cards and account summary
+## Fig. 4 — student course cards and account summary
 
 - 원본: `student-01-dashboard.png`
 - redbox: `assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg`
@@ -1319,7 +165,7 @@ smart-class/
 
 ![Fig. 4 redbox](assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg)
 
-#### Fig. 5 — professor course cards
+## Fig. 5 — professor course cards
 
 - 원본: `professor-01-dashboard.png`
 - redbox: `assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg`
@@ -1327,7 +173,7 @@ smart-class/
 
 ![Fig. 5 redbox](assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg)
 
-#### Fig. 6 / Fig. 48 — admin user table and role column
+## Fig. 6 / Fig. 48 — admin user table and role column
 
 - 원본: `admin-01-users.png`
 - redbox: `assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg`
@@ -1335,7 +181,7 @@ smart-class/
 
 ![Fig. 6 / Fig. 48 redbox](assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg)
 
-#### Fig. 7 — registered device list and controls
+## Fig. 7 — registered device list and controls
 
 - 원본: `student-02-profile-devices.png`
 - redbox: `assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg`
@@ -1343,7 +189,7 @@ smart-class/
 
 ![Fig. 7 redbox](assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg)
 
-#### Fig. 8 — course header and student tabs
+## Fig. 8 — course header and student tabs
 
 - 원본: `student-03-course-home.png`
 - redbox: `assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg`
@@ -1351,7 +197,7 @@ smart-class/
 
 ![Fig. 8 redbox](assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg)
 
-#### Fig. 9 — learning item cards and download area
+## Fig. 9 — learning item cards and download area
 
 - 원본: `student-04-learning-content.png`
 - redbox: `assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg`
@@ -1359,7 +205,7 @@ smart-class/
 
 ![Fig. 9 redbox](assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg)
 
-#### Fig. 10 — notice list row and navigation
+## Fig. 10 — notice list row and navigation
 
 - 원본: `student-05-notices.png`
 - redbox: `assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg`
@@ -1367,7 +213,7 @@ smart-class/
 
 ![Fig. 10 redbox](assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg)
 
-#### Fig. 11 — notice title, body, and metadata
+## Fig. 11 — notice title, body, and metadata
 
 - 원본: `student-06-notice-detail.png`
 - redbox: `assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg`
@@ -1375,7 +221,7 @@ smart-class/
 
 ![Fig. 11 redbox](assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg)
 
-#### Fig. 12 — assignment card, status, and detail action
+## Fig. 12 — assignment card, status, and detail action
 
 - 원본: `student-14-assignment-list.png`
 - redbox: `assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg`
@@ -1383,7 +229,7 @@ smart-class/
 
 ![Fig. 12 redbox](assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg)
 
-#### Fig. 13 — submission body, attachment area, and current feedback
+## Fig. 13 — submission body, attachment area, and current feedback
 
 - 원본: `student-15-assignment-detail.png`
 - redbox: `assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg`
@@ -1391,7 +237,7 @@ smart-class/
 
 ![Fig. 13 redbox](assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg)
 
-#### Fig. 14 — grade and feedback summary card
+## Fig. 14 — grade and feedback summary card
 
 - 원본: `student-16-grade-feedback.png`
 - redbox: `assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg`
@@ -1399,7 +245,7 @@ smart-class/
 
 ![Fig. 14 redbox](assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg)
 
-#### Fig. 15 — learning progress input and save action
+## Fig. 15 — learning progress input and save action
 
 - 원본: `student-17-learning-progress.png`
 - redbox: `assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg`
@@ -1407,7 +253,7 @@ smart-class/
 
 ![Fig. 15 redbox](assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg)
 
-#### Fig. 16 — Q&A form and thread status
+## Fig. 16 — Q&A form and thread status
 
 - 원본: `student-18-qna.png`
 - redbox: `assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg`
@@ -1415,7 +261,7 @@ smart-class/
 
 ![Fig. 16 redbox](assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg)
 
-#### Fig. 17 / Fig. 20 — attendance eligibility card and semester matrix
+## Fig. 17 / Fig. 20 — attendance eligibility card and semester matrix
 
 - 원본: `student-07-attendance-before-check.png`
 - redbox: `assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg`
@@ -1423,7 +269,7 @@ smart-class/
 
 ![Fig. 17 / Fig. 20 redbox](assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg)
 
-#### Fig. 18 — eligible summary and evidence card
+## Fig. 18 — eligible summary and evidence card
 
 - 원본: `student-08-eligibility-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg`
@@ -1431,7 +277,7 @@ smart-class/
 
 ![Fig. 18 redbox](assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg)
 
-#### Fig. 19 — bundle check-in result card
+## Fig. 19 — bundle check-in result card
 
 - 원본: `student-09-check-in-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg`
@@ -1439,7 +285,7 @@ smart-class/
 
 ![Fig. 19 redbox](assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg)
 
-#### Fig. 21 — exam list card status and policy
+## Fig. 21 — exam list card status and policy
 
 - 원본: `student-10-exam-list.png`
 - redbox: `assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg`
@@ -1447,7 +293,7 @@ smart-class/
 
 ![Fig. 21 redbox](assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg)
 
-#### Fig. 22 — question prompt, options, countdown
+## Fig. 22 — question prompt, options, countdown
 
 - 원본: `student-11-exam-taking.png`
 - redbox: `assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg`
@@ -1455,7 +301,7 @@ smart-class/
 
 ![Fig. 22 redbox](assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg)
 
-#### Fig. 23 — selected option and save state
+## Fig. 23 — selected option and save state
 
 - 원본: `student-12-exam-answer-selected.png`
 - redbox: `assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg`
@@ -1463,7 +309,7 @@ smart-class/
 
 ![Fig. 23 redbox](assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg)
 
-#### Fig. 24 — missing-answer warning or submit guard state
+## Fig. 24 — missing-answer warning or submit guard state
 
 - 원본: `student-19-exam-missing-answer-warning.png`
 - redbox: `assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg`
@@ -1471,7 +317,7 @@ smart-class/
 
 ![Fig. 24 redbox](assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg)
 
-#### Fig. 25 — submission completion status
+## Fig. 25 — submission completion status
 
 - 원본: `student-13-exam-submit-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg`
@@ -1479,7 +325,7 @@ smart-class/
 
 ![Fig. 25 redbox](assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg)
 
-#### Fig. P2 — professor profile summary
+## Fig. P2 — professor profile summary
 
 - 원본: `professor-02-profile.png`
 - redbox: `assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg`
@@ -1487,7 +333,7 @@ smart-class/
 
 ![Fig. P2 redbox](assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg)
 
-#### Fig. 26 — professor course header and action tabs
+## Fig. 26 — professor course header and action tabs
 
 - 원본: `professor-03-course-home.png`
 - redbox: `assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg`
@@ -1495,7 +341,7 @@ smart-class/
 
 ![Fig. 26 redbox](assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg)
 
-#### Fig. 27 — material upload/create controls
+## Fig. 27 — material upload/create controls
 
 - 원본: `professor-04-learning-content-manage.png`
 - redbox: `assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg`
@@ -1503,7 +349,7 @@ smart-class/
 
 ![Fig. 27 redbox](assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg)
 
-#### Fig. 28 — professor notice list
+## Fig. 28 — professor notice list
 
 - 원본: `professor-05-notices.png`
 - redbox: `assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg`
@@ -1511,7 +357,7 @@ smart-class/
 
 ![Fig. 28 redbox](assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg)
 
-#### Fig. 29 — notice form and submit action
+## Fig. 29 — notice form and submit action
 
 - 원본: `professor-06-course-manage-notice-form.png`
 - redbox: `assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg`
@@ -1519,7 +365,7 @@ smart-class/
 
 ![Fig. 29 redbox](assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg)
 
-#### Fig. 30 — assignment creation/list management area
+## Fig. 30 — assignment creation/list management area
 
 - 원본: `professor-17-assignment-create.png`
 - redbox: `assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg`
@@ -1527,7 +373,7 @@ smart-class/
 
 ![Fig. 30 redbox](assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg)
 
-#### Fig. 31 — submission roster and selected student detail
+## Fig. 31 — submission roster and selected student detail
 
 - 원본: `professor-18-submission-review.png`
 - redbox: `assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg`
@@ -1535,7 +381,7 @@ smart-class/
 
 ![Fig. 31 redbox](assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg)
 
-#### Fig. 32 — score/status/feedback grading controls
+## Fig. 32 — score/status/feedback grading controls
 
 - 원본: `professor-19-assignment-grading.png`
 - redbox: `assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg`
@@ -1543,7 +389,7 @@ smart-class/
 
 ![Fig. 32 redbox](assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg)
 
-#### Fig. 33 — student grade rows and average percent
+## Fig. 33 — student grade rows and average percent
 
 - 원본: `professor-20-grade-overview.png`
 - redbox: `assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg`
@@ -1551,7 +397,7 @@ smart-class/
 
 ![Fig. 33 redbox](assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg)
 
-#### Fig. 34 — student-by-material learning progress table
+## Fig. 34 — student-by-material learning progress table
 
 - 원본: `professor-21-learning-progress.png`
 - redbox: `assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg`
@@ -1559,7 +405,7 @@ smart-class/
 
 ![Fig. 34 redbox](assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg)
 
-#### Fig. 35 — answer textarea, close checkbox, and save action
+## Fig. 35 — answer textarea, close checkbox, and save action
 
 - 원본: `professor-22-qna-answer.png`
 - redbox: `assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg`
@@ -1567,7 +413,7 @@ smart-class/
 
 ![Fig. 35 redbox](assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg)
 
-#### Fig. 36 — exam draft/list management card
+## Fig. 36 — exam draft/list management card
 
 - 원본: `professor-07-exam-manage.png`
 - redbox: `assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg`
@@ -1575,7 +421,7 @@ smart-class/
 
 ![Fig. 36 redbox](assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg)
 
-#### Fig. 37 — exam policy and question list
+## Fig. 37 — exam policy and question list
 
 - 원본: `professor-08-exam-detail.png`
 - redbox: `assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg`
@@ -1583,7 +429,7 @@ smart-class/
 
 ![Fig. 37 redbox](assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg)
 
-#### Fig. 38 — exam publish status result
+## Fig. 38 — exam publish status result
 
 - 원본: `professor-16-exam-publish-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg`
@@ -1591,7 +437,7 @@ smart-class/
 
 ![Fig. 38 redbox](assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg)
 
-#### Fig. 39 — exam close result status
+## Fig. 39 — exam close result status
 
 - 원본: `professor-15-exam-close-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg`
@@ -1599,7 +445,7 @@ smart-class/
 
 ![Fig. 39 redbox](assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg)
 
-#### Fig. 40 — weekly attendance timeline rows
+## Fig. 40 — weekly attendance timeline rows
 
 - 원본: `professor-09-attendance-timeline.png`
 - redbox: `assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg`
@@ -1607,7 +453,7 @@ smart-class/
 
 ![Fig. 40 redbox](assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg)
 
-#### Fig. 41 — attendance start modal mode options
+## Fig. 41 — attendance start modal mode options
 
 - 원본: `professor-23-attendance-start-modal.png`
 - redbox: `assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg`
@@ -1615,7 +461,7 @@ smart-class/
 
 ![Fig. 41 redbox](assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg)
 
-#### Fig. 42 — smart attendance timer and close button
+## Fig. 42 — smart attendance timer and close button
 
 - 원본: `professor-11-attendance-timer.png`
 - redbox: `assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg`
@@ -1623,7 +469,7 @@ smart-class/
 
 ![Fig. 42 redbox](assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg)
 
-#### Fig. 43 — student status table and reason inputs
+## Fig. 43 — student status table and reason inputs
 
 - 원본: `professor-12-attendance-roster.png`
 - redbox: `assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg`
@@ -1631,7 +477,7 @@ smart-class/
 
 ![Fig. 43 redbox](assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg)
 
-#### Fig. 44 — slot-specific roster controls
+## Fig. 44 — slot-specific roster controls
 
 - 원본: `professor-13-attendance-slot-roster.png`
 - redbox: `assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg`
@@ -1639,7 +485,7 @@ smart-class/
 
 ![Fig. 44 redbox](assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg)
 
-#### Fig. 45 — save success and updated status row
+## Fig. 45 — save success and updated status row
 
 - 원본: `professor-14-attendance-edit-save-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg`
@@ -1647,7 +493,7 @@ smart-class/
 
 ![Fig. 45 redbox](assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg)
 
-#### Fig. 46 — student stats table and CSV buttons
+## Fig. 46 — student stats table and CSV buttons
 
 - 원본: `professor-10-attendance-student-stats.png`
 - redbox: `assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg`
@@ -1655,7 +501,7 @@ smart-class/
 
 ![Fig. 46 redbox](assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg)
 
-#### Fig. 47 — immutable attendance audit history list
+## Fig. 47 — immutable attendance audit history list
 
 - 원본: `professor-24-attendance-history.png`
 - redbox: `assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg`
@@ -1663,7 +509,7 @@ smart-class/
 
 ![Fig. 47 redbox](assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg)
 
-#### Fig. 49 / Fig. 50 / Fig. 51 — classroom/AP mapping, station list, threshold controls
+## Fig. 49 / Fig. 50 / Fig. 51 — classroom/AP mapping, station list, threshold controls
 
 - 원본: `admin-02-classrooms-networks.png`
 - redbox: `assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg`
@@ -1671,7 +517,7 @@ smart-class/
 
 ![Fig. 49 / Fig. 50 / Fig. 51 redbox](assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg)
 
-#### Fig. 52 — demo source label and overlay controls
+## Fig. 52 — demo source label and overlay controls
 
 - 원본: `admin-03-presence-demo-control.png`
 - redbox: `assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg`
@@ -1679,7 +525,7 @@ smart-class/
 
 ![Fig. 52 redbox](assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg)
 
-#### Fig. 53 — applied overlay station state
+## Fig. 53 — applied overlay station state
 
 - 원본: `admin-04-presence-demo-applied.png`
 - redbox: `assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg`
@@ -1687,7 +533,7 @@ smart-class/
 
 ![Fig. 53 redbox](assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg)
 
-#### Fig. 54 — reset result and restored baseline
+## Fig. 54 — reset result and restored baseline
 
 - 원본: `admin-05-presence-demo-reset-result.png`
 - redbox: `assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg`
@@ -1695,7 +541,7 @@ smart-class/
 
 ![Fig. 54 redbox](assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg)
 
-#### Fig. 55 — real/demo snapshot separation labels
+## Fig. 55 — real/demo snapshot separation labels
 
 - 원본: `admin-06-real-vs-demo-snapshots.png`
 - redbox: `assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg`
@@ -1703,19 +549,105 @@ smart-class/
 
 ![Fig. 55 redbox](assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg)
 
-#### Fig. 56 — OpenWrt router registration/token N/A
+## Fig. 56 — OpenWrt router registration/token N/A
 
 현재 Front main에는 전용 router registration/token UI가 없다. 이 기능은 Backend AP registry endpoints, DB `access_points/access_point_interfaces`, Service OpenWrt collector script로 근거를 대체하며, 운영 UI는 향후 과제로 분리한다.
 
-## 5.4 API request/response 근거
+# E. ERD 전체/부분 갤러리
 
-아래 API 예시는 인증, 출석 eligibility/check-in, 교수 CSV export, 시험, selected LMS, Presence collector snapshot ingest의 대표 흐름이다. 본문에 request/response를 직접 둬서 endpoint 이름만 보고 추가 산출물을 열 필요가 없도록 했다.
+## ERD-1 — Full Smart Class PostgreSQL ERD
 
-### 5.4.1 API request/response 예시
+- raw SVG: `assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg`
+- 강조 대상: LMS + presence/attendance + assessment domains
+- 포함 테이블/노드: users, courses, course_enrollments, course_schedules, classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, refresh_sessions, attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, presence_eligibility_logs, exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, assignments, assignment_submissions, learning_items, learning_progress, course_qna_threads, course_qna_posts, report_exports, object_deletion_jobs
 
-### 5.4.2 대표 request/response 예시
+![ERD-1 raw](assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
 
-#### 5.4.2.1 인증 로그인
+![ERD-1 redbox](assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg)
+
+## ERD-2 — User / auth / registered-device ERD
+
+- raw SVG: `assets/diagrams/final/raw/erd-2-user-auth-device.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg`
+- 강조 대상: users.id relationships to sessions/devices
+- 포함 테이블/노드: users, refresh_sessions, registered_devices
+
+![ERD-2 raw](assets/diagrams/final/raw/erd-2-user-auth-device.svg)
+
+![ERD-2 redbox](assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg)
+
+## ERD-3 — Course / enrollment / notice / material ERD
+
+- raw SVG: `assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg`
+- 강조 대상: course ownership/enrollment and attachment relations
+- 포함 테이블/노드: courses, course_enrollments, course_schedules, notices, learning_items, learning_item_attachments, notice_attachments
+
+![ERD-3 raw](assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg)
+
+![ERD-3 redbox](assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg)
+
+## ERD-4 — Device / classroom / AP / presence ERD
+
+- raw SVG: `assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg`
+- 강조 대상: classroom network mapping and AP registry evidence
+- 포함 테이블/노드: classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, presence_eligibility_logs
+
+![ERD-4 raw](assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg)
+
+![ERD-4 redbox](assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg)
+
+## ERD-5 — Attendance session / record / audit ERD
+
+- raw SVG: `assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg`
+- 강조 대상: bundle parent, slot fan-out, record/audit history
+- 포함 테이블/노드: attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, users, courses, classrooms
+
+![ERD-5 raw](assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg)
+
+![ERD-5 redbox](assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg)
+
+## ERD-6 — Exam / question / submission / answer ERD
+
+- raw SVG: `assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg`
+- 강조 대상: exam-question-option and submission-answer consistency
+- 포함 테이블/노드: exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, exam_question_attachments, exam_answer_attachments
+
+![ERD-6 raw](assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg)
+
+![ERD-6 redbox](assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg)
+
+## ERD-7 — Selected LMS / assignment / Q&A / progress ERD
+
+- raw SVG: `assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg`
+- 강조 대상: grading fields, Q&A threads/posts, progress ownership
+- 포함 테이블/노드: assignments, assignment_submissions, assignment_submission_attachments, course_qna_threads, course_qna_posts, learning_progress, learning_items, users, courses
+
+![ERD-7 raw](assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg)
+
+![ERD-7 redbox](assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg)
+
+## ERD-8 — Service / ops metadata ERD and N/A boundary
+
+- raw SVG: `assets/diagrams/final/raw/erd-8-service-ops-metadata.svg`
+- redbox SVG: `assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg`
+- 강조 대상: report exports, object deletion outbox, Service runtime N/A boundary
+- 포함 테이블/노드: report_exports, object_deletion_jobs, learning_item_attachments, notice_attachments, assignment_submission_attachments, Service runtime: N/A PostgreSQL entity
+
+![ERD-8 raw](assets/diagrams/final/raw/erd-8-service-ops-metadata.svg)
+
+![ERD-8 redbox](assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg)
+
+# F. API request/response 예시
+
+# C.3 대표 request/response 예시
+
+## C.3.1 인증 로그인
 
 **Request**
 
@@ -1752,7 +684,7 @@ Content-Type: application/json
 
 근거: `Backend/app/main.py:920`, `Backend/tests/test_presence_admin_and_auth.py:590`.
 
-#### 5.4.2.2 출석 eligibility
+## C.3.2 출석 eligibility
 
 **Request**
 
@@ -1792,7 +724,7 @@ Content-Type: application/json
 
 근거: `Backend/app/main.py:2028`, `PresenceService/app/main.py:88`, `Backend/tests/test_presence_admin_and_auth.py:906`.
 
-#### 5.4.2.3 교수 출석 CSV export
+## C.3.3 교수 출석 CSV export
 
 **Request**
 
@@ -1825,9 +757,9 @@ Content-Type: application/json
 
 근거: `Backend/app/main.py:2091`, `:2104`, `:2115`, weekly Backend commit `36e8524`, Front commit `73f5e09`.
 
-#### 5.4.2.4 학생 시험 시작 및 답안 저장
+## C.3.4 학생 시험 시작 및 답안 저장
 
-##### 시험 시작
+### 시험 시작
 
 **Request**
 
@@ -1851,7 +783,7 @@ Authorization: Bearer <student-access-token>
 }
 ```
 
-##### 답안 저장
+### 답안 저장
 
 **Request**
 
@@ -1883,9 +815,9 @@ Content-Type: application/json
 
 근거: `Backend/app/main.py:1492`, `:1682`, `:1706`, `Backend/tests/test_exam_contract_alignment.py:261`, `Front/tests/e2e/exam-workflow.spec.ts:244`.
 
-#### 5.4.2.5 selected LMS: Q&A / learning progress / grade feedback
+## C.3.5 selected LMS: Q&A / learning progress / grade feedback
 
-##### Q&A 질문 등록
+### Q&A 질문 등록
 
 **Request**
 
@@ -1919,7 +851,7 @@ Content-Type: application/json
 }
 ```
 
-##### 학습 진도 저장
+### 학습 진도 저장
 
 **Request**
 
@@ -1948,7 +880,7 @@ Content-Type: application/json
 }
 ```
 
-##### 성적·피드백 조회
+### 성적·피드백 조회
 
 **Request**
 
@@ -1979,7 +911,7 @@ Authorization: Bearer <student-access-token>
 
 근거: `Backend/app/main.py:1280`, `:1302`, `:1313`, `:1371`, `:1382`, `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`.
 
-#### 5.4.2.6 PresenceService collector snapshot ingest
+## C.3.6 PresenceService collector snapshot ingest
 
 **Request**
 
@@ -2014,13 +946,10 @@ Content-Type: application/json
 
 근거: `PresenceService/app/main.py:64`, `PresenceService/tests/test_service.py:296`, `DB/postgres/migrations/016_openwrt_collector_registry.sql`.
 
-## 5.5 코드 구현 excerpt
 
-아래 코드는 실제 repository source에서 가져온 핵심 구현 excerpt다. Front API wrapper, route 규칙, Backend 인증/LMS/출석/시험 endpoint, PresenceService eligibility, CSV export, DB 연계 서비스를 본문에 직접 둔다.
+# G. 코드 근거 excerpt
 
-### 5.5.1 코드 근거 excerpt
-
-#### G.1 Front API request wrapper와 인증/세션 API
+## G.1 Front API request wrapper와 인증/세션 API
 
 Source: `Front/src/api.ts:743-955`
 
@@ -2240,7 +1169,7 @@ Source: `Front/src/api.ts:743-955`
 0955:         return authRequest<LoginResponse>('/api/auth/me')
 ```
 
-#### G.2 Front selected LMS / assignment / exam / attendance API client
+## G.2 Front selected LMS / assignment / exam / attendance API client
 
 Source: `Front/src/api.ts:968-1150`
 
@@ -2430,7 +1359,7 @@ Source: `Front/src/api.ts:968-1150`
 1150:     files: File[],
 ```
 
-#### G.3 Front route parser와 URL build 규칙
+## G.3 Front route parser와 URL build 규칙
 
 Source: `Front/src/router.ts:1-140`
 
@@ -2577,7 +1506,7 @@ Source: `Front/src/router.ts:1-140`
 0140:       }
 ```
 
-#### G.4 Front 출석 modal/history UI 핵심
+## G.4 Front 출석 modal/history UI 핵심
 
 Source: `Front/src/App.tsx:4677-4745`
 
@@ -2653,7 +1582,7 @@ Source: `Front/src/App.tsx:4677-4745`
 4745:             ) : null}
 ```
 
-#### G.5 Front selected LMS UI 핵심
+## G.5 Front selected LMS UI 핵심
 
 Source: `Front/src/App.tsx:5800-5945`
 
@@ -2806,7 +1735,7 @@ Source: `Front/src/App.tsx:5800-5945`
 5945:               </div>
 ```
 
-#### G.6 Backend 인증/세션/권한 endpoint
+## G.6 Backend 인증/세션/권한 endpoint
 
 Source: `Backend/app/main.py:920-1075`
 
@@ -2969,7 +1898,7 @@ Source: `Backend/app/main.py:920-1075`
 1075:     revoke_refresh_session(db, request.cookies.get(settings.refresh_cookie_name))
 ```
 
-#### G.7 Backend selected LMS/assignment/Q&A/learning endpoints
+## G.7 Backend selected LMS/assignment/Q&A/learning endpoints
 
 Source: `Backend/app/main.py:1102-1456`
 
@@ -3331,7 +2260,7 @@ Source: `Backend/app/main.py:1102-1456`
 1456: def download_professor_learning_attachment(
 ```
 
-#### G.8 Backend exam endpoints
+## G.8 Backend exam endpoints
 
 Source: `Backend/app/main.py:1469-1715`
 
@@ -3585,7 +2514,7 @@ Source: `Backend/app/main.py:1469-1715`
 1715:     question_id: int,
 ```
 
-#### G.9 Backend attendance endpoints + WebSocket
+## G.9 Backend attendance endpoints + WebSocket
 
 Source: `Backend/app/main.py:2028-2335`
 
@@ -3900,7 +2829,7 @@ Source: `Backend/app/main.py:2028-2335`
 2335:             courseCode,
 ```
 
-#### G.10 Backend attendance bundle open/check-in core
+## G.10 Backend attendance bundle open/check-in core
 
 Source: `Backend/app/attendance.py:718-850`
 
@@ -4040,7 +2969,7 @@ Source: `Backend/app/attendance.py:718-850`
 0850:             replaced_session.closed_at = now
 ```
 
-#### G.11 Backend student check-in with presence gate
+## G.11 Backend student check-in with presence gate
 
 Source: `Backend/app/attendance.py:1607-1815`
 
@@ -4256,7 +3185,7 @@ Source: `Backend/app/attendance.py:1607-1815`
 1815:
 ```
 
-#### G.12 Backend exam start/submit/answer service
+## G.12 Backend exam start/submit/answer service
 
 Source: `Backend/app/services.py:1378-1605`
 
@@ -4491,7 +3420,7 @@ Source: `Backend/app/services.py:1378-1605`
 1605:
 ```
 
-#### G.13 Backend attendance CSV export service
+## G.13 Backend attendance CSV export service
 
 Source: `Backend/app/services.py:2007-2115`
 
@@ -4607,7 +3536,7 @@ Source: `Backend/app/services.py:2007-2115`
 2115:
 ```
 
-#### G.14 PresenceService HTTP endpoints
+## G.14 PresenceService HTTP endpoints
 
 Source: `PresenceService/app/main.py:36-129`
 
@@ -4708,7 +3637,7 @@ Source: `PresenceService/app/main.py:36-129`
 0129:         except KeyError as exc:
 ```
 
-#### G.15 PresenceService collector/cache/eligibility core
+## G.15 PresenceService collector/cache/eligibility core
 
 Source: `PresenceService/app/service.py:86-170`
 
@@ -4800,7 +3729,7 @@ Source: `PresenceService/app/service.py:86-170`
 0170:             return None
 ```
 
-#### G.16 PresenceService eligibility evaluation
+## G.16 PresenceService eligibility evaluation
 
 Source: `PresenceService/app/service.py:548-640`
 
@@ -4900,69 +3829,779 @@ Source: `PresenceService/app/service.py:548-640`
 0640:             snapshotAgeSeconds=age_seconds,
 ```
 
-## 5.6 기능별 구현 상세
+# H. DB schema excerpt
 
-### 5.6.1 인증/세션/권한
+## H.1 users/classrooms/courses/enrollments/schedules/notices
 
-인증 기능은 로그인, refresh, bootstrap, logout으로 구성된다. Front는 로그인 성공 후 role별 dashboard로 이동하고, Backend는 토큰 검증과 role guard를 endpoint마다 적용한다. 권한 오류는 UI에서도 denied 화면으로 표시되며, Backend에서도 403 계열 envelope로 막는다. 이중 방어 구조는 UI 우회 접근과 API 직접 호출을 모두 고려한 것이다.
+Source: `DB/postgres/init/001_schema.sql:1-59`
 
-### 5.6.2 학생 LMS 기능
+```sql
+0001: CREATE TABLE IF NOT EXISTS users (
+0002:     id BIGSERIAL PRIMARY KEY,
+0003:     student_id VARCHAR(32) UNIQUE,
+0004:     professor_id VARCHAR(32) UNIQUE,
+0005:     admin_id VARCHAR(32) UNIQUE,
+0006:     name VARCHAR(120) NOT NULL,
+0007:     role VARCHAR(20) NOT NULL CHECK (role IN ('student', 'professor', 'admin')),
+0008:     password VARCHAR(120) NOT NULL,
+0009:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0010:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0011: );
+0012:
+0013: CREATE TABLE IF NOT EXISTS classrooms (
+0014:     id BIGSERIAL PRIMARY KEY,
+0015:     classroom_code VARCHAR(32) NOT NULL UNIQUE,
+0016:     name VARCHAR(120) NOT NULL,
+0017:     building VARCHAR(120),
+0018:     floor_label VARCHAR(32),
+0019:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0020:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0021: );
+0022:
+0023: CREATE TABLE IF NOT EXISTS courses (
+0024:     id BIGSERIAL PRIMARY KEY,
+0025:     course_code VARCHAR(32) NOT NULL UNIQUE,
+0026:     title VARCHAR(200) NOT NULL,
+0027:     professor_user_id BIGINT REFERENCES users(id),
+0028:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0029:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0030: );
+0031:
+0032: CREATE TABLE IF NOT EXISTS course_enrollments (
+0033:     id BIGSERIAL PRIMARY KEY,
+0034:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0035:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0036:     status VARCHAR(20) NOT NULL DEFAULT 'active',
+0037:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0038:     UNIQUE (course_id, student_user_id)
+0039: );
+0040:
+0041: CREATE TABLE IF NOT EXISTS course_schedules (
+0042:     id BIGSERIAL PRIMARY KEY,
+0043:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0044:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+0045:     day_of_week SMALLINT NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
+0046:     starts_at TIME NOT NULL,
+0047:     ends_at TIME NOT NULL,
+0048:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0049: );
+0050:
+0051: CREATE TABLE IF NOT EXISTS notices (
+0052:     id BIGSERIAL PRIMARY KEY,
+0053:     course_id BIGINT REFERENCES courses(id) ON DELETE CASCADE,
+0054:     author_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0055:     title VARCHAR(200) NOT NULL,
+0056:     body TEXT NOT NULL,
+0057:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0058: );
+0059:
+```
 
-학생은 dashboard에서 강의 카드와 계정 요약을 확인하고, 강의 홈으로 이동해 공지, 학습자료, 과제, 성적/피드백, 학습진도, Q&A, 출석, 시험을 사용할 수 있다. 과제 제출과 Q&A, 학습진도는 selected LMS subset으로 구현되어 있으며, 교수 화면과 같은 DB record를 공유한다.
+## H.2 classroom networks / devices / presence logs / refresh sessions
 
-### 5.6.3 교수 LMS 및 평가 기능
+Source: `DB/postgres/init/001_schema.sql:60-115`
 
-교수는 담당 강의 홈에서 자료와 공지를 관리하고, 과제 생성, 제출물 검토, 점수/피드백 저장, 성적 요약 조회, 학습진도 확인, Q&A 답변을 수행한다. 시험 기능은 draft 생성, 문항/선택지 구성, publish, close 흐름으로 구성된다. 출석 기능은 timeline, smart attendance timer, roster, slot roster, 수동 보정, audit history, CSV export를 제공한다.
+```sql
+0060: CREATE TABLE IF NOT EXISTS classroom_networks (
+0061:     id BIGSERIAL PRIMARY KEY,
+0062:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+0063:     ap_id VARCHAR(64) NOT NULL,
+0064:     ssid VARCHAR(120) NOT NULL,
+0065:     gateway_host VARCHAR(120),
+0066:     signal_threshold_dbm INTEGER,
+0067:     collection_mode VARCHAR(40) NOT NULL DEFAULT 'openwrt-ssh',
+0068:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0069:     UNIQUE (classroom_id, ap_id)
+0070: );
+0071:
+0072: CREATE TABLE IF NOT EXISTS registered_devices (
+0073:     id BIGSERIAL PRIMARY KEY,
+0074:     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0075:     label VARCHAR(120),
+0076:     mac_address VARCHAR(17) NOT NULL UNIQUE,
+0077:     status VARCHAR(20) NOT NULL DEFAULT 'active',
+0078:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0079:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0080: );
+0081:
+0082: CREATE INDEX IF NOT EXISTS idx_registered_devices_user_id
+0083:     ON registered_devices (user_id);
+0084:
+0085: CREATE TABLE IF NOT EXISTS presence_eligibility_logs (
+0086:     id BIGSERIAL PRIMARY KEY,
+0087:     student_user_id BIGINT REFERENCES users(id),
+0088:     course_id BIGINT REFERENCES courses(id),
+0089:     classroom_id BIGINT REFERENCES classrooms(id),
+0090:     purpose VARCHAR(20) NOT NULL,
+0091:     eligible BOOLEAN NOT NULL,
+0092:     reason_code VARCHAR(64) NOT NULL,
+0093:     matched_device_mac VARCHAR(17),
+0094:     evidence JSONB NOT NULL DEFAULT '{}'::jsonb,
+0095:     observed_at TIMESTAMPTZ,
+0096:     snapshot_age_seconds INTEGER,
+0097:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0098: );
+0099:
+0100: CREATE TABLE IF NOT EXISTS refresh_sessions (
+0101:     id BIGSERIAL PRIMARY KEY,
+0102:     session_key VARCHAR(128) NOT NULL UNIQUE,
+0103:     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0104:     current_token_hash VARCHAR(64) NOT NULL,
+0105:     expires_at TIMESTAMPTZ NOT NULL,
+0106:     revoked_at TIMESTAMPTZ,
+0107:     replay_detected_at TIMESTAMPTZ,
+0108:     last_rotated_at TIMESTAMPTZ,
+0109:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0110:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0111: );
+0112:
+0113: CREATE INDEX IF NOT EXISTS idx_refresh_sessions_user_id
+0114:     ON refresh_sessions (user_id);
+0115:
+```
 
-### 5.6.4 서비스관리자 및 Presence 운영 기능
+## H.3 attendance sessions / slots / records / audit / AP registry
 
-서비스관리자는 사용자/역할, 강의실/AP 매핑, threshold, snapshot, demo overlay를 관리한다. 특히 real snapshot과 demo overlay를 UI에서 구분해 보여주어 시연용 데이터가 실제 collector 결과처럼 과장되지 않게 했다. OpenWrt router registration/token UI는 현재 범위에서 N/A로 표시하고, Backend registry endpoint와 DB migration/Service collector script 근거로 구현 경계를 설명한다.
+Source: `DB/postgres/init/001_schema.sql:116-225`
 
-### 5.6.5 출석 및 시험의 재실성 결합
+```sql
+0116: CREATE TABLE IF NOT EXISTS attendance_sessions (
+0117:     id BIGSERIAL PRIMARY KEY,
+0118:     projection_key VARCHAR(255) NOT NULL,
+0119:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0120:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+0121:     session_date DATE NOT NULL,
+0122:     slot_start_at TIME NOT NULL,
+0123:     slot_end_at TIME NOT NULL,
+0124:     mode VARCHAR(16) NOT NULL CHECK (mode IN ('manual', 'smart', 'canceled')),
+0125:     status VARCHAR(16) NOT NULL CHECK (status IN ('active', 'closed', 'expired', 'canceled')),
+0126:     opened_by_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+0127:     opened_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0128:     closed_at TIMESTAMPTZ,
+0129:     expires_at TIMESTAMPTZ,
+0130:     latest_version INTEGER NOT NULL DEFAULT 0,
+0131:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0132:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0133: );
+0134:
+0135: CREATE TABLE IF NOT EXISTS attendance_session_slots (
+0136:     id BIGSERIAL PRIMARY KEY,
+0137:     attendance_session_id BIGINT NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
+0138:     projection_key VARCHAR(255) NOT NULL,
+0139:     classroom_id BIGINT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+0140:     session_date DATE NOT NULL,
+0141:     slot_start_at TIME NOT NULL,
+0142:     slot_end_at TIME NOT NULL,
+0143:     slot_order INTEGER NOT NULL,
+0144:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0145:     UNIQUE (attendance_session_id, projection_key)
+0146: );
+0147:
+0148: CREATE TABLE IF NOT EXISTS attendance_records (
+0149:     id BIGSERIAL PRIMARY KEY,
+0150:     attendance_session_id BIGINT NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
+0151:     projection_key VARCHAR(255) NOT NULL,
+0152:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0153:     final_status VARCHAR(16) NOT NULL CHECK (final_status IN ('present', 'absent', 'late', 'official', 'sick')),
+0154:     attendance_reason VARCHAR(500),
+0155:     finalized_by_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+0156:     finalized_at TIMESTAMPTZ,
+0157:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0158:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0159:     UNIQUE (attendance_session_id, projection_key, student_user_id)
+0160: );
+0161:
+0162: CREATE TABLE IF NOT EXISTS attendance_status_audit_logs (
+0163:     id BIGSERIAL PRIMARY KEY,
+0164:     attendance_session_id BIGINT NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
+0165:     projection_key VARCHAR(255) NOT NULL,
+0166:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0167:     actor_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+0168:     actor_role VARCHAR(16) NOT NULL,
+0169:     change_source VARCHAR(32) NOT NULL,
+0170:     previous_status VARCHAR(16),
+0171:     new_status VARCHAR(16),
+0172:     reason VARCHAR(500),
+0173:     changed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0174:     version INTEGER NOT NULL
+0175: );
+0176:
+0177: CREATE INDEX IF NOT EXISTS idx_attendance_session_slots_session_order
+0178:     ON attendance_session_slots (attendance_session_id, slot_order);
+0179:
+0180: CREATE INDEX IF NOT EXISTS idx_attendance_session_slots_projection
+0181:     ON attendance_session_slots (projection_key);
+0182:
+0183: CREATE INDEX IF NOT EXISTS idx_attendance_sessions_course_date
+0184:     ON attendance_sessions (course_id, session_date);
+0185:
+0186: CREATE INDEX IF NOT EXISTS idx_attendance_records_student_session_projection
+0187:     ON attendance_records (student_user_id, attendance_session_id, projection_key);
+0188:
+0189: CREATE INDEX IF NOT EXISTS idx_attendance_status_audit_logs_student_changed_at
+0190:     ON attendance_status_audit_logs (student_user_id, changed_at DESC);
+0191:
+0192: CREATE INDEX IF NOT EXISTS idx_attendance_status_audit_logs_session_projection
+0193:     ON attendance_status_audit_logs (attendance_session_id, projection_key, changed_at DESC);
+0194:
+0195: CREATE TABLE IF NOT EXISTS access_points (
+0196:     id BIGSERIAL PRIMARY KEY,
+0197:     collector_ap_id VARCHAR(64) NOT NULL UNIQUE,
+0198:     label VARCHAR(120) NOT NULL,
+0199:     management_ip VARCHAR(64),
+0200:     tailnet_ip VARCHAR(64),
+0201:     status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
+0202:     token_hash VARCHAR(128),
+0203:     token_version INTEGER NOT NULL DEFAULT 0,
+0204:     token_revoked_at TIMESTAMPTZ,
+0205:     last_rotated_at TIMESTAMPTZ,
+0206:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0207:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0208: );
+0209:
+0210: CREATE TABLE IF NOT EXISTS access_point_interfaces (
+0211:     id BIGSERIAL PRIMARY KEY,
+0212:     access_point_id BIGINT NOT NULL REFERENCES access_points(id) ON DELETE CASCADE,
+0213:     interface_id VARCHAR(64) NOT NULL,
+0214:     bssid VARCHAR(32),
+0215:     ssid VARCHAR(120),
+0216:     classroom_network_id BIGINT NOT NULL REFERENCES classroom_networks(id) ON DELETE CASCADE,
+0217:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0218:     UNIQUE (access_point_id, interface_id),
+0219:     UNIQUE (classroom_network_id)
+0220: );
+0221:
+0222: CREATE INDEX IF NOT EXISTS idx_access_point_interfaces_network_id
+0223:     ON access_point_interfaces (classroom_network_id);
+```
 
-출석은 Backend attendance session과 PresenceService eligibility를 결합한다. 시험 접근도 수강/시험 상태와 eligibility policy를 함께 고려할 수 있도록 endpoint와 service layer를 분리했다. 이 설계는 재실성 판정 로직을 특정 UI에 묶지 않고, 출석·시험 등 여러 도메인에서 재사용할 수 있게 한다.
+## H.4 exam schema
 
-# 6. 실험 및 결과
+Source: `DB/postgres/init/013_exam_schema.sql:1-140`
 
-## 6.1 테스트 방법
+```sql
+0001: -- Exam domain schema
+0002: -- Each attempt expires at:
+0003: -- min(started_at + time_limit_snapshot_minutes, exams.ends_at)
+0004: -- Exam ownership is derived from courses.professor_user_id.
+0005:
+0006: CREATE TABLE IF NOT EXISTS exams (
+0007:     id BIGSERIAL PRIMARY KEY,
+0008:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0009:     title VARCHAR(200) NOT NULL,
+0010:     description TEXT,
+0011:     exam_type VARCHAR(20) NOT NULL DEFAULT 'quiz'
+0012:         CHECK (exam_type IN ('quiz', 'midterm', 'final', 'practice', 'custom')),
+0013:     status VARCHAR(20) NOT NULL DEFAULT 'draft'
+0014:         CHECK (status IN ('draft', 'published', 'open', 'closed', 'archived')),
+0015:     starts_at TIMESTAMPTZ NOT NULL,
+0016:     ends_at TIMESTAMPTZ NOT NULL,
+0017:     duration_minutes INTEGER NOT NULL CHECK (duration_minutes > 0),
+0018:     requires_presence BOOLEAN NOT NULL DEFAULT TRUE,
+0019:     late_entry_allowed BOOLEAN NOT NULL DEFAULT TRUE,
+0020:     auto_submit_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+0021:     shuffle_questions BOOLEAN NOT NULL DEFAULT FALSE,
+0022:     shuffle_options BOOLEAN NOT NULL DEFAULT FALSE,
+0023:     max_attempts INTEGER NOT NULL DEFAULT 1 CHECK (max_attempts > 0),
+0024:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0025:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0026:     CHECK (ends_at > starts_at)
+0027: );
+0028:
+0029: COMMENT ON TABLE exams IS 'Exam master records bound to a course. Ownership is derived from the course owner.';
+0030: COMMENT ON COLUMN exams.duration_minutes IS 'Per-student time budget in minutes before the global ends_at cap is applied.';
+0031: COMMENT ON COLUMN exams.late_entry_allowed IS 'When false, students may not start after starts_at.';
+0032: COMMENT ON COLUMN exams.auto_submit_enabled IS 'When true, in-progress attempts should be auto-submitted at expires_at.';
+0033:
+0034: CREATE INDEX IF NOT EXISTS idx_exams_course_status_starts_at
+0035:     ON exams (course_id, status, starts_at);
+0036:
+0037: CREATE TABLE IF NOT EXISTS exam_questions (
+0038:     id BIGSERIAL PRIMARY KEY,
+0039:     exam_id BIGINT NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
+0040:     question_order INTEGER NOT NULL CHECK (question_order > 0),
+0041:     question_type VARCHAR(30) NOT NULL
+0042:         CHECK (question_type IN ('multiple_choice', 'true_false')),
+0043:     prompt TEXT NOT NULL,
+0044:     points NUMERIC(6,2) NOT NULL DEFAULT 1.00 CHECK (points >= 0),
+0045:     correct_answer_text TEXT,
+0046:     explanation TEXT,
+0047:     is_required BOOLEAN NOT NULL DEFAULT TRUE,
+0048:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0049:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0050:     UNIQUE (exam_id, question_order),
+0051:     UNIQUE (id, exam_id)
+0052: );
+0053:
+0054: COMMENT ON TABLE exam_questions IS 'Questions that belong to an exam.';
+0055: COMMENT ON COLUMN exam_questions.correct_answer_text IS 'Canonical answer text for auto-gradable question types.';
+0056:
+0057: CREATE INDEX IF NOT EXISTS idx_exam_questions_exam_order
+0058:     ON exam_questions (exam_id, question_order);
+0059:
+0060: CREATE TABLE IF NOT EXISTS exam_question_options (
+0061:     id BIGSERIAL PRIMARY KEY,
+0062:     question_id BIGINT NOT NULL REFERENCES exam_questions(id) ON DELETE CASCADE,
+0063:     option_order INTEGER NOT NULL CHECK (option_order > 0),
+0064:     option_text TEXT NOT NULL,
+0065:     is_correct BOOLEAN NOT NULL DEFAULT FALSE,
+0066:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0067:     UNIQUE (question_id, option_order),
+0068:     UNIQUE (id, question_id)
+0069: );
+0070:
+0071: COMMENT ON TABLE exam_question_options IS 'Answer choices for multiple-choice and true-false questions.';
+0072:
+0073: CREATE INDEX IF NOT EXISTS idx_exam_question_options_question_order
+0074:     ON exam_question_options (question_id, option_order);
+0075:
+0076: CREATE UNIQUE INDEX IF NOT EXISTS uniq_exam_question_options_one_correct
+0077:     ON exam_question_options (question_id)
+0078:     WHERE is_correct;
+0079:
+0080: CREATE TABLE IF NOT EXISTS exam_submissions (
+0081:     id BIGSERIAL PRIMARY KEY,
+0082:     exam_id BIGINT NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
+0083:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0084:     attempt_no INTEGER NOT NULL DEFAULT 1 CHECK (attempt_no > 0),
+0085:     status VARCHAR(20) NOT NULL DEFAULT 'in_progress'
+0086:         CHECK (status IN ('in_progress', 'submitted', 'auto_submitted', 'graded', 'expired')),
+0087:     started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0088:     submitted_at TIMESTAMPTZ,
+0089:     expires_at TIMESTAMPTZ NOT NULL,
+0090:     time_limit_snapshot_minutes INTEGER NOT NULL CHECK (time_limit_snapshot_minutes > 0),
+0091:     score NUMERIC(8,2) CHECK (score >= 0),
+0092:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0093:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0094:     UNIQUE (exam_id, student_user_id, attempt_no),
+0095:     UNIQUE (id, exam_id),
+0096:     CHECK (submitted_at IS NULL OR submitted_at >= started_at),
+0097:     CHECK (expires_at >= started_at)
+0098: );
+0099:
+0100: COMMENT ON TABLE exam_submissions IS 'One student attempt for one exam.';
+0101: COMMENT ON COLUMN exam_submissions.expires_at IS 'Application-computed personal deadline capped by the exam ends_at.';
+0102: COMMENT ON COLUMN exam_submissions.time_limit_snapshot_minutes IS 'Duration copied at attempt start so later exam edits do not rewrite past attempts.';
+0103:
+0104: CREATE INDEX IF NOT EXISTS idx_exam_submissions_exam_student
+0105:     ON exam_submissions (exam_id, student_user_id);
+0106:
+0107: CREATE INDEX IF NOT EXISTS idx_exam_submissions_student_status
+0108:     ON exam_submissions (student_user_id, status);
+0109:
+0110: CREATE UNIQUE INDEX IF NOT EXISTS uniq_exam_submissions_one_in_progress
+0111:     ON exam_submissions (exam_id, student_user_id)
+0112:     WHERE status = 'in_progress';
+0113:
+0114: CREATE TABLE IF NOT EXISTS exam_submission_answers (
+0115:     id BIGSERIAL PRIMARY KEY,
+0116:     exam_id BIGINT NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
+0117:     submission_id BIGINT NOT NULL,
+0118:     question_id BIGINT NOT NULL,
+0119:     selected_option_id BIGINT,
+0120:     answer_text TEXT,
+0121:     is_correct BOOLEAN,
+0122:     awarded_score NUMERIC(8,2) CHECK (awarded_score >= 0),
+0123:     answered_at TIMESTAMPTZ,
+0124:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0125:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0126:     UNIQUE (submission_id, question_id),
+0127:     CONSTRAINT fk_exam_submission_answers_submission_exam
+0128:         FOREIGN KEY (submission_id, exam_id)
+0129:         REFERENCES exam_submissions(id, exam_id)
+0130:         ON DELETE CASCADE,
+0131:     CONSTRAINT fk_exam_submission_answers_question_exam
+0132:         FOREIGN KEY (question_id, exam_id)
+0133:         REFERENCES exam_questions(id, exam_id)
+0134:         ON DELETE CASCADE,
+0135:     CONSTRAINT fk_exam_submission_answers_option_question
+0136:         FOREIGN KEY (selected_option_id, question_id)
+0137:         REFERENCES exam_question_options(id, question_id)
+0138:         ON DELETE SET NULL
+0139: );
+0140:
+```
 
-| 대상 | 대표 검증 | 목적 |
-|---|---|---|
-| Front | `npm --prefix Front run lint`, `npm --prefix Front run build`, Playwright e2e (`auth-routing`, `exam-workflow`, `selected-lms-subset`) | 화면 route, role guard, 시험/selected LMS 사용자 흐름 검증 |
-| Backend | `PYTHONPATH=. pytest -q`, `test_presence_admin_and_auth.py`, `test_lms_selected_subset.py`, `test_attendance_realtime.py`, `test_exam_contract_alignment.py` | 인증, 출석, LMS, 시험 API 계약 검증 |
-| PresenceService | `PYTHONPATH=. pytest -q`, `test_service.py`, `test_registry.py` | collector/cache/eligibility/registry 동작 검증 |
-| DB | schema/init/migration SQL, object storage trigger tests | FK, audit/history, metadata schema 확인 |
-| Service | compose/nginx/manifest tests | 로컬/이미지 실행 구조와 release manifest 확인 |
-| 보고서 | `git -C docs diff --check`, link audit, marker scan | 문서 산출물 형식과 자급자족성 검증 |
+## H.5 assignment schema
 
-## 6.2 기능 검증 결과
+Source: `DB/postgres/init/014_assignment_schema.sql:1-80`
 
-| 기능 | 결과 | 직접 근거 |
-|---|---|---|
-| 로그인/권한 | 로컬 MVP 완료 | Fig. 1-6, Backend auth endpoints, route guard/e2e |
-| 학생 강의/LMS | 로컬 MVP 완료 | Fig. 8-16, selected LMS API/DB/code excerpt |
-| 과제/성적/Q&A/학습진도 | 로컬 MVP 완료 | Fig. 12-16, 30-35, API examples, selected LMS DB schema |
-| 출석 | 로컬 MVP 완료 | Fig. 17-20, 40-47, attendance ERD/API/code/audit |
-| 시험 | 로컬 MVP 완료 | Fig. 21-25, 36-39, exam ERD/API/code/e2e |
-| PresenceService | 로컬 MVP 완료 | Fig. 49-55, ERD-4, PresenceService code/test evidence |
-| Service/CI-CD | 부분 완료 | compose/manifest/test 근거. 단, 상용 배포 완료로 주장하지 않음 |
+```sql
+0001: -- Assignment domain schema
+0002: -- One mutable submission row per assignment and student.
+0003: -- Files are stored on the backend local filesystem and only metadata is stored here.
+0004:
+0005: CREATE TABLE IF NOT EXISTS assignments (
+0006:     id BIGSERIAL PRIMARY KEY,
+0007:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0008:     title VARCHAR(200) NOT NULL,
+0009:     description TEXT,
+0010:     opens_at TIMESTAMPTZ NOT NULL,
+0011:     due_at TIMESTAMPTZ NOT NULL,
+0012:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0013:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0014:     CHECK (due_at > opens_at)
+0015: );
+0016:
+0017: COMMENT ON TABLE assignments IS 'Course assignment master records.';
+0018:
+0019: CREATE INDEX IF NOT EXISTS idx_assignments_course_due_at
+0020:     ON assignments (course_id, due_at DESC);
+0021:
+0022: CREATE TABLE IF NOT EXISTS assignment_submissions (
+0023:     id BIGSERIAL PRIMARY KEY,
+0024:     assignment_id BIGINT NOT NULL REFERENCES assignments(id) ON DELETE CASCADE,
+0025:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0026:     submission_text TEXT,
+0027:     submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0028:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0029:     UNIQUE (assignment_id, student_user_id)
+0030: );
+0031:
+0032: COMMENT ON TABLE assignment_submissions IS 'Latest submission per assignment and student.';
+0033:
+0034: CREATE INDEX IF NOT EXISTS idx_assignment_submissions_assignment_student
+0035:     ON assignment_submissions (assignment_id, student_user_id);
+0036:
+0037: CREATE INDEX IF NOT EXISTS idx_assignment_submissions_student_submitted_at
+0038:     ON assignment_submissions (student_user_id, submitted_at DESC);
+0039:
+0040: CREATE TABLE IF NOT EXISTS assignment_submission_attachments (
+0041:     id BIGSERIAL PRIMARY KEY,
+0042:     submission_id BIGINT NOT NULL REFERENCES assignment_submissions(id) ON DELETE CASCADE,
+0043:     original_filename VARCHAR(255) NOT NULL,
+0044:     stored_filename VARCHAR(255) NOT NULL,
+0045:     mime_type VARCHAR(120),
+0046:     file_size_bytes INTEGER NOT NULL CHECK (file_size_bytes >= 0),
+0047:     storage_key VARCHAR(500) NOT NULL,
+0048:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0049: );
+0050:
+0051: COMMENT ON TABLE assignment_submission_attachments IS 'Attachment metadata for assignment submissions.';
+0052: COMMENT ON COLUMN assignment_submission_attachments.storage_key IS 'Internal backend storage path or key, not a public URL.';
+0053:
+0054: CREATE INDEX IF NOT EXISTS idx_assignment_submission_attachments_submission
+0055:     ON assignment_submission_attachments (submission_id, created_at ASC);
+```
 
-## 6.3 성능·운영성 평가
+## H.6 object storage / report export / deletion jobs
 
-이번 주 PR 기준 Backend #48(`feat/fix/db-pool-exhaustion-demo`)에는 PresenceService 지연 상황에서 one-worker Backend가 DB connection을 오래 점유하거나 realtime socket 연결이 막히는 문제를 완화하는 commit 3개가 포함되었다. 이는 성능 수치를 대규모 부하 테스트로 제시하는 단계는 아니지만, 출석 bootstrap 경로에서 timeout과 resource starvation이 실제 운영성 이슈가 될 수 있음을 발견하고 개선한 과정이다. 따라서 본 보고서의 성능 평가는 “대규모 운영 성능 보장”이 아니라 “로컬 MVP에서 확인된 병목 위험을 식별하고 완화한 근거”로 표현한다.
+Source: `DB/postgres/init/015_object_storage_schema.sql:49-205`
 
-## 6.4 한계점
+```sql
+0049: CREATE TABLE IF NOT EXISTS learning_items (
+0050:     id BIGSERIAL PRIMARY KEY,
+0051:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0052:     created_by_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+0053:     title VARCHAR(200) NOT NULL,
+0054:     description TEXT,
+0055:     item_type VARCHAR(20) NOT NULL DEFAULT 'file'
+0056:         CHECK (item_type IN ('document', 'video', 'file', 'link')),
+0057:     external_url TEXT,
+0058:     sort_order INTEGER NOT NULL DEFAULT 0,
+0059:     is_published BOOLEAN NOT NULL DEFAULT FALSE,
+0060:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0061:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0062:     CHECK ((item_type = 'link' AND external_url IS NOT NULL) OR (item_type <> 'link'))
+0063: );
+0064:
+0065: COMMENT ON TABLE learning_items IS 'Persisted course learning materials owned by Backend; Front no longer treats learning content as local-only state.';
+0066: COMMENT ON COLUMN learning_items.external_url IS 'Optional external link for link-type learning items; uploaded files use learning_item_attachments.';
+0067:
+0068: CREATE INDEX IF NOT EXISTS idx_learning_items_course_published_sort
+0069:     ON learning_items (course_id, is_published, sort_order, created_at DESC);
+0070:
+0071: CREATE TABLE IF NOT EXISTS learning_item_attachments (
+0072:     id BIGSERIAL PRIMARY KEY,
+0073:     learning_item_id BIGINT NOT NULL REFERENCES learning_items(id) ON DELETE CASCADE,
+0074:     original_filename VARCHAR(255) NOT NULL,
+0075:     stored_filename VARCHAR(255) NOT NULL,
+0076:     mime_type VARCHAR(120),
+0077:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
+0078:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
+0079:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
+0080:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
+0081:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
+0082:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0083: );
+0084:
+0085: COMMENT ON TABLE learning_item_attachments IS 'Object metadata for course learning materials and lecture videos.';
+0086: COMMENT ON COLUMN learning_item_attachments.storage_key IS 'Internal object key, for example learning/{course_code}/{item_id}/{uuid}_{filename}.';
+0087:
+0088: CREATE INDEX IF NOT EXISTS idx_learning_item_attachments_item
+0089:     ON learning_item_attachments (learning_item_id, created_at ASC);
+0090:
+0091: CREATE TABLE IF NOT EXISTS notice_attachments (
+0092:     id BIGSERIAL PRIMARY KEY,
+0093:     notice_id BIGINT NOT NULL REFERENCES notices(id) ON DELETE CASCADE,
+0094:     original_filename VARCHAR(255) NOT NULL,
+0095:     stored_filename VARCHAR(255) NOT NULL,
+0096:     mime_type VARCHAR(120),
+0097:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
+0098:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
+0099:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
+0100:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
+0101:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
+0102:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0103: );
+0104:
+0105: COMMENT ON TABLE notice_attachments IS 'Object metadata for course or global notice attachments.';
+0106: COMMENT ON COLUMN notice_attachments.storage_key IS 'Internal object key, for example notices/{notice_id}/{uuid}_{filename}.';
+0107:
+0108: CREATE INDEX IF NOT EXISTS idx_notice_attachments_notice
+0109:     ON notice_attachments (notice_id, created_at ASC);
+0110:
+0111: CREATE TABLE IF NOT EXISTS exam_question_attachments (
+0112:     id BIGSERIAL PRIMARY KEY,
+0113:     question_id BIGINT NOT NULL REFERENCES exam_questions(id) ON DELETE CASCADE,
+0114:     attachment_role VARCHAR(20) NOT NULL DEFAULT 'prompt'
+0115:         CHECK (attachment_role IN ('prompt', 'explanation')),
+0116:     original_filename VARCHAR(255) NOT NULL,
+0117:     stored_filename VARCHAR(255) NOT NULL,
+0118:     mime_type VARCHAR(120),
+0119:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
+0120:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
+0121:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
+0122:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
+0123:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
+0124:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0125: );
+0126:
+0127: COMMENT ON TABLE exam_question_attachments IS 'Object metadata for professor-authored exam question or explanation media.';
+0128: COMMENT ON COLUMN exam_question_attachments.storage_key IS 'Internal object key, for example exams/{exam_id}/questions/{question_id}/{uuid}_{filename}.';
+0129:
+0130: CREATE INDEX IF NOT EXISTS idx_exam_question_attachments_question
+0131:     ON exam_question_attachments (question_id, created_at ASC);
+0132:
+0133: CREATE TABLE IF NOT EXISTS exam_answer_attachments (
+0134:     id BIGSERIAL PRIMARY KEY,
+0135:     answer_id BIGINT NOT NULL REFERENCES exam_submission_answers(id) ON DELETE CASCADE,
+0136:     original_filename VARCHAR(255) NOT NULL,
+0137:     stored_filename VARCHAR(255) NOT NULL,
+0138:     mime_type VARCHAR(120),
+0139:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
+0140:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
+0141:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
+0142:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
+0143:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
+0144:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0145: );
+0146:
+0147: COMMENT ON TABLE exam_answer_attachments IS 'Future-compatible object metadata for student exam answer files; first-pass objective exams do not require file-answer UI.';
+0148: COMMENT ON COLUMN exam_answer_attachments.storage_key IS 'Internal object key, for example exams/{exam_id}/submissions/{submission_id}/answers/{answer_id}/{uuid}_{filename}.';
+0149:
+0150: CREATE INDEX IF NOT EXISTS idx_exam_answer_attachments_answer
+0151:     ON exam_answer_attachments (answer_id, created_at ASC);
+0152:
+0153: CREATE TABLE IF NOT EXISTS report_exports (
+0154:     id BIGSERIAL PRIMARY KEY,
+0155:     course_id BIGINT REFERENCES courses(id) ON DELETE SET NULL,
+0156:     requested_by_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+0157:     report_domain VARCHAR(20) NOT NULL DEFAULT 'attendance'
+0158:         CHECK (report_domain IN ('attendance', 'grade', 'assignment', 'exam')),
+0159:     export_format VARCHAR(20) NOT NULL DEFAULT 'csv'
+0160:         CHECK (export_format IN ('csv', 'pdf')),
+0161:     original_filename VARCHAR(255) NOT NULL,
+0162:     stored_filename VARCHAR(255) NOT NULL,
+0163:     mime_type VARCHAR(120),
+0164:     file_size_bytes BIGINT NOT NULL CHECK (file_size_bytes >= 0),
+0165:     storage_provider VARCHAR(20) NOT NULL DEFAULT 's3' CHECK (storage_provider IN ('local', 's3')),
+0166:     bucket_name VARCHAR(120) NOT NULL DEFAULT 'smart-class' CHECK (bucket_name <> ''),
+0167:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
+0168:     checksum_sha256 VARCHAR(64) CHECK (checksum_sha256 IS NULL OR checksum_sha256 ~ '^[0-9a-f]{64}$'),
+0169:     status VARCHAR(20) NOT NULL DEFAULT 'ready'
+0170:         CHECK (status IN ('pending', 'ready', 'failed', 'deleted')),
+0171:     generated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0172:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0173: );
+0174:
+0175: COMMENT ON TABLE report_exports IS 'Metadata for generated report files; first pass stores attendance CSV exports only, other domains are future-compatible.';
+0176: COMMENT ON COLUMN report_exports.storage_key IS 'Internal object key, for example reports/{domain}/{course_code}/{yyyy}/{mm}/{uuid}_{filename}.';
+0177:
+0178: CREATE INDEX IF NOT EXISTS idx_report_exports_course_domain_created
+0179:     ON report_exports (course_id, report_domain, created_at DESC);
+0180:
+0181: CREATE TABLE IF NOT EXISTS object_deletion_jobs (
+0182:     id BIGSERIAL PRIMARY KEY,
+0183:     storage_provider VARCHAR(20) NOT NULL CHECK (storage_provider IN ('local', 's3')),
+0184:     bucket_name VARCHAR(120) NOT NULL CHECK (bucket_name <> ''),
+0185:     storage_key VARCHAR(700) NOT NULL CHECK (storage_key <> '' AND storage_key !~* '^https?://'),
+0186:     owner_domain VARCHAR(80) NOT NULL,
+0187:     owner_id BIGINT,
+0188:     reason VARCHAR(80) NOT NULL DEFAULT 'metadata_deleted',
+0189:     status VARCHAR(20) NOT NULL DEFAULT 'pending'
+0190:         CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
+0191:     attempt_count INTEGER NOT NULL DEFAULT 0 CHECK (attempt_count >= 0),
+0192:     last_error TEXT,
+0193:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0194:     completed_at TIMESTAMPTZ,
+0195:     CHECK ((status = 'completed' AND completed_at IS NOT NULL) OR (status <> 'completed'))
+0196: );
+0197:
+0198: COMMENT ON TABLE object_deletion_jobs IS 'Durable outbox for DB-driven immediate object deletion after metadata delete/replace.';
+0199: COMMENT ON COLUMN object_deletion_jobs.owner_domain IS 'Domain/table context that owned the deleted object metadata.';
+0200: COMMENT ON COLUMN object_deletion_jobs.owner_id IS 'Owning domain row id captured from the deleted metadata row when available.';
+0201:
+0202: CREATE INDEX IF NOT EXISTS idx_object_deletion_jobs_status_created
+0203:     ON object_deletion_jobs (status, created_at ASC);
+0204:
+0205: CREATE INDEX IF NOT EXISTS idx_object_deletion_jobs_object_active
+```
 
-- 장기 교내 Wi-Fi 현장 검증: 실제 강의실에서 여러 주 동안 AP별 RSSI, roaming, snapshot freshness, 랜덤 MAC 정책을 수집·분석하지 못했다.
-- 상용 운영 배포: compose/image/release manifest는 있으나, 운영 서버 provenance와 장기 모니터링 근거는 없다.
-- 학사시스템 정식 연동: 현재 seed/test 사용자와 LMS subset 중심이며, 실제 SIS/SSO와의 계약은 후속 과제다.
-- 네이티브 모바일 앱: 웹 기반 MVP이며, push notification, 백그라운드 Wi-Fi scan, 모바일 단말 등록 UX는 후속 과제다.
-- 시험 범위: 객관식/참거짓 중심이며, 서술형/파일형/부정행위 대응은 추가 설계가 필요하다.
-- 개인정보/보안 정책: MAC/단말 정보와 presence log는 운영 정책, 보관 기간, 익명화/가명화, 사용자 동의 절차가 필요하다.
+## H.7 selected LMS Q&A / learning progress
 
-## 6.5 검증 및 품질 게이트 근거
+Source: `DB/postgres/init/016_selected_lms_subset.sql:84-160`
 
-### 6.5.1 실행/검증 명령
+```sql
+0084: CREATE TABLE IF NOT EXISTS course_qna_threads (
+0085:     id BIGSERIAL PRIMARY KEY,
+0086:     course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+0087:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0088:     title VARCHAR(200) NOT NULL,
+0089:     body TEXT NOT NULL,
+0090:     status VARCHAR(20) NOT NULL DEFAULT 'open'
+0091:         CHECK (status IN ('open', 'answered', 'closed')),
+0092:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0093:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0094:     CHECK (btrim(title) <> ''),
+0095:     CHECK (btrim(body) <> '')
+0096: );
+0097:
+0098: COMMENT ON TABLE course_qna_threads IS 'Student-authored course Q&A/inquiry threads for the selected LMS subset.';
+0099: COMMENT ON COLUMN course_qna_threads.status IS 'Thread state visible to students and professors: open, answered, or closed.';
+0100:
+0101: CREATE INDEX IF NOT EXISTS idx_course_qna_threads_course_status_updated
+0102:     ON course_qna_threads (course_id, status, updated_at DESC);
+0103:
+0104: CREATE INDEX IF NOT EXISTS idx_course_qna_threads_student_updated
+0105:     ON course_qna_threads (student_user_id, updated_at DESC);
+0106:
+0107: CREATE TABLE IF NOT EXISTS course_qna_posts (
+0108:     id BIGSERIAL PRIMARY KEY,
+0109:     thread_id BIGINT NOT NULL REFERENCES course_qna_threads(id) ON DELETE CASCADE,
+0110:     author_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0111:     body TEXT NOT NULL,
+0112:     post_type VARCHAR(20) NOT NULL DEFAULT 'comment'
+0113:         CHECK (post_type IN ('question', 'answer', 'comment')),
+0114:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0115:     CHECK (btrim(body) <> '')
+0116: );
+0117:
+0118: COMMENT ON TABLE course_qna_posts IS 'Posts inside a course Q&A thread: initial question, professor answer, or comments.';
+0119: COMMENT ON COLUMN course_qna_posts.post_type IS 'Q&A post type: question, answer, or comment.';
+0120:
+0121: CREATE INDEX IF NOT EXISTS idx_course_qna_posts_thread_created
+0122:     ON course_qna_posts (thread_id, created_at ASC);
+0123:
+0124: CREATE INDEX IF NOT EXISTS idx_course_qna_posts_author_created
+0125:     ON course_qna_posts (author_user_id, created_at DESC);
+0126:
+0127: CREATE TABLE IF NOT EXISTS learning_progress (
+0128:     id BIGSERIAL PRIMARY KEY,
+0129:     learning_item_id BIGINT NOT NULL REFERENCES learning_items(id) ON DELETE CASCADE,
+0130:     student_user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+0131:     progress_percent NUMERIC(5,2) NOT NULL DEFAULT 0.00
+0132:         CHECK (progress_percent >= 0 AND progress_percent <= 100),
+0133:     status VARCHAR(20) NOT NULL DEFAULT 'not_started'
+0134:         CHECK (status IN ('not_started', 'in_progress', 'completed')),
+0135:     last_viewed_at TIMESTAMPTZ,
+0136:     completed_at TIMESTAMPTZ,
+0137:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0138:     UNIQUE (learning_item_id, student_user_id),
+0139:     CHECK (status <> 'completed' OR progress_percent = 100.00)
+0140: );
+0141:
+0142: COMMENT ON TABLE learning_progress IS 'Per-student learning material progress snapshot for selected LMS progress APIs.';
+0143: COMMENT ON COLUMN learning_progress.progress_percent IS 'Progress percentage from 0 through 100.';
+0144: COMMENT ON COLUMN learning_progress.status IS 'Learning progress state: not_started, in_progress, or completed.';
+0145:
+0146: CREATE INDEX IF NOT EXISTS idx_learning_progress_student_status
+0147:     ON learning_progress (student_user_id, status, updated_at DESC);
+0148:
+0149: CREATE INDEX IF NOT EXISTS idx_learning_progress_item_status
+0150:     ON learning_progress (learning_item_id, status, updated_at DESC);
+```
+
+## H.8 OpenWrt collector registry migration
+
+Source: `DB/postgres/migrations/016_openwrt_collector_registry.sql:1-70`
+
+```sql
+0001: CREATE TABLE IF NOT EXISTS access_points (
+0002:     id BIGSERIAL PRIMARY KEY,
+0003:     collector_ap_id VARCHAR(64) NOT NULL UNIQUE,
+0004:     label VARCHAR(120) NOT NULL,
+0005:     management_ip VARCHAR(64),
+0006:     tailnet_ip VARCHAR(64),
+0007:     status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
+0008:     token_hash VARCHAR(128),
+0009:     token_version INTEGER NOT NULL DEFAULT 0,
+0010:     token_revoked_at TIMESTAMPTZ,
+0011:     last_rotated_at TIMESTAMPTZ,
+0012:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0013:     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+0014: );
+0015:
+0016: CREATE TABLE IF NOT EXISTS access_point_interfaces (
+0017:     id BIGSERIAL PRIMARY KEY,
+0018:     access_point_id BIGINT NOT NULL REFERENCES access_points(id) ON DELETE CASCADE,
+0019:     interface_id VARCHAR(64) NOT NULL,
+0020:     bssid VARCHAR(32),
+0021:     ssid VARCHAR(120),
+0022:     classroom_network_id BIGINT NOT NULL REFERENCES classroom_networks(id) ON DELETE CASCADE,
+0023:     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+0024:     UNIQUE (access_point_id, interface_id),
+0025:     UNIQUE (classroom_network_id)
+0026: );
+0027:
+0028: CREATE INDEX IF NOT EXISTS idx_access_point_interfaces_network_id
+0029:     ON access_point_interfaces (classroom_network_id);
+0030:
+0031: UPDATE classroom_networks
+0032: SET collection_mode = 'openwrt-push',
+0033:     ssid = 'SmartClass-Demo',
+0034:     gateway_host = CASE
+0035:         WHEN ap_id LIKE 'phy0-%' OR ap_id LIKE 'phy1-%' THEN '192.168.97.1'
+0036:         WHEN ap_id LIKE 'phy4-%' OR ap_id LIKE 'phy5-%' THEN '192.168.97.2'
+0037:         WHEN ap_id LIKE 'phy7-%' OR ap_id LIKE 'phy8-%' THEN '192.168.97.3'
+0038:         ELSE gateway_host
+0039:     END
+0040: WHERE ap_id IN ('phy0-ap0','phy1-ap0','phy4-ap0','phy5-ap0','phy7-ap0','phy8-ap0');
+0041:
+0042: INSERT INTO access_points (collector_ap_id, label, management_ip, tailnet_ip, status)
+0043: VALUES
+0044:     ('openwrt-a', 'Demo AP A / B101', '192.168.97.1', '100.78.116.89', 'active'),
+0045:     ('openwrt-b', 'Demo AP B / B102', '192.168.97.2', '100.86.49.51', 'active'),
+0046:     ('openwrt-c', 'Demo AP C / C201', '192.168.97.3', '100.99.237.79', 'active')
+0047: ON CONFLICT (collector_ap_id) DO UPDATE
+0048: SET label = EXCLUDED.label,
+0049:     management_ip = EXCLUDED.management_ip,
+0050:     tailnet_ip = EXCLUDED.tailnet_ip,
+0051:     status = EXCLUDED.status,
+0052:     updated_at = NOW();
+0053:
+0054: DELETE FROM access_point_interfaces api
+0055: USING access_points ap
+0056: WHERE api.access_point_id = ap.id
+0057:   AND ap.collector_ap_id IN ('openwrt-a', 'openwrt-b', 'openwrt-c')
+0058:   AND api.interface_id <> 'phy1-ap0';
+0059:
+0060: INSERT INTO access_point_interfaces (access_point_id, interface_id, ssid, classroom_network_id)
+0061: SELECT ap.id, mapping.interface_id, cn.ssid, cn.id
+0062: FROM (VALUES
+0063:     ('openwrt-a', 'phy1-ap0', 'phy1-ap0'),
+0064:     ('openwrt-b', 'phy1-ap0', 'phy4-ap0'),
+0065:     ('openwrt-c', 'phy1-ap0', 'phy7-ap0')
+0066: ) AS mapping(collector_ap_id, interface_id, classroom_ap_id)
+0067: JOIN access_points ap ON ap.collector_ap_id = mapping.collector_ap_id
+0068: JOIN classroom_networks cn ON cn.ap_id = mapping.classroom_ap_id
+0069: ON CONFLICT (access_point_id, interface_id) DO UPDATE
+0070: SET ssid = EXCLUDED.ssid,
+```
+
+# I. 검증 및 품질 게이트 근거
+
+## I.1 실행/검증 명령
 
 ```text
 git -C docs diff --check
@@ -4972,76 +4611,15 @@ API request/response pair count audit
 two-file report/appendix alignment audit
 ```
 
-### 6.5.2 현재 산출물 수량
+## I.2 현재 산출물 수량
 
 - Screenshot PNG: 52
 - Screenshot redbox SVG: 52
 - ERD SVG: 16
 - ERD set: ERD-1 full + ERD-2~ERD-8 partial/N/A boundary
 
-### 6.5.3 최종 품질 원칙
+## I.3 최종 품질 원칙
 
 - 완료 주장에는 화면, API/코드, DB/ERD, 테스트/실행 근거 중 가능한 근거를 함께 둔다.
 - 운영 배포, 장기 현장 검증, SIS 연동, 네이티브 모바일 앱은 한계/후속 과제로만 표현한다.
 - 보고서와 부록은 외부 보조 산출물 없이도 읽히는 형태를 유지한다.
-
-# 7. 결론
-
-## 7.1 성과
-
-Smart Class는 단순 LMS 화면 구현을 넘어, 출석과 시험 접근에 필요한 재실성 판단을 별도 서비스로 분리하고 이를 Backend 도메인 판단과 결합했다. 학생·교수·서비스관리자 역할별 UI, Backend API, PresenceService eligibility, PostgreSQL ERD/SQL, Docker/Nginx 실행 구조, 테스트 근거가 서로 연결되어 있다. 특히 출석 workflow는 교수 세션 운영, 학생 self check-in, 수동 보정, audit history, CSV export까지 end-to-end로 설명 가능한 수준에 도달했다.
-
-## 7.2 문제 해결 과정
-
-프로젝트 수행 중 가장 중요한 문제는 “네트워크 presence evidence와 학사 도메인 판단을 어디에서 결합할 것인가”였다. 이를 Backend와 PresenceService 경계로 분리하여 해결했다. 또 attendance bootstrap 과정에서 PresenceService 지연이 Backend resource starvation으로 이어질 수 있는 문제가 확인되어, realtime socket 연결성과 DB pool 점유를 완화하는 방향으로 수정했다. 문서화 단계에서는 기존 보고서가 여러 보조 산출물을 계속 열어야 이해되는 문제가 있어, 본문과 부록 두 파일 안에 화면·ERD·코드·SQL·API·검증 근거를 직접 넣는 구조로 개선했다.
-
-## 7.3 개선 방향
-
-향후 개선은 네 방향이다. 첫째, 실제 강의실 OpenWrt/AP 환경에서 장기 수집을 수행해 threshold와 false positive/false negative를 정량화한다. 둘째, 학사시스템 SSO/SIS와 연동하여 사용자·수강·시간표 데이터를 운영 계약으로 가져온다. 셋째, 모바일 앱 또는 PWA를 통해 단말 등록, 알림, 시험/출석 UX를 개선한다. 넷째, 운영 배포 pipeline, observability, 개인정보 보관 정책, 장애 대응 runbook을 보강한다.
-
-# 8. 참고문헌
-
-## 8.1 프로젝트 산출물
-
-[1] Smart Class Front repository, `Front`, main HEAD `418ae29`, 2026-05-22 기준.
-[2] Smart Class Backend repository, `Backend`, main HEAD `f06169e`, 2026-05-22 기준.
-[3] Smart Class PresenceService repository, `PresenceService`, main HEAD `bffda67`, 2026-05-22 기준.
-[4] Smart Class DB repository, `DB`, main HEAD `621d712`, 2026-05-22 기준.
-[5] Smart Class Service repository, `Service`, main HEAD `c36a432`, 2026-05-22 기준.
-[6] Smart Class final appendix, `docs/08-reports/99-combined-report-appendix.md`, 2026-05-22 기준.
-
-## 8.2 기술 문서
-
-[7] FastAPI documentation, REST endpoint and WebSocket design reference.
-[8] React documentation, component-based UI implementation reference.
-[9] Vite documentation, frontend build/dev server reference.
-[10] PostgreSQL documentation, relational schema, constraint, transaction reference.
-[11] Docker Compose documentation, multi-container local runtime reference.
-[12] Nginx documentation, reverse proxy and static asset routing reference.
-
-## 8.3 코드/테스트 출처
-
-[13] `Backend/tests/test_presence_admin_and_auth.py` — 인증, 관리자, presence 관련 contract test.
-[14] `Backend/tests/test_lms_selected_subset.py` — selected LMS subset API test.
-[15] `Backend/tests/test_attendance_realtime.py` — 출석 WebSocket/session/record/audit test.
-[16] `Backend/tests/test_exam_contract_alignment.py` — 시험 API contract alignment test.
-[17] `PresenceService/tests/test_service.py` — collector/cache/eligibility test.
-[18] `PresenceService/tests/test_registry.py` — collector registry test.
-[19] `Front/tests/e2e/auth-routing.spec.ts`, `exam-workflow.spec.ts`, `selected-lms-subset.spec.ts` — 주요 UI e2e 흐름 test.
-[20] `Service/tests/test_release_manifest_contract.py`, `test_workspace_release_readiness.py` — release/runtime manifest contract test.
-
-# 9. 부록 안내
-
-## 9.1 두 파일 산출물 관계
-
-이 파일(`99-combined-report.md`)은 최종보고서 본문이며, 설명에 필요한 화면·ERD·API·코드·SQL을 직접 포함한다. `99-combined-report-appendix.md`는 같은 근거를 증거 원장 형태로 정렬한 두 번째 문서 산출물이다. 화면/ERD asset은 두 문서에서 바로 표시되도록 연결된 증거 자료이며, 과거 보고서 조각이나 보조 문서 산출물은 최종 독자가 이해를 위해 열 필요가 없다.
-
-## 9.2 부록 사용법
-
-부록은 다음 용도로 사용한다.
-
-- 화면 번호별 redbox 이미지 빠른 검색
-- ERD raw/redbox 이미지 빠른 검색
-- API request/response 예시 빠른 검색
-- 코드/DB excerpt 위치 확인
-- repo baseline, 검증 caveat, 한계/비범위 재확인

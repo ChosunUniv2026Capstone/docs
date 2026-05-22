@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2521" viewBox="0 0 1440 2521">
+  <image href="../../admin-02-classrooms-networks.png" x="0" y="0" width="1440" height="2521" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="100" y="453" width="1238" height="1613" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="100" y="405" width="830" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="112" y="432" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 49 / Fig. 50 / Fig. 51: classroom/AP mapping, station list, threshold controls</text>
+</svg>
