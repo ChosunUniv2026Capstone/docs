@@ -2,7 +2,7 @@
 title: Assignment Workflow API
 type: architecture
 status: active
-updated: 2026-05-14
+updated: 2026-05-22
 owners:
   - backend-team
   - frontend-team
@@ -16,6 +16,7 @@ source:
   - 2026-05-09 local implementation alignment for course assignment workflow
   - 2026-05-14 current issue-resolution checkpoint for grading/feedback scope
   - 2026-05-16 selected LMS subset contract
+  - 2026-05-22 assignment attachment removal contract update
 ---
 
 # Domain Model
