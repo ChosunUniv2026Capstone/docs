@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1291" viewBox="0 0 1440 1291">
+  <image href="../../student-10-exam-list.png" x="0" y="0" width="1440" height="1291" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="144" y="232" width="1152" height="800" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="144" y="184" width="410" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="156" y="211" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 21: exam list card status and policy</text>
+</svg>

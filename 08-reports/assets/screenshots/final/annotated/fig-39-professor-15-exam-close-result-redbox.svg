@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2681" viewBox="0 0 1440 2681">
+  <image href="../../professor-15-exam-close-result.png" x="0" y="0" width="1440" height="2681" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="144" y="482" width="1152" height="1662" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="144" y="434" width="360" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="156" y="461" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 39: exam close result status</text>
+</svg>

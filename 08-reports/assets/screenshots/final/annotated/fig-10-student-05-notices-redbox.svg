@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1100" viewBox="0 0 1440 1100">
+  <image href="../../student-05-notices.png" x="0" y="0" width="1440" height="1100" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="172" y="220" width="1094" height="638" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="172" y="172" width="390" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="184" y="199" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 10: notice list row and navigation</text>
+</svg>

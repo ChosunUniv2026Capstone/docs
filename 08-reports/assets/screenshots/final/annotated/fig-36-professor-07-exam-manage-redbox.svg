@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2130" viewBox="0 0 1440 2130">
+  <image href="../../professor-07-exam-manage.png" x="0" y="0" width="1440" height="2130" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="144" y="383" width="1152" height="1320" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="144" y="335" width="400" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="156" y="362" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 36: exam draft/list management card</text>
+</svg>

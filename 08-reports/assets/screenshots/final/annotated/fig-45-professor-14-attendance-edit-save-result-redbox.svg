@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="13087" viewBox="0 0 1440 13087">
+  <image href="../../professor-14-attendance-edit-save-result.png" x="0" y="0" width="1440" height="13087" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="100" y="2093" width="1238" height="8899" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="100" y="2045" width="440" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="112" y="2072" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 45: save success and updated status row</text>
+</svg>

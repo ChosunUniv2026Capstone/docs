@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1100" viewBox="0 0 1440 1100">
+  <image href="../../student-03-course-home.png" x="0" y="0" width="1440" height="1100" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="115" y="198" width="1209" height="682" fill="none" stroke="#e60000" stroke-width="8" rx="12"/>
+  <rect x="115" y="150" width="380" height="40" fill="rgba(255,255,255,0.92)" stroke="#e60000" stroke-width="3"/>
+  <text x="127" y="177" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#e60000">Fig. 8: course header and student tabs</text>
+</svg>
