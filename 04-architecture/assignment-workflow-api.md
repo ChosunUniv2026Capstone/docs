@@ -63,6 +63,7 @@ source:
 - `POST /api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/submission`
   - multipart form fields:
     - `submission_text`
+    - `remove_attachment_ids`
     - `files`
 - `GET /api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/attachments/{attachment_id}`
 
@@ -109,6 +110,7 @@ source:
 - Submission updates are blocked after the assignment becomes `closed`.
 - The current local MVP accepts up to 5 files per submission.
 - The current local MVP rejects any single uploaded file larger than 10 MiB.
+- `remove_attachment_ids` may only reference the student's current submission attachments.
 
 # Error Codes
 
