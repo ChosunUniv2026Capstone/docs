@@ -310,7 +310,7 @@ sequenceDiagram
     participant D as PostgreSQL
     participant R as Redis snapshot cache
 
-    S->>B: POST /api/attendance/sessions/<built-in function id>/check-in
+    S->>B: POST /api/attendance/sessions/{session_id}/check-in
     B->>D: enrollment, session, slot, device 조회
     B->>P: GET /presence/eligibility?user&course&classroom&purpose=attendance
     P->>R: latest classroom snapshot 조회
@@ -349,9 +349,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: LMS + presence/attendance + assessment domains
 - 포함 테이블/노드: users, courses, course_enrollments, course_schedules, classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, refresh_sessions, attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, presence_eligibility_logs, exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, assignments, assignment_submissions, learning_items, learning_progress, course_qna_threads, course_qna_posts, report_exports, object_deletion_jobs
 
-![ERD-1 raw](assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
+![ERD-1 raw](../08-reports/assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
 
-![ERD-1 redbox](assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg)
+![ERD-1 redbox](../08-reports/assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg)
 
 #### ERD-2 — User / auth / registered-device ERD
 
@@ -360,9 +360,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: users.id relationships to sessions/devices
 - 포함 테이블/노드: users, refresh_sessions, registered_devices
 
-![ERD-2 raw](assets/diagrams/final/raw/erd-2-user-auth-device.svg)
+![ERD-2 raw](../08-reports/assets/diagrams/final/raw/erd-2-user-auth-device.svg)
 
-![ERD-2 redbox](assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg)
+![ERD-2 redbox](../08-reports/assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg)
 
 #### ERD-3 — Course / enrollment / notice / material ERD
 
@@ -371,9 +371,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: course ownership/enrollment and attachment relations
 - 포함 테이블/노드: courses, course_enrollments, course_schedules, notices, learning_items, learning_item_attachments, notice_attachments
 
-![ERD-3 raw](assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg)
+![ERD-3 raw](../08-reports/assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg)
 
-![ERD-3 redbox](assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg)
+![ERD-3 redbox](../08-reports/assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg)
 
 #### ERD-4 — Device / classroom / AP / presence ERD
 
@@ -382,9 +382,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: classroom network mapping and AP registry evidence
 - 포함 테이블/노드: classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, presence_eligibility_logs
 
-![ERD-4 raw](assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg)
+![ERD-4 raw](../08-reports/assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg)
 
-![ERD-4 redbox](assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg)
+![ERD-4 redbox](../08-reports/assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg)
 
 #### ERD-5 — Attendance session / record / audit ERD
 
@@ -393,9 +393,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: bundle parent, slot fan-out, record/audit history
 - 포함 테이블/노드: attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, users, courses, classrooms
 
-![ERD-5 raw](assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg)
+![ERD-5 raw](../08-reports/assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg)
 
-![ERD-5 redbox](assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg)
+![ERD-5 redbox](../08-reports/assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg)
 
 #### ERD-6 — Exam / question / submission / answer ERD
 
@@ -404,9 +404,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: exam-question-option and submission-answer consistency
 - 포함 테이블/노드: exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, exam_question_attachments, exam_answer_attachments
 
-![ERD-6 raw](assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg)
+![ERD-6 raw](../08-reports/assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg)
 
-![ERD-6 redbox](assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg)
+![ERD-6 redbox](../08-reports/assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg)
 
 #### ERD-7 — Selected LMS / assignment / Q&A / progress ERD
 
@@ -415,9 +415,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: grading fields, Q&A threads/posts, progress ownership
 - 포함 테이블/노드: assignments, assignment_submissions, assignment_submission_attachments, course_qna_threads, course_qna_posts, learning_progress, learning_items, users, courses
 
-![ERD-7 raw](assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg)
+![ERD-7 raw](../08-reports/assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg)
 
-![ERD-7 redbox](assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg)
+![ERD-7 redbox](../08-reports/assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg)
 
 #### ERD-8 — Service / ops metadata ERD and N/A boundary
 
@@ -426,9 +426,9 @@ DB 설계는 사용자·강의·강의실·네트워크·출석·시험·과제�
 - 강조 대상: report exports, object deletion outbox, Service runtime N/A boundary
 - 포함 테이블/노드: report_exports, object_deletion_jobs, learning_item_attachments, notice_attachments, assignment_submission_attachments, Service runtime: N/A PostgreSQL entity
 
-![ERD-8 raw](assets/diagrams/final/raw/erd-8-service-ops-metadata.svg)
+![ERD-8 raw](../08-reports/assets/diagrams/final/raw/erd-8-service-ops-metadata.svg)
 
-![ERD-8 redbox](assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg)
+![ERD-8 redbox](../08-reports/assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg)
 
 ## 4.5 DB schema excerpt
 
@@ -1309,7 +1309,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-1-01-login-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 1 redbox](assets/screenshots/final/annotated/fig-1-01-login-redbox.svg)
+![Fig. 1 redbox](../08-reports/assets/screenshots/final/annotated/fig-1-01-login-redbox.svg)
 
 #### Fig. 2 — inline login failure banner
 
@@ -1317,7 +1317,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 2 redbox](assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg)
+![Fig. 2 redbox](../08-reports/assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg)
 
 #### Fig. 3 — authorization denied message
 
@@ -1325,7 +1325,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 3 redbox](assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg)
+![Fig. 3 redbox](../08-reports/assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg)
 
 #### Fig. 4 — student course cards and account summary
 
@@ -1333,7 +1333,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 4 redbox](assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg)
+![Fig. 4 redbox](../08-reports/assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg)
 
 #### Fig. 5 — professor course cards
 
@@ -1341,7 +1341,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 5 redbox](assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg)
+![Fig. 5 redbox](../08-reports/assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg)
 
 #### Fig. 6 / Fig. 48 — admin user table and role column
 
@@ -1349,7 +1349,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 6 / Fig. 48 redbox](assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg)
+![Fig. 6 / Fig. 48 redbox](../08-reports/assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg)
 
 #### Fig. 7 — registered device list and controls
 
@@ -1357,7 +1357,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 7 redbox](assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg)
+![Fig. 7 redbox](../08-reports/assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg)
 
 #### Fig. 8 — course header and student tabs
 
@@ -1365,7 +1365,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 8 redbox](assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg)
+![Fig. 8 redbox](../08-reports/assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg)
 
 #### Fig. 9 — learning item cards and download area
 
@@ -1373,7 +1373,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 9 redbox](assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg)
+![Fig. 9 redbox](../08-reports/assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg)
 
 #### Fig. 10 — notice list row and navigation
 
@@ -1381,7 +1381,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 10 redbox](assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg)
+![Fig. 10 redbox](../08-reports/assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg)
 
 #### Fig. 11 — notice title, body, and metadata
 
@@ -1389,7 +1389,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 11 redbox](assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg)
+![Fig. 11 redbox](../08-reports/assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg)
 
 #### Fig. 12 — assignment card, status, and detail action
 
@@ -1397,7 +1397,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 12 redbox](assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg)
+![Fig. 12 redbox](../08-reports/assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg)
 
 #### Fig. 13 — submission body, attachment area, and current feedback
 
@@ -1405,7 +1405,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 13 redbox](assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg)
+![Fig. 13 redbox](../08-reports/assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg)
 
 #### Fig. 14 — grade and feedback summary card
 
@@ -1413,7 +1413,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 14 redbox](assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg)
+![Fig. 14 redbox](../08-reports/assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg)
 
 #### Fig. 15 — learning progress input and save action
 
@@ -1421,7 +1421,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 15 redbox](assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg)
+![Fig. 15 redbox](../08-reports/assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg)
 
 #### Fig. 16 — Q&A form and thread status
 
@@ -1429,7 +1429,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 16 redbox](assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg)
+![Fig. 16 redbox](../08-reports/assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg)
 
 #### Fig. 17 / Fig. 20 — attendance eligibility card and semester matrix
 
@@ -1437,7 +1437,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 17 / Fig. 20 redbox](assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg)
+![Fig. 17 / Fig. 20 redbox](../08-reports/assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg)
 
 #### Fig. 18 — eligible summary and evidence card
 
@@ -1445,7 +1445,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 18 redbox](assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg)
+![Fig. 18 redbox](../08-reports/assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg)
 
 #### Fig. 19 — bundle check-in result card
 
@@ -1453,7 +1453,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 19 redbox](assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg)
+![Fig. 19 redbox](../08-reports/assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg)
 
 #### Fig. 21 — exam list card status and policy
 
@@ -1461,7 +1461,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 21 redbox](assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg)
+![Fig. 21 redbox](../08-reports/assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg)
 
 #### Fig. 22 — question prompt, options, countdown
 
@@ -1469,7 +1469,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 22 redbox](assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg)
+![Fig. 22 redbox](../08-reports/assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg)
 
 #### Fig. 23 — selected option and save state
 
@@ -1477,7 +1477,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 23 redbox](assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg)
+![Fig. 23 redbox](../08-reports/assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg)
 
 #### Fig. 24 — missing-answer warning or submit guard state
 
@@ -1485,7 +1485,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 24 redbox](assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg)
+![Fig. 24 redbox](../08-reports/assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg)
 
 #### Fig. 25 — submission completion status
 
@@ -1493,7 +1493,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 25 redbox](assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg)
+![Fig. 25 redbox](../08-reports/assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg)
 
 #### Fig. P2 — professor profile summary
 
@@ -1501,7 +1501,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. P2 redbox](assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg)
+![Fig. P2 redbox](../08-reports/assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg)
 
 #### Fig. 26 — professor course header and action tabs
 
@@ -1509,7 +1509,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 26 redbox](assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg)
+![Fig. 26 redbox](../08-reports/assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg)
 
 #### Fig. 27 — material upload/create controls
 
@@ -1517,7 +1517,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 27 redbox](assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg)
+![Fig. 27 redbox](../08-reports/assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg)
 
 #### Fig. 28 — professor notice list
 
@@ -1525,7 +1525,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 28 redbox](assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg)
+![Fig. 28 redbox](../08-reports/assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg)
 
 #### Fig. 29 — notice form and submit action
 
@@ -1533,7 +1533,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 29 redbox](assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg)
+![Fig. 29 redbox](../08-reports/assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg)
 
 #### Fig. 30 — assignment creation/list management area
 
@@ -1541,7 +1541,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 30 redbox](assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg)
+![Fig. 30 redbox](../08-reports/assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg)
 
 #### Fig. 31 — submission roster and selected student detail
 
@@ -1549,7 +1549,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 31 redbox](assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg)
+![Fig. 31 redbox](../08-reports/assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg)
 
 #### Fig. 32 — score/status/feedback grading controls
 
@@ -1557,7 +1557,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 32 redbox](assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg)
+![Fig. 32 redbox](../08-reports/assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg)
 
 #### Fig. 33 — student grade rows and average percent
 
@@ -1565,7 +1565,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 33 redbox](assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg)
+![Fig. 33 redbox](../08-reports/assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg)
 
 #### Fig. 34 — student-by-material learning progress table
 
@@ -1573,7 +1573,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 34 redbox](assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg)
+![Fig. 34 redbox](../08-reports/assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg)
 
 #### Fig. 35 — answer textarea, close checkbox, and save action
 
@@ -1581,7 +1581,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 35 redbox](assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg)
+![Fig. 35 redbox](../08-reports/assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg)
 
 #### Fig. 36 — exam draft/list management card
 
@@ -1589,7 +1589,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 36 redbox](assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg)
+![Fig. 36 redbox](../08-reports/assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg)
 
 #### Fig. 37 — exam policy and question list
 
@@ -1597,7 +1597,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 37 redbox](assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg)
+![Fig. 37 redbox](../08-reports/assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg)
 
 #### Fig. 38 — exam publish status result
 
@@ -1605,7 +1605,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 38 redbox](assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg)
+![Fig. 38 redbox](../08-reports/assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg)
 
 #### Fig. 39 — exam close result status
 
@@ -1613,7 +1613,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 39 redbox](assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg)
+![Fig. 39 redbox](../08-reports/assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg)
 
 #### Fig. 40 — weekly attendance timeline rows
 
@@ -1621,7 +1621,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 40 redbox](assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg)
+![Fig. 40 redbox](../08-reports/assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg)
 
 #### Fig. 41 — attendance start modal mode options
 
@@ -1629,7 +1629,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 41 redbox](assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg)
+![Fig. 41 redbox](../08-reports/assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg)
 
 #### Fig. 42 — smart attendance timer and close button
 
@@ -1637,7 +1637,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 42 redbox](assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg)
+![Fig. 42 redbox](../08-reports/assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg)
 
 #### Fig. 43 — student status table and reason inputs
 
@@ -1645,7 +1645,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 43 redbox](assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg)
+![Fig. 43 redbox](../08-reports/assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg)
 
 #### Fig. 44 — slot-specific roster controls
 
@@ -1653,7 +1653,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 44 redbox](assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg)
+![Fig. 44 redbox](../08-reports/assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg)
 
 #### Fig. 45 — save success and updated status row
 
@@ -1661,7 +1661,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 45 redbox](assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg)
+![Fig. 45 redbox](../08-reports/assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg)
 
 #### Fig. 46 — student stats table and CSV buttons
 
@@ -1669,7 +1669,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 46 redbox](assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg)
+![Fig. 46 redbox](../08-reports/assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg)
 
 #### Fig. 47 — immutable attendance audit history list
 
@@ -1677,7 +1677,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 47 redbox](assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg)
+![Fig. 47 redbox](../08-reports/assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg)
 
 #### Fig. 49 / Fig. 50 / Fig. 51 — classroom/AP mapping, station list, threshold controls
 
@@ -1685,7 +1685,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 49 / Fig. 50 / Fig. 51 redbox](assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg)
+![Fig. 49 / Fig. 50 / Fig. 51 redbox](../08-reports/assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg)
 
 #### Fig. 52 — demo source label and overlay controls
 
@@ -1693,7 +1693,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 52 redbox](assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg)
+![Fig. 52 redbox](../08-reports/assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg)
 
 #### Fig. 53 — applied overlay station state
 
@@ -1701,7 +1701,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 53 redbox](assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg)
+![Fig. 53 redbox](../08-reports/assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg)
 
 #### Fig. 54 — reset result and restored baseline
 
@@ -1709,7 +1709,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 54 redbox](assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg)
+![Fig. 54 redbox](../08-reports/assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg)
 
 #### Fig. 55 — real/demo snapshot separation labels
 
@@ -1717,7 +1717,7 @@ smart-class/
 - redbox: `assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg`
 - 상태: redbox SVG 생성 완료
 
-![Fig. 55 redbox](assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg)
+![Fig. 55 redbox](../08-reports/assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg)
 
 #### Fig. 56 — OpenWrt router registration/token N/A
 
