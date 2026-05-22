@@ -19,8 +19,8 @@ primary_deliverables:
 | 항목 | 내용 |
 |---|---|
 | 보고서 종류 | 최종보고서 |
-| 기준 시각 | 2026-05-22 14:02 KST |
-| 이번 주 변경사항 기간 | 2026-05-18 09:00 KST ~ 2026-05-22 14:02 KST |
+| 기준 시각 | 2026-05-22 16:33 KST |
+| 이번 주 변경사항 기간 | 2026-05-18 09:00 KST ~ 2026-05-22 16:33 KST |
 | 기준 브랜치/PR | `main`으로 merge된 PR branch 기준; merge 시각이 보고 기간 안이면 이번 주 개발내용으로 포함 |
 | 보고서 산출물 | `docs/08-reports/99-combined-report.md` |
 | 부록 산출물 | `docs/08-reports/99-combined-report-appendix.md` |
@@ -84,15 +84,15 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 
 ## 1.1 기준 시각과 보고 기간
 
-이번 주 진행사항은 KST 기준 2026-05-18 09:00 KST부터 2026-05-22 14:02 KST까지의 변경을 대상으로 한다. 이번 주 개발내용은 각 레포의 `main`에 merge된 PR branch를 기준으로 보며, PR merge 시각이 보고 기간 안에 있으면 해당 PR의 첫 commit 시각부터 merge 시각까지를 개발 기간으로 산정한다. docs 레포는 보고서 작성 브랜치가 포함되어 있으므로, 기능 완성 주장과 문서 작성 작업을 분리하여 평가했다.
+이번 주 진행사항은 KST 기준 2026-05-18 09:00 KST부터 2026-05-22 16:33 KST까지의 변경을 대상으로 한다. 이번 주 개발내용은 각 레포의 `main`에 merge된 PR branch를 기준으로 보며, PR merge 시각이 보고 기간 안에 있으면 해당 PR의 첫 commit 시각부터 merge 시각까지를 개발 기간으로 산정한다. docs 레포는 보고서 작성 브랜치가 포함되어 있으므로, 기능 완성 주장과 문서 작성 작업을 분리하여 평가했다.
 
 ## 1.2 repo main baseline 및 기능별 증거 매트릭스
 
 ### 1.2.1 기준 시각과 보고 기간
 
-- 기준 시각: 2026-05-22 14:02 KST
+- 기준 시각: 2026-05-22 16:33 KST
 - 보고 기간 시작: 2026-05-18 09:00 KST
-- 보고 기간 종료: 2026-05-22 14:02 KST
+- 보고 기간 종료: 2026-05-22 16:33 KST
 - 시간 표기 원칙: 모든 보고서 시간은 KST 기준 `YYYY-MM-DD HH:MM KST` 형식으로 적고, UTC offset 표기는 본문 기준 시각 표기에서 제외한다.
 
 ### 1.2.2 제출본 source-of-truth
@@ -104,16 +104,18 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 
 ### 1.2.3 Repo main baseline
 
-| Repo | Current branch | HEAD | local `main` | `origin/main` | Dirty status | Weekly merged PRs | Note |
-|---|---|---|---|---|---|---:|---|
-| Front | `main` | `418ae29` | `418ae29` | `418ae29` | clean | 2 | PR #45, #41 |
-| Backend | `main` | `f06169e` | `f06169e` | `f06169e` | clean | 3 | PR #48, #49, #47 |
-| PresenceService | `main` | `bffda67` | `bffda67` | `bffda67` | clean | 0 | no merged PR in period |
-| DB | `main` | `621d712` | `621d712` | `621d712` | clean | 0 | no merged PR in period |
-| Service | `main` | `c36a432` | `c36a432` | `c36a432` | clean | 2 | PR #26, #27 |
-| docs | `feat/final-report-writing-convention` | `cef3c2f` | `cef3c2f` | `cef3c2f` | dirty: final-report convention/report edits | 1 | PR #36 plus current report-writing edits |
-| CodexKit | `main` | `a5a68c1` | `a5a68c1` | `a5a68c1` | clean | 0 | no merged PR in period |
-| DocsQuartz | `main` | `90d012b` | `90d012b` | `90d012b` | clean | 0 | no merged PR in period |
+이번 주 변경사항은 각 repository의 `origin/main`을 기준으로 다시 확인했다. 현재 편집 브랜치가 `feat/weekly-report-update`이더라도, 아래 표의 HEAD와 PR 수는 보고서 작성용 작업 브랜치가 아니라 **main에 실제 merge된 결과**만 반영한다.
+
+| Repo | 기준 branch | `origin/main` HEAD | local main sync | Weekly merged PRs | Note |
+|---|---|---|---|---:|---|
+| Front | `main` | `a2b1b8f` | synced | 4 | PR #45, #41, #46, #47 |
+| Backend | `main` | `9e8ba35` | synced | 5 | PR #48, #49, #47, #50, #51 |
+| PresenceService | `main` | `bffda67` | synced | 0 | no merged PR in period |
+| DB | `main` | `621d712` | synced | 0 | no merged PR in period |
+| Service | `main` | `290820f` | synced | 4 | PR #26, #27, #28, #29 |
+| docs | `main` | `90e62db` | synced | 3 | PR #36, #38, #37; 현재 `feat/weekly-report-update`는 아직 main merge 전이므로 집계 제외 |
+| CodexKit | `main` | `a5a68c1` | synced | 0 | no merged PR in period |
+| DocsQuartz | `main` | `90d012b` | synced | 0 | no merged PR in period |
 
 ### 1.2.4 이번 주 개발 진행 내용(PR branch 기준)
 
@@ -121,25 +123,31 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 
 #### 1.2.4.1 이번 주 진행사항 요약
 
-이번 주의 핵심 개발은 출석 기능의 운영 안정성 보강과 교수자용 CSV export 완성이다. 먼저 Backend에서는 출석 화면을 열거나 학생이 체크인할 때 PresenceService 응답이 느려지면 Backend의 DB connection이 오래 점유되고, 단일 worker demo 환경에서 `/health`, `/api/auth/bootstrap`, attendance WebSocket까지 함께 지연되는 문제가 확인되었다. 이 문제를 Backend #48에서 해결했다. `/health`를 DB 의존 없는 liveness endpoint로 분리하고, `/ready`를 DB readiness 확인용으로 따로 두었으며, SQLAlchemy pool timeout을 구조화된 503 오류로 바꾸었다. 또한 출석 hot path에서 느린 PresenceService 호출이나 WebSocket publish를 기다리는 동안 request DB session을 붙잡지 않도록 정리했고, 학생 check-in은 eligibility를 먼저 수집한 뒤 durable DB write를 수행하도록 조정했다. 결과적으로 출석 bootstrap과 realtime socket 연결이 느린 presence 경로에 의해 함께 멈추는 위험을 줄였다.
+이번 주의 핵심 개발은 출석 운영 안정성 보강, 교수자용 출석 CSV export 완성, 과제 제출 수정/첨부 삭제 흐름 보강, 종료된 Q&A thread의 추가 답변 차단, 그리고 이 기능들이 포함된 demo/release manifest 고정이다. 단순히 PR이 여러 개 merge된 것이 아니라, 실제 사용자가 겪을 수 있는 병목·데이터 수정·권한/상태 불일치 문제를 발견하고 Backend, Front, Service, docs가 같은 계약으로 맞춰진 주간이다.
 
-두 번째로 교수 출석 CSV export를 실제 사용 가능한 기능으로 연결했다. Backend #49에서는 교수자가 담당 과목의 출석 현황을 별도 수작업 없이 다운로드할 수 있도록 `attendance_summary_csv`와 `attendance_full_csv` export contract를 추가했다. 기존 report-export/object-storage 다운로드 경로를 재사용하여 권한, 저장, 인증 다운로드 흐름을 유지했고, UTF-8 BOM, summary/full variant filename, `sick` 상태의 공결 합산, 차시별 상태 라벨, 잘못된 export type 거부, 비담당 교수 접근 거부까지 테스트로 고정했다. 이 작업은 DB schema 변경 없이 출석 도메인 table builder와 기존 object-storage boundary를 확장한 것이다.
+첫 번째로 Backend에서는 출석 화면을 열거나 학생이 체크인할 때 PresenceService 응답이 느려지면 Backend의 DB connection이 오래 점유되고, 단일 worker demo 환경에서 `/health`, `/api/auth/bootstrap`, attendance WebSocket까지 함께 지연되는 문제가 확인되었다. Backend #48은 이 문제를 운영성 결함으로 보고 고쳤다. `/health`를 DB 의존 없는 liveness endpoint로 분리하고, `/ready`를 DB readiness 확인용으로 따로 두었으며, SQLAlchemy pool timeout을 구조화된 503 오류로 바꾸었다. 또한 출석 hot path에서 느린 PresenceService 호출이나 WebSocket publish를 기다리는 동안 request DB session을 붙잡지 않도록 정리했고, 학생 check-in은 eligibility를 먼저 수집한 뒤 durable DB write를 수행하도록 조정했다. 결과적으로 출석 bootstrap과 realtime socket 연결이 느린 presence 경로에 의해 함께 멈추는 위험을 줄였다.
 
-세 번째로 Front #45에서 Backend export를 교수 화면의 실제 버튼으로 노출했다. 교수 출석 페이지에서 학생별 출석 누계 표를 출석 차시 목록 하단에 기본 표시하도록 바꾸고, `요약본 CSV`와 `전체본 CSV` 즉시 다운로드 버튼을 추가했다. 다운로드 object URL 정리도 `finally`에서 처리하도록 보강해 브라우저 리소스 정리를 명확히 했다. 따라서 이번 주 기능 변화는 단순 API 추가가 아니라, 교수자가 화면에서 출석 통계를 보고 바로 CSV를 내려받는 end-to-end 사용 흐름으로 연결되었다.
+두 번째로 교수 출석 CSV export를 실제 사용 가능한 기능으로 연결했다. Backend #49에서는 교수자가 담당 과목의 출석 현황을 별도 수작업 없이 다운로드할 수 있도록 `attendance_summary_csv`와 `attendance_full_csv` export contract를 추가했다. 기존 report-export/object-storage 다운로드 경로를 재사용하여 권한, 저장, 인증 다운로드 흐름을 유지했고, UTF-8 BOM, summary/full variant filename, `sick` 상태의 공결 합산, 차시별 상태 라벨, 잘못된 export type 거부, 비담당 교수 접근 거부까지 테스트로 고정했다. Front #45는 이 Backend export를 교수 출석 화면의 실제 버튼으로 노출했다. 학생별 출석 누계 표를 출석 차시 목록 하단에 기본 표시하고, `요약본 CSV`와 `전체본 CSV` 즉시 다운로드 버튼을 추가했으며, 다운로드 object URL 정리를 `finally`에서 처리하도록 보강했다. 따라서 이번 주 기능 변화는 단순 API 추가가 아니라, 교수자가 화면에서 출석 통계를 보고 바로 CSV를 내려받는 end-to-end 사용 흐름으로 연결되었다.
 
-네 번째로 Service #26과 #27에서 위 기능을 demo/release 단위로 고정했다. Service v0.4.1 manifest는 Backend v0.6.0과 Front v0.6.0 이미지를 digest로 pin하고, 이번 변경이 UI/API-only rollout이므로 DB reset이 필요 없다는 점을 manifest에 반영했다. release PR은 기능 구현 자체는 아니지만, 이번 주에 만들어진 CSV export 기능을 demo stack에서 재현 가능한 버전 조합으로 고정하는 역할을 한다.
+세 번째로 과제 제출 수정과 첨부파일 제거 흐름을 보강했다. docs #37은 학생 과제 제출 multipart contract에 `remove_attachment_ids`를 추가하고, 이 값이 학생 자신의 현재 제출물에 속한 첨부만 참조해야 한다는 제약을 문서화했다. Backend #50은 이 계약에 맞춰 재제출 시 기존 첨부를 유지·삭제·추가하는 경로를 구현하고, 텍스트만 수정할 때 파일 교체를 강제하지 않도록 했다. Front #46은 학생 과제 상세/수정 화면에서 기존 첨부를 표시하고 제거할 수 있게 하며, 본문만 수정하는 저장 흐름도 사용자에게 자연스럽게 보이도록 다듬었다. 이 변경으로 학생은 제출 후 오타나 첨부 실수를 고칠 때 전체 제출을 다시 만들 필요 없이 필요한 첨부만 제거하거나 유지할 수 있다.
 
-마지막으로 docs #36과 현재 최종보고서 작업에서 교수 출석 CSV export의 요구사항, non-goal, UI 배치, report-export 경로, 증거 매트릭스를 맞췄다. 특히 이번 최종보고서는 단순 PR 나열이 아니라, “어떤 문제를 발견했고 → 어떤 구현으로 고쳤고 → 어떤 화면/코드/DB/API/테스트 근거가 있는지”가 드러나도록 본문과 부록을 재구성했다.
+네 번째로 Q&A와 summary card UI의 상태 일관성을 보강했다. Backend #50은 닫힌 Q&A thread에 교수자가 추가 답변을 남기지 못하도록 차단하고 테스트로 잠갔다. Front #46은 교수 Q&A 답변 화면의 thread 종료 checkbox 배치를 정리하고, 닫힌 thread에서 추가 답변 UI가 남아 있는 문제를 함께 막았다. 동시에 dashboard/profile summary card는 label을 값 위에 배치하고 긴 텍스트·compact status wrapping을 개선해 좁은 화면에서도 정보가 덜 깨지도록 polish했다.
+
+다섯 번째로 Service와 release PR들이 기능 조합을 demo 단위로 고정했다. Backend #47/Front #41/Service #26/#27은 출석 CSV export가 포함된 Backend v0.6.0, Front v0.6.0, Service v0.4.1 조합을 고정했다. 이어 Backend #51/Front #47/Service #28/#29는 과제 첨부 삭제와 닫힌 Q&A guard가 포함된 Backend v0.7.0, Front v0.6.1, Service v0.4.2 조합을 고정했다. 두 release line 모두 DB reset이 필요 없는 UI/API-only 변경으로 기록되어, demo 환경에서 재현할 수 있는 버전 조합이 명확해졌다.
+
+마지막으로 docs #36, #37, #38에서 교수 출석 CSV export scope, 과제 제출 API contract, 최종보고서 두 파일 산출물 구조가 main에 반영되었다. 특히 docs #38은 보고서 본문과 부록만 열어도 화면·ERD·API·코드·DB 근거가 보이도록 최종보고서를 self-contained 구조로 재작성했다. 본 업데이트는 직전 작성 이후 추가로 merge된 assignment/Q&A/release PR까지 포함해, 이번 주 진행사항이 PR 번호 나열이 아니라 “무엇을 고쳤고 사용 흐름이 어떻게 달라졌는지”로 읽히도록 다시 정리한 것이다.
 
 #### 1.2.4.2 기능/문제 중심 상세 내용
 
 | 구분 | 이번 주 진행 내용 | 고친 부분 / 구현 포인트 | 사용자에게 보이는 변화 | 근거 PR |
 |---|---|---|---|---|
 | 출석 안정성 | PresenceService 지연·장애 시 Backend 단일 worker가 같이 멈추는 문제를 완화 | DB session을 외부 wait 경로에서 조기 release, `/health`와 `/ready` 분리, pool timeout을 503 `DB_POOL_EXHAUSTED`로 구조화, WebSocket bootstrap을 느린 작업과 분리 | 출석 화면/체크인/실시간 roster 연결이 느린 presence 응답 때문에 전체적으로 멈추는 위험 감소 | Backend #48 |
-| 교수 출석 CSV export | 교수자가 출석 현황을 요약본/전체본 CSV로 다운로드하는 기능 구현 | `attendance_summary_csv`, `attendance_full_csv`, legacy alias, UTF-8 BOM, variant filename, 공결 합산, 상태 라벨, 권한 검증 추가 | 교수 출석 페이지에서 별도 수작업 없이 과목 출석 데이터를 내려받을 수 있음 | Backend #49, Front #45 |
-| 교수 출석 UI | 학생별 출석 누계와 CSV 다운로드 버튼을 교수 화면에 상시 노출 | 학생별 누계 표를 출석 timeline 하단에 기본 표시, `요약본 CSV`/`전체본 CSV` 버튼 추가, object URL cleanup 보강 | 교수자가 출석 운영 화면에서 누계 확인 후 바로 CSV 다운로드 가능 | Front #45 |
-| release / demo manifest | 이번 주 기능이 포함된 Backend/Front 이미지를 demo stack manifest에 고정 | Service v0.4.1 manifest에서 Backend v0.6.0, Front v0.6.0, PresenceService, DB image digest pin; DB reset 불필요 명시 | 같은 manifest로 CSV export 기능 포함 demo 조합 재현 가능 | Service #26, Service #27, Backend #47, Front #41 |
-| 문서/보고서 정렬 | 기능 요구사항, architecture boundary, 보고서 증거를 최신 구현과 맞춤 | CSV export scope, non-goal(PDF/XLSX/filter/history 제외), 학생별 누계 표 위치, object-storage report export 경로 문서화 | 교수님이 최종보고서에서 이번 주 개발 내용을 PR 번호가 아니라 기능 변화로 읽을 수 있음 | docs #36, 현재 보고서 작업 |
+| 교수 출석 CSV export | 교수자가 출석 현황을 요약본/전체본 CSV로 다운로드하는 기능 구현 | `attendance_summary_csv`, `attendance_full_csv`, legacy alias, UTF-8 BOM, variant filename, 공결 합산, 상태 라벨, 권한 검증 추가 | 교수 출석 페이지에서 학생별 누계를 확인하고 바로 CSV를 내려받을 수 있음 | Backend #49, Front #45 |
+| 과제 제출 수정/첨부 삭제 | 학생 과제 재제출 시 기존 첨부를 유지·삭제·추가할 수 있도록 contract와 구현을 맞춤 | `remove_attachment_ids` 문서화, 현재 제출물 첨부만 제거 가능하도록 제약, 텍스트-only 수정 시 파일 교체 강제 제거, Backend/Frontend test 추가 | 학생이 과제 본문만 수정하거나 잘못 올린 첨부만 제거할 수 있음 | docs #37, Backend #50, Front #46 |
+| Q&A 종료 상태 일관성 | 닫힌 Q&A thread에 추가 답변이 남는 상태 불일치를 차단 | Backend에서 closed thread 추가 답변 거부, Front에서 close-thread checkbox/UI 흐름 정리와 닫힌 thread 답변 방지 | 교수자가 Q&A를 종료하면 화면과 API가 같은 상태로 동작해 중복 답변 위험 감소 | Backend #50, Front #46 |
+| UI polish / summary card | dashboard/profile summary card와 긴 텍스트/compact status 표시 개선 | label을 값 위에 배치, 긴 문구 wrapping, compact 상태 요소 visual polish | 좁은 화면에서 학생/교수 정보 카드와 상태 값이 더 읽기 쉬움 | Front #46 |
+| release / demo manifest | 출석 CSV export와 과제/Q&A 보강이 포함된 Backend/Front 이미지를 demo stack manifest에 고정 | Backend v0.6.0/v0.7.0, Front v0.6.0/v0.6.1, Service v0.4.1/v0.4.2 digest pin; DB reset 불필요 명시 | 같은 manifest로 이번 주 기능 포함 demo 조합 재현 가능 | Backend #47/#51, Front #41/#47, Service #26/#27/#28/#29 |
+| 문서/보고서 정렬 | 기능 요구사항, API contract, 보고서 증거를 최신 구현과 맞춤 | CSV export scope, assignment submission multipart field, self-contained final report, 두 파일 산출물 원칙 정리 | 교수님이 최종보고서에서 이번 주 개발 내용을 기능 변화와 문제 해결 과정으로 읽을 수 있음 | docs #36/#37/#38, 현재 보고서 작업 |
 | 변화 없음으로 확인한 영역 | PresenceService, DB, CodexKit, DocsQuartz는 이번 주 보고 기간 안에 main merge PR 없음 | 기존 구현/ERD/test 근거는 유지하되 이번 주 신규 개발 성과로 과장하지 않음 | 완료도 평가는 기존 로컬 MVP 근거를 유지하고, 신규 변경 없음은 명확히 분리 | PR 없음 |
 
 #### 1.2.4.3 PR 추적 근거 표
@@ -149,13 +157,21 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 | Repo | PR | PR branch | 제목 | 개발 기간 산정(KST) | commits | merge commit | 보고서상 의미 |
 |---|---:|---|---|---|---:|---|---|
 | Backend | [#48](https://github.com/ChosunUniv2026Capstone/Backend/pull/48) | `feat/fix/db-pool-exhaustion-demo` | fix(backend): keep one-worker demo responsive under DB pressure | 2026-05-18 13:50 KST ~ 2026-05-20 11:37 KST | 3 | `f874e8a` | PresenceService 지연 시 DB pool 고갈·health/auth/bootstrap timeout·WebSocket 지연 위험 완화 |
+| docs | [#36](https://github.com/ChosunUniv2026Capstone/docs/pull/36) | `docs/attendance-csv-export` | docs(attendance): align professor CSV export scope | 2026-05-22 00:46 KST ~ 2026-05-22 00:49 KST | 1 | `cef3c2f` | CSV export 요구사항·non-goal·UI 배치·object-storage 경로 문서 정렬 |
 | Backend | [#49](https://github.com/ChosunUniv2026Capstone/Backend/pull/49) | `feat/attendance-csv-export` | feat(backend): let professors export attendance CSVs | 2026-05-22 00:46 KST ~ 2026-05-22 00:49 KST | 1 | `36e8524` | 교수 출석 요약본/전체본 CSV export API와 report-export 저장/다운로드 경로 구현 |
 | Front | [#45](https://github.com/ChosunUniv2026Capstone/Front/pull/45) | `feat/attendance-csv-export` | feat(frontend): surface professor attendance CSV downloads | 2026-05-22 00:46 KST ~ 2026-05-22 00:49 KST | 1 | `73f5e09` | 교수 출석 화면에 학생별 누계 표와 CSV 다운로드 버튼 노출 |
-| docs | [#36](https://github.com/ChosunUniv2026Capstone/docs/pull/36) | `docs/attendance-csv-export` | docs(attendance): align professor CSV export scope | 2026-05-22 00:46 KST ~ 2026-05-22 00:49 KST | 1 | `cef3c2f` | CSV export 요구사항·non-goal·UI 배치·object-storage 경로 문서 정렬 |
 | Backend | [#47](https://github.com/ChosunUniv2026Capstone/Backend/pull/47) | `release-please--branches--main` | chore(main): release 0.6.0 | 2026-05-22 00:50 KST ~ 2026-05-22 00:51 KST | 1 | `f06169e` | Backend #48/#49를 포함한 v0.6.0 release 고정 |
 | Front | [#41](https://github.com/ChosunUniv2026Capstone/Front/pull/41) | `release-please--branches--main--components--smart-class-front` | chore(main): release smart-class-front 0.6.0 | 2026-05-22 00:50 KST ~ 2026-05-22 00:51 KST | 1 | `418ae29` | Front #45를 포함한 smart-class-front v0.6.0 release 고정 |
 | Service | [#26](https://github.com/ChosunUniv2026Capstone/Service/pull/26) | `fix/attendance-csv-demo-release` | fix(service): pin attendance CSV demo manifest | 2026-05-22 00:56 KST ~ 2026-05-22 00:57 KST | 1 | `e89dcdb` | attendance CSV demo rollout용 Backend/Front image digest와 DB reset 불필요 조건 고정 |
-| Service | [#27](https://github.com/ChosunUniv2026Capstone/Service/pull/27) | `release-please--branches--main` | chore(main): release 0.4.1 | 2026-05-22 00:58 KST ~ 2026-05-22 00:58 KST | 1 | `c36a432` | Service v0.4.1 release로 demo manifest 변경 고정 |
+| Service | [#27](https://github.com/ChosunUniv2026Capstone/Service/pull/27) | `release-please--branches--main` | chore(main): release 0.4.1 | 2026-05-22 00:58 KST ~ 2026-05-22 00:58 KST | 1 | `c36a432` | Service v0.4.1 release로 attendance CSV demo manifest 변경 고정 |
+| docs | [#38](https://github.com/ChosunUniv2026Capstone/docs/pull/38) | `feat/final-report-writing-convention` | docs(reports): make final report self-contained | 2026-05-22 14:22 KST ~ 2026-05-22 14:25 KST | 1 | `615b8e0` | 최종보고서와 부록을 두 파일 산출물로 재구성하고 화면·ERD·API·코드·DB 근거를 본문에 직접 배치 |
+| docs | [#37](https://github.com/ChosunUniv2026Capstone/docs/pull/37) | `docs/assignment-api-update` | docs(assignment): update assignment submission api fields | 2026-05-22 14:04 KST ~ 2026-05-22 15:45 KST | 2 | `90e62db` | `remove_attachment_ids`와 현재 제출물 첨부 제거 제약을 assignment submission contract에 반영 |
+| Backend | [#50](https://github.com/ChosunUniv2026Capstone/Backend/pull/50) | `feat/assignment-qna-guard` | feat: support assignment attachment removal and block closed… | 2026-05-22 14:04 KST ~ 2026-05-22 15:49 KST | 2 | `95465c1` | 과제 첨부 유지·삭제·추가 재제출 경로와 닫힌 Q&A thread 추가 답변 차단 구현 |
+| Front | [#46](https://github.com/ChosunUniv2026Capstone/Front/pull/46) | `fix/student-assignment-qna-ui` | fix: polish assignment, qna, and summary card UI | 2026-05-22 14:04 KST ~ 2026-05-22 15:57 KST | 2 | `0c555e0` | 과제 첨부 표시/삭제 UI, content-only 저장 흐름, Q&A 종료 UI, summary card readability 개선 |
+| Backend | [#51](https://github.com/ChosunUniv2026Capstone/Backend/pull/51) | `release-please--branches--main` | chore(main): release 0.7.0 | 2026-05-22 15:49 KST ~ 2026-05-22 16:16 KST | 1 | `9e8ba35` | Backend #50을 포함한 v0.7.0 release 고정 |
+| Front | [#47](https://github.com/ChosunUniv2026Capstone/Front/pull/47) | `release-please--branches--main--components--smart-class-front` | chore(main): release smart-class-front 0.6.1 | 2026-05-22 15:57 KST ~ 2026-05-22 16:16 KST | 1 | `a2b1b8f` | Front #46을 포함한 smart-class-front v0.6.1 release 고정 |
+| Service | [#28](https://github.com/ChosunUniv2026Capstone/Service/pull/28) | `fix/assignment-attachment-demo-release` | fix(service): pin assignment workflow demo release | 2026-05-22 16:19 KST ~ 2026-05-22 16:20 KST | 1 | `7b934a3` | assignment attachment removal/closed-Q&A fixes가 포함된 Backend/Front image digest를 Service v0.4.2 manifest에 고정 |
+| Service | [#29](https://github.com/ChosunUniv2026Capstone/Service/pull/29) | `release-please--branches--main` | chore(main): release 0.4.2 | 2026-05-22 16:20 KST ~ 2026-05-22 16:21 KST | 1 | `290820f` | Service v0.4.2 release로 assignment workflow demo manifest 변경 고정 |
 
 ### 1.2.5 검증 경계와 caveat
 
@@ -169,18 +185,18 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 | Evidence ID | 기능 영역 | 완료도 | 화면 근거 | API / 코드 근거 | DB 근거 | 테스트 / 실행 근거 | 한계 / 후속 과제 |
 |---|---|---|---|---|---|---|---|
 | E-AUTH-01 | 인증 / 세션 | 로컬 MVP 완료 | Fig. 1-6 redbox: 로그인, 실패, 권한거부, 역할별 대시보드 | `Backend/app/main.py:920` login, `:961` refresh, `:1054` bootstrap, `:1070` logout; `Front/src/api.ts`; `Front/src/router.ts` | `DB/postgres/init/010_seed.sql` seed users, `refresh_sessions` | `Backend/tests/test_presence_admin_and_auth.py:218`, `:590`, `:683`; `Front/tests/e2e/auth-routing.spec.ts:584` | 운영 SSO/학사 인증 연동은 후속 과제 |
-| E-UI-01 | 역할별 Front UI | 로컬 MVP 완료 | Fig. 4-55 redbox(역할별 UI 전체; Fig. 56은 N/A) | `Front/src/router.ts`, `Front/src/App.tsx`, `Front/src/api.ts` | 역할/수강/강의 seed tables | `Front/tests/e2e/auth-routing.spec.ts:584`, `selected-lms-subset.spec.ts:55`, `exam-workflow.spec.ts:244` | Fig. 56 OpenWrt router registration/token 화면은 N/A로 API/DB/Service 근거 대체 |
-| E-LMS-01 | 강의 / 공지 / selected LMS read model | 로컬 MVP 완료 | Fig. 8-16, 26-35 redbox | `Backend/app/main.py:1102-1456`, `:1785-1843` | `courses`, `course_enrollments`, `notices`, `learning_items`, `assignments`, `course_qna_threads`, `learning_progress` | `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`; notice tests `test_presence_admin_and_auth.py:272` | selected-LMS 추가 화면 캡처 완료; 운영 데이터 다양화는 후속 과제 |
+| E-UI-01 | 역할별 Front UI | 로컬 MVP 완료 | Fig. 4-55 redbox(역할별 UI 전체; Fig. 56은 N/A) | `Front/src/router.ts`, `Front/src/App.tsx`, `Front/src/api.ts`; weekly merged PR Front #46 (`0c555e0`) | 역할/수강/강의 seed tables | `Front/tests/e2e/auth-routing.spec.ts:584`, `selected-lms-subset.spec.ts:55`, `exam-workflow.spec.ts:244`; PR #46 manual/docker-build evidence | Fig. 56 OpenWrt router registration/token 화면은 N/A로 API/DB/Service 근거 대체 |
+| E-LMS-01 | 강의 / 공지 / 과제 / Q&A / selected LMS read model | 로컬 MVP 완료 | Fig. 8-16, 26-35 redbox; 과제/Q&A UI 변경은 Fig. 12-16/35 계열 화면과 weekly PR evidence로 추적 | `Backend/app/main.py:1102-1456`, `:1785-1843`; `Backend/app/assignments.py`; `Backend/app/lms_selected.py`; `Front/src/App.tsx`; `Front/src/api.ts` | `courses`, `course_enrollments`, `notices`, `learning_items`, `assignments`, `assignment_submissions`, `assignment_attachments`, `course_qna_threads`, `course_qna_messages`, `learning_progress` | `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`; `Backend/tests/test_assignment_contract.py`; `Front/tests/e2e/assignment-workflow.spec.ts`; `Front/tests/e2e/selected-lms-subset.spec.ts`; weekly merged PRs docs #37, Backend #50, Front #46 (`90e62db`, `95465c1`, `0c555e0`) | selected-LMS 추가 화면 캡처 완료; 운영 데이터 다양화는 후속 과제 |
 | E-ATT-01 | 출석 workflow | 로컬 MVP 완료 | Fig. 17-20, 40-47 redbox | `Backend/app/attendance.py`; `Backend/app/main.py:2028-2318`; WebSocket `/ws/attendance` | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs`, `report_exports` | `Backend/tests/test_attendance_realtime.py:226`, `:369`, `:405`, `:498`, `:593`, `:1030`; weekly merged PRs Backend #48/#49 (`f874e8a`, `36e8524`) | 장기 교실 현장 검증은 후속 과제 |
 | E-EXAM-01 | 객관식 시험 workflow | 로컬 MVP 완료 | Fig. 21-25, 36-39 redbox | `Backend/app/main.py:1469-1710`; `Front/tests/e2e/exam-workflow.spec.ts` | `exams`, `exam_questions`, `exam_question_options`, `exam_submissions`, `exam_submission_answers` | `Backend/tests/test_exam_contract_alignment.py:147`, `:208`, `:261`, `:294`; `Front/tests/e2e/exam-workflow.spec.ts:244` | 서술형/파일형 시험과 대규모 부정행위 대응은 후속 과제 |
 | E-PRES-01 | PresenceService eligibility / collector / demo overlay | 로컬 MVP 완료 | Fig. 18, 49-55 redbox; Fig. 56 N/A | `PresenceService/app/main.py:45`, `:64`, `:88`, `:100-125`; `Service/openwrt/presence-collector.sh`; Backend registry endpoints `Backend/app/main.py:1988-2028` | `classroom_networks`, `access_points`, `access_point_interfaces`, `registered_devices`, `presence_eligibility_logs` | `PresenceService/tests/test_service.py:136`, `:153`, `:203`, `:296`, `:347`, `:652`; `test_registry.py:29` | dummy overlay는 실 OpenWrt 장기 검증을 대체하지 않음 |
 | E-DB-01 | DB schema / seed / ERD | 로컬 MVP 완료 | ERD-1~ERD-8 raw/redbox SVG | `DB/postgres/init/*.sql`, `DB/postgres/migrations/*.sql` | 전체 PostgreSQL schema 및 seed | `DB/postgres/tests/object_storage_triggers.sql`; Backend/Presence/Service tests가 schema 계약을 간접 검증 | ERD SVG는 보고서용 산출물이며 실제 운영 migration 로그는 후속 운영 검증에서 보강 |
-| E-SVC-01 | Service runtime / CI-CD | 부분 완료 | Service runtime은 diagram/manifest 중심; UI 화면 아님 | `Service/compose.yml`, `compose.local.yml`, `compose.image.yml`, `nginx/local.conf`, workflows `ci.yml`, `deploy-demo.yml` | DB 직접 테이블 없음; `report_exports` 등 ops metadata는 ERD-8 | `Service/tests/test_release_manifest_contract.py:27`, `:45`; `test_workspace_release_readiness.py:81`, `:98`; weekly merged PRs Service #26/#27 (`e89dcdb`, `c36a432`) | workflow run / demo server provenance 없이는 상용 배포로 쓰지 않음 |
-| E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/08-reports/99-combined-report.md`, `docs/08-reports/99-combined-report-appendix.md` | N/A | `git -C docs diff --check`, markdown/link sanity | docs가 feature branch/dirty 상태라 기능 완료 증거와 작성 지시를 분리 |
+| E-SVC-01 | Service runtime / CI-CD | 부분 완료 | Service runtime은 diagram/manifest 중심; UI 화면 아님 | `Service/compose.yml`, `compose.local.yml`, `compose.image.yml`, `nginx/local.conf`, `Service/manifests/releases/v0.4.1.yml`, `v0.4.2.yml`, workflows `ci.yml`, `deploy-demo.yml` | DB 직접 테이블 없음; `report_exports` 등 ops metadata는 ERD-8 | `Service/tests/test_release_manifest_contract.py:27`, `:45`; `test_workspace_release_readiness.py:81`, `:98`; weekly merged PRs Service #26/#27/#28/#29 (`e89dcdb`, `c36a432`, `7b934a3`, `290820f`) | workflow run / demo server provenance 없이는 상용 배포로 쓰지 않음 |
+| E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/04-architecture/assignment-workflow-api.md`; `docs/08-reports/99-combined-report.md`; `docs/08-reports/99-combined-report-appendix.md` | N/A | docs #36/#37/#38 merged evidence; `git -C docs diff --check`, markdown/link sanity | 현재 `feat/weekly-report-update`는 추가 보고서 갱신 branch이며 main merge 전까지는 별도 집계 제외 |
 
 ## 1.5 자체평가 결론
 
-전체적으로 시스템은 “강의실 Wi-Fi 기반 재실성 판정이 결합된 LMS 로컬 MVP”라는 목표에 도달했다. 핵심 사용자는 학생, 교수, 서비스관리자이며, 각 역할의 주요 화면과 API 흐름, DB 저장 구조가 서로 연결되어 있다. 이번 주에는 출석 운영 안정성 개선과 교수 출석 CSV export 완성이 가장 큰 변화다. Backend는 PresenceService 지연으로 DB connection과 WebSocket handshake가 함께 밀리는 문제를 고쳤고, Front/Backend는 교수자가 출석 화면에서 학생별 누계를 확인한 뒤 요약본/전체본 CSV를 바로 내려받는 흐름을 완성했다. Service는 이 기능이 들어간 Backend/Front image 조합을 demo manifest와 release로 고정했다. 다만 실제 학교 운영망에서 장기간 수집한 Wi-Fi 품질 지표, 학사시스템 정식 SSO/SIS 연동, 네이티브 앱은 후속 과제로 남긴다.
+전체적으로 시스템은 “강의실 Wi-Fi 기반 재실성 판정이 결합된 LMS 로컬 MVP”라는 목표에 도달했다. 핵심 사용자는 학생, 교수, 서비스관리자이며, 각 역할의 주요 화면과 API 흐름, DB 저장 구조가 서로 연결되어 있다. 이번 주에는 출석 운영 안정성 개선과 교수 출석 CSV export 완성에 더해, 과제 제출 수정 시 기존 첨부를 유지·삭제·추가할 수 있는 흐름, 닫힌 Q&A thread의 추가 답변 차단, dashboard/profile summary card 가독성 개선까지 main에 반영되었다. Backend는 PresenceService 지연으로 DB connection과 WebSocket handshake가 함께 밀리는 문제를 고쳤고, Front/Backend는 교수자가 출석 화면에서 학생별 누계를 확인한 뒤 요약본/전체본 CSV를 바로 내려받는 흐름을 완성했다. 이어 assignment/Q&A PR들은 학생 과제 수정과 교수 Q&A 종료 상태가 API와 화면에서 같은 규칙으로 동작하도록 맞췄다. Service는 이 기능들이 포함된 Backend/Front image 조합을 v0.4.1과 v0.4.2 demo/release manifest로 고정했다. 다만 실제 학교 운영망에서 장기간 수집한 Wi-Fi 품질 지표, 학사시스템 정식 SSO/SIS 연동, 네이티브 앱은 후속 과제로 남긴다.
 
 # 2. 서론
 
@@ -4989,11 +5005,11 @@ two-file report/appendix alignment audit
 
 ## 7.1 성과
 
-Smart Class는 단순 LMS 화면 구현을 넘어, 출석과 시험 접근에 필요한 재실성 판단을 별도 서비스로 분리하고 이를 Backend 도메인 판단과 결합했다. 학생·교수·서비스관리자 역할별 UI, Backend API, PresenceService eligibility, PostgreSQL ERD/SQL, Docker/Nginx 실행 구조, 테스트 근거가 서로 연결되어 있다. 특히 출석 workflow는 교수 세션 운영, 학생 self check-in, 수동 보정, audit history, CSV export까지 end-to-end로 설명 가능한 수준에 도달했다.
+Smart Class는 단순 LMS 화면 구현을 넘어, 출석과 시험 접근에 필요한 재실성 판단을 별도 서비스로 분리하고 이를 Backend 도메인 판단과 결합했다. 학생·교수·서비스관리자 역할별 UI, Backend API, PresenceService eligibility, PostgreSQL ERD/SQL, Docker/Nginx 실행 구조, 테스트 근거가 서로 연결되어 있다. 특히 출석 workflow는 교수 세션 운영, 학생 self check-in, 수동 보정, audit history, CSV export까지 end-to-end로 설명 가능한 수준에 도달했고, selected LMS의 과제 수정/첨부 삭제와 Q&A 종료 상태도 API·UI·테스트 근거로 보강되었다.
 
 ## 7.2 문제 해결 과정
 
-프로젝트 수행 중 가장 중요한 문제는 “네트워크 presence evidence와 학사 도메인 판단을 어디에서 결합할 것인가”였다. 이를 Backend와 PresenceService 경계로 분리하여 해결했다. 또 attendance bootstrap 과정에서 PresenceService 지연이 Backend resource starvation으로 이어질 수 있는 문제가 확인되어, realtime socket 연결성과 DB pool 점유를 완화하는 방향으로 수정했다. 문서화 단계에서는 기존 보고서가 여러 보조 산출물을 계속 열어야 이해되는 문제가 있어, 본문과 부록 두 파일 안에 화면·ERD·코드·SQL·API·검증 근거를 직접 넣는 구조로 개선했다.
+프로젝트 수행 중 가장 중요한 문제는 “네트워크 presence evidence와 학사 도메인 판단을 어디에서 결합할 것인가”였다. 이를 Backend와 PresenceService 경계로 분리하여 해결했다. 또 attendance bootstrap 과정에서 PresenceService 지연이 Backend resource starvation으로 이어질 수 있는 문제가 확인되어, realtime socket 연결성과 DB pool 점유를 완화하는 방향으로 수정했다. 과제 제출에서는 기존 첨부 유지·삭제·추가와 텍스트-only 수정이 함께 필요하다는 문제가 드러나 `remove_attachment_ids` contract와 Backend/Front 흐름을 맞췄고, Q&A는 닫힌 thread에 추가 답변이 남지 않도록 상태 전이를 일관화했다. 문서화 단계에서는 기존 보고서가 여러 보조 산출물을 계속 열어야 이해되는 문제가 있어, 본문과 부록 두 파일 안에 화면·ERD·코드·SQL·API·검증 근거를 직접 넣는 구조로 개선했다.
 
 ## 7.3 개선 방향
 
@@ -5003,11 +5019,11 @@ Smart Class는 단순 LMS 화면 구현을 넘어, 출석과 시험 접근에 �
 
 ## 8.1 프로젝트 산출물
 
-[1] Smart Class Front repository, `Front`, main HEAD `418ae29`, 2026-05-22 기준.
-[2] Smart Class Backend repository, `Backend`, main HEAD `f06169e`, 2026-05-22 기준.
+[1] Smart Class Front repository, `Front`, main HEAD `a2b1b8f`, 2026-05-22 기준.
+[2] Smart Class Backend repository, `Backend`, main HEAD `9e8ba35`, 2026-05-22 기준.
 [3] Smart Class PresenceService repository, `PresenceService`, main HEAD `bffda67`, 2026-05-22 기준.
 [4] Smart Class DB repository, `DB`, main HEAD `621d712`, 2026-05-22 기준.
-[5] Smart Class Service repository, `Service`, main HEAD `c36a432`, 2026-05-22 기준.
+[5] Smart Class Service repository, `Service`, main HEAD `290820f`, 2026-05-22 기준.
 [6] Smart Class final appendix, `docs/08-reports/99-combined-report-appendix.md`, 2026-05-22 기준.
 
 ## 8.2 기술 문서
