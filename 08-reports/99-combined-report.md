@@ -38,7 +38,7 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
    1.1 기준 시각과 보고 기간
    1.2 PR 기준 weekly merged branch와 repo baseline
    1.3 기능별 완성도 자체평가
-   1.4 증거 매트릭스와 한계 분리 원칙
+   1.4 자체평가 결론
 2. 서론
    2.1 연구 배경
    2.2 필요성
@@ -104,16 +104,16 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 
 ### 1.2.3 Repo main baseline
 
-이번 주 변경사항은 각 repository의 `origin/main`을 기준으로 다시 확인했다. 현재 편집 브랜치가 `feat/weekly-report-update`이더라도, 아래 표의 HEAD와 PR 수는 보고서 작성용 작업 브랜치가 아니라 **main에 실제 merge된 결과**만 반영한다.
+이번 주 변경사항은 각 repository의 `origin/main`을 기준으로 다시 확인했다. 아래 표의 HEAD와 PR 수는 보고서 작성용 임시 상태가 아니라 **main에 실제 반영된 결과**만 반영한다.
 
-| Repo | 기준 branch | `origin/main` HEAD | local main sync | Weekly merged PRs | Note |
+| Repo | 기준 branch | `origin/main` HEAD | local main sync | Weekly merged PRs / main changes | Note |
 |---|---|---|---|---:|---|
 | Front | `main` | `a2b1b8f` | synced | 4 | PR #45, #41, #46, #47 |
 | Backend | `main` | `9e8ba35` | synced | 5 | PR #48, #49, #47, #50, #51 |
 | PresenceService | `main` | `bffda67` | synced | 0 | no merged PR in period |
 | DB | `main` | `621d712` | synced | 0 | no merged PR in period |
 | Service | `main` | `290820f` | synced | 4 | PR #26, #27, #28, #29 |
-| docs | `main` | `90e62db` | synced | 3 | PR #36, #38, #37; 현재 `feat/weekly-report-update`는 아직 main merge 전이므로 집계 제외 |
+| docs | `main` | `a675519` | synced | 3 PR + 6 report follow-up commits | PR #36, #38, #37은 보고 기간 안의 기능/계약 문서 변경이다. `9c33d29`~`a675519`는 2026-05-22 16:33 KST 이후 main에 반영된 보고서 asset/rendering 보정이며 기능 구현 PR 수에는 포함하지 않는다. |
 | CodexKit | `main` | `a5a68c1` | synced | 0 | no merged PR in period |
 | DocsQuartz | `main` | `90d012b` | synced | 0 | no merged PR in period |
 
@@ -186,15 +186,15 @@ Smart Class는 대학 사이버캠퍼스의 핵심 LMS 기능을 웹 기반으�
 |---|---|---|---|---|---|---|---|
 | E-AUTH-01 | 인증 / 세션 | 로컬 MVP 완료 | Fig. 1-6 redbox: 로그인, 실패, 권한거부, 역할별 대시보드 | `Backend/app/main.py:920` login, `:961` refresh, `:1054` bootstrap, `:1070` logout; `Front/src/api.ts`; `Front/src/router.ts` | `DB/postgres/init/010_seed.sql` seed users, `refresh_sessions` | `Backend/tests/test_presence_admin_and_auth.py:218`, `:590`, `:683`; `Front/tests/e2e/auth-routing.spec.ts:584` | 운영 SSO/학사 인증 연동은 후속 과제 |
 | E-UI-01 | 역할별 Front UI | 로컬 MVP 완료 | Fig. 4-55 redbox(역할별 UI 전체; Fig. 56은 N/A) | `Front/src/router.ts`, `Front/src/App.tsx`, `Front/src/api.ts`; weekly merged PR Front #46 (`0c555e0`) | 역할/수강/강의 seed tables | `Front/tests/e2e/auth-routing.spec.ts:584`, `selected-lms-subset.spec.ts:55`, `exam-workflow.spec.ts:244`; PR #46 manual/docker-build evidence | Fig. 56 OpenWrt router registration/token 화면은 N/A로 API/DB/Service 근거 대체 |
-| E-LMS-01 | 강의 / 공지 / 과제 / Q&A / selected LMS read model | 로컬 MVP 완료 | Fig. 8-16, 26-35 redbox; 과제/Q&A UI 변경은 Fig. 12-16/35 계열 화면과 weekly PR evidence로 추적 | `Backend/app/main.py:1102-1456`, `:1785-1843`; `Backend/app/assignments.py`; `Backend/app/lms_selected.py`; `Front/src/App.tsx`; `Front/src/api.ts` | `courses`, `course_enrollments`, `notices`, `learning_items`, `assignments`, `assignment_submissions`, `assignment_attachments`, `course_qna_threads`, `course_qna_messages`, `learning_progress` | `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`; `Backend/tests/test_assignment_contract.py`; `Front/tests/e2e/assignment-workflow.spec.ts`; `Front/tests/e2e/selected-lms-subset.spec.ts`; weekly merged PRs docs #37, Backend #50, Front #46 (`90e62db`, `95465c1`, `0c555e0`) | selected-LMS 추가 화면 캡처 완료; 운영 데이터 다양화는 후속 과제 |
-| E-ATT-01 | 출석 workflow | 로컬 MVP 완료 | Fig. 17-20, 40-47 redbox | `Backend/app/attendance.py`; `Backend/app/main.py:2028-2318`; WebSocket `/ws/attendance` | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs`, `report_exports` | `Backend/tests/test_attendance_realtime.py:226`, `:369`, `:405`, `:498`, `:593`, `:1030`; weekly merged PRs Backend #48/#49 (`f874e8a`, `36e8524`) | 장기 교실 현장 검증은 후속 과제 |
+| E-LMS-01 | 강의 / 공지 / 과제 / Q&A / selected LMS read model | 로컬 MVP 완료 | Fig. 8-16, 26-35 redbox; 과제/Q&A UI 변경은 Fig. 12-16/35 계열 화면과 weekly PR evidence로 추적 | `Backend/app/main.py:1102-1456`, `:1785-1843`; `Backend/app/assignments.py`; `Backend/app/lms_selected.py`; `Front/src/App.tsx`; `Front/src/api.ts` | `courses`, `course_enrollments`, `notices`, `learning_items`, `assignments`, `assignment_submissions`, `assignment_submission_attachments`, `course_qna_threads`, `course_qna_posts`, `learning_progress` | `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`; `Backend/tests/test_assignment_contract.py`; `Front/tests/e2e/assignment-workflow.spec.ts`; `Front/tests/e2e/selected-lms-subset.spec.ts`; weekly merged PRs docs #37, Backend #50, Front #46 (`90e62db`, `95465c1`, `0c555e0`) | selected-LMS 추가 화면 캡처 완료; 운영 데이터 다양화는 후속 과제 |
+| E-ATT-01 | 출석 workflow | 로컬 MVP 완료 | Fig. 17-20, 40-47 redbox | `Backend/app/attendance.py`; `Backend/app/main.py:2030-2367`; WebSocket `/ws/attendance` | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs`, `report_exports` | `Backend/tests/test_attendance_realtime.py:226`, `:369`, `:405`, `:498`, `:593`, `:1030`; weekly merged PRs Backend #48/#49 (`f874e8a`, `36e8524`) | 장기 교실 현장 검증은 후속 과제 |
 | E-EXAM-01 | 객관식 시험 workflow | 로컬 MVP 완료 | Fig. 21-25, 36-39 redbox | `Backend/app/main.py:1469-1710`; `Front/tests/e2e/exam-workflow.spec.ts` | `exams`, `exam_questions`, `exam_question_options`, `exam_submissions`, `exam_submission_answers` | `Backend/tests/test_exam_contract_alignment.py:147`, `:208`, `:261`, `:294`; `Front/tests/e2e/exam-workflow.spec.ts:244` | 서술형/파일형 시험과 대규모 부정행위 대응은 후속 과제 |
-| E-PRES-01 | PresenceService eligibility / collector / demo overlay | 로컬 MVP 완료 | Fig. 18, 49-55 redbox; Fig. 56 N/A | `PresenceService/app/main.py:45`, `:64`, `:88`, `:100-125`; `Service/openwrt/presence-collector.sh`; Backend registry endpoints `Backend/app/main.py:1988-2028` | `classroom_networks`, `access_points`, `access_point_interfaces`, `registered_devices`, `presence_eligibility_logs` | `PresenceService/tests/test_service.py:136`, `:153`, `:203`, `:296`, `:347`, `:652`; `test_registry.py:29` | dummy overlay는 실 OpenWrt 장기 검증을 대체하지 않음 |
+| E-PRES-01 | PresenceService eligibility / collector / demo overlay | 로컬 MVP 완료 | Fig. 18, 49-55 redbox; Fig. 56 N/A | `PresenceService/app/main.py:45`, `:64`, `:88`, `:100-125`; `Service/openwrt/presence-collector.sh`; Backend registry endpoints `Backend/app/main.py:1990-2027` | `classroom_networks`, `access_points`, `access_point_interfaces`, `registered_devices`, `presence_eligibility_logs` | `PresenceService/tests/test_service.py:136`, `:153`, `:203`, `:296`, `:347`, `:652`; `test_registry.py:29` | dummy overlay는 실 OpenWrt 장기 검증을 대체하지 않음 |
 | E-DB-01 | DB schema / seed / ERD | 로컬 MVP 완료 | ERD-1~ERD-8 raw/redbox SVG | `DB/postgres/init/*.sql`, `DB/postgres/migrations/*.sql` | 전체 PostgreSQL schema 및 seed | `DB/postgres/tests/object_storage_triggers.sql`; Backend/Presence/Service tests가 schema 계약을 간접 검증 | ERD SVG는 보고서용 산출물이며 실제 운영 migration 로그는 후속 운영 검증에서 보강 |
 | E-SVC-01 | Service runtime / CI-CD | 부분 완료 | Service runtime은 diagram/manifest 중심; UI 화면 아님 | `Service/compose.yml`, `compose.local.yml`, `compose.image.yml`, `nginx/local.conf`, `Service/manifests/releases/v0.4.1.yml`, `v0.4.2.yml`, workflows `ci.yml`, `deploy-demo.yml` | DB 직접 테이블 없음; `report_exports` 등 ops metadata는 ERD-8 | `Service/tests/test_release_manifest_contract.py:27`, `:45`; `test_workspace_release_readiness.py:81`, `:98`; weekly merged PRs Service #26/#27/#28/#29 (`e89dcdb`, `c36a432`, `7b934a3`, `290820f`) | workflow run / demo server provenance 없이는 상용 배포로 쓰지 않음 |
-| E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/04-architecture/assignment-workflow-api.md`; `docs/08-reports/99-combined-report.md`; `docs/08-reports/99-combined-report-appendix.md` | N/A | docs #36/#37/#38 merged evidence; `git -C docs diff --check`, markdown/link sanity | 현재 `feat/weekly-report-update`는 추가 보고서 갱신 branch이며 main merge 전까지는 별도 집계 제외 |
+| E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/04-architecture/assignment-workflow-api.md`; `docs/08-reports/99-combined-report.md`; `docs/08-reports/99-combined-report-appendix.md` | N/A | docs #36/#37/#38 merged evidence와 `9c33d29`~`a675519` report asset/rendering follow-up; `git -C docs diff --check`, markdown/link sanity | 보고서 렌더링/asset 보정은 main 반영 완료이며 기능 구현 성과와 분리 |
 
-## 1.5 자체평가 결론
+## 1.4 자체평가 결론
 
 전체적으로 시스템은 “강의실 Wi-Fi 기반 재실성 판정이 결합된 LMS 로컬 MVP”라는 목표에 도달했다. 핵심 사용자는 학생, 교수, 서비스관리자이며, 각 역할의 주요 화면과 API 흐름, DB 저장 구조가 서로 연결되어 있다. 이번 주에는 출석 운영 안정성 개선과 교수 출석 CSV export 완성에 더해, 과제 제출 수정 시 기존 첨부를 유지·삭제·추가할 수 있는 흐름, 닫힌 Q&A thread의 추가 답변 차단, dashboard/profile summary card 가독성 개선까지 main에 반영되었다. Backend는 PresenceService 지연으로 DB connection과 WebSocket handshake가 함께 밀리는 문제를 고쳤고, Front/Backend는 교수자가 출석 화면에서 학생별 누계를 확인한 뒤 요약본/전체본 CSV를 바로 내려받는 흐름을 완성했다. 이어 assignment/Q&A PR들은 학생 과제 수정과 교수 Q&A 종료 상태가 API와 화면에서 같은 규칙으로 동작하도록 맞췄다. Service는 이 기능들이 포함된 Backend/Front image 조합을 v0.4.1과 v0.4.2 demo/release manifest로 고정했다. 다만 실제 학교 운영망에서 장기간 수집한 Wi-Fi 품질 지표, 학사시스템 정식 SSO/SIS 연동, 네이티브 앱은 후속 과제로 남긴다.
 
@@ -567,7 +567,7 @@ Source: `DB/postgres/init/001_schema.sql:60-115`
 
 #### H.3 attendance sessions / slots / records / audit / AP registry
 
-Source: `DB/postgres/init/001_schema.sql:116-225`
+Source: `DB/postgres/init/001_schema.sql:116-223`
 
 ```sql
 0116: CREATE TABLE IF NOT EXISTS attendance_sessions (
@@ -829,7 +829,7 @@ Source: `DB/postgres/init/013_exam_schema.sql:1-140`
 
 #### H.5 assignment schema
 
-Source: `DB/postgres/init/014_assignment_schema.sql:1-80`
+Source: `DB/postgres/init/014_assignment_schema.sql:1-55`
 
 ```sql
 0001: -- Assignment domain schema
@@ -1055,7 +1055,7 @@ Source: `DB/postgres/init/015_object_storage_schema.sql:49-205`
 
 #### H.7 selected LMS Q&A / learning progress
 
-Source: `DB/postgres/init/016_selected_lms_subset.sql:84-160`
+Source: `DB/postgres/init/016_selected_lms_subset.sql:84-150`
 
 ```sql
 0084: CREATE TABLE IF NOT EXISTS course_qna_threads (
@@ -1731,6 +1731,8 @@ smart-class/
 
 ### 5.4.2 대표 request/response 예시
 
+아래 JSON 응답의 datetime 값은 API 직렬화 형식을 보여주기 위해 ISO 8601 offset 예시를 사용한다.
+
 #### 5.4.2.1 인증 로그인
 
 **Request**
@@ -1752,7 +1754,10 @@ Content-Type: application/json
   "success": true,
   "data": {
     "access_token": "<jwt>",
+    "token_type": "bearer",
+    "expires_at": "2026-05-22T02:30:00+09:00",
     "user": {
+      "id": 1,
       "login_id": "20201239",
       "role": "student",
       "name": "Demo Student"
@@ -1760,9 +1765,22 @@ Content-Type: application/json
     "route_access": {
       "dashboard": true,
       "student_courses": true
-    }
+    },
+    "refresh_expires_at": "2026-05-29T02:00:00+09:00"
   },
-  "error": null
+  "message": "ok",
+  "meta": {
+    "refresh_cookie_name": "smart_class_refresh",
+    "access_cookie_name": "smart_class_access",
+    "legacy_dev_token_enabled": false
+  },
+  "access_token": "<jwt>",
+  "user": {
+    "id": 1,
+    "login_id": "20201239",
+    "role": "student",
+    "name": "Demo Student"
+  }
 }
 ```
 
@@ -1779,9 +1797,7 @@ Content-Type: application/json
 
 {
   "student_id": "20201239",
-  "course_code": "CSE116",
-  "purpose": "attendance",
-  "classroom_code": "B101"
+  "course_code": "CSE116"
 }
 ```
 
@@ -1792,9 +1808,10 @@ Content-Type: application/json
   "success": true,
   "data": {
     "eligible": true,
-    "reason": "eligible",
-    "classroom_code": "B101",
-    "matched_device_id": "demo-device-1",
+    "reason_code": "OK",
+    "matched_device_mac": "AA:BB:CC:DD:EE:FF",
+    "observed_at": "2026-05-22T00:49:00+09:00",
+    "snapshot_age_seconds": 4,
     "evidence": {
       "source": "demo-overlay",
       "ap_id": "b101-ap-1",
@@ -1802,11 +1819,12 @@ Content-Type: application/json
       "threshold_dbm": -65
     }
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
-근거: `Backend/app/main.py:2028`, `PresenceService/app/main.py:88`, `Backend/tests/test_presence_admin_and_auth.py:906`.
+근거: `Backend/app/main.py:2030`, `PresenceService/app/main.py:88`, `Backend/tests/test_presence_admin_and_auth.py:906`.
 
 #### 5.4.2.3 교수 출석 CSV export
 
@@ -1818,8 +1836,7 @@ Authorization: Bearer <professor-access-token>
 Content-Type: application/json
 
 {
-  "format": "csv",
-  "scope": "course-semester"
+  "export_type": "attendance_summary_csv"
 }
 ```
 
@@ -1830,16 +1847,23 @@ Content-Type: application/json
   "success": true,
   "data": {
     "id": 42,
+    "original_filename": "attendance-summary-CSE116-20260522004900.csv",
+    "mime_type": "text/csv; charset=utf-8",
+    "file_size_bytes": 1234,
+    "uploaded_at": "2026-05-22T00:49:00+09:00",
+    "storage_provider": "local",
+    "bucket_name": "smart-class",
+    "export_type": "attendance_csv",
     "course_code": "CSE116",
-    "format": "csv",
     "status": "ready",
-    "download_path": "/api/professors/PRF002/courses/CSE116/attendance/report-exports/42/download"
+    "generated_at": "2026-05-22T00:49:00+09:00"
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
-근거: `Backend/app/main.py:2091`, `:2104`, `:2115`, weekly Backend commit `36e8524`, Front commit `73f5e09`.
+근거: `Backend/app/main.py:2093`, `:2106`, `:2117`, weekly Backend commit `36e8524`, Front commit `73f5e09`.
 
 #### 5.4.2.4 학생 시험 시작 및 답안 저장
 
@@ -1859,11 +1883,14 @@ Authorization: Bearer <student-access-token>
   "success": true,
   "data": {
     "submission_id": 1001,
-    "exam_id": 1,
+    "attempt_no": 1,
     "status": "in_progress",
-    "started_at": "2026-05-22 02:00 KST"
+    "started_at": "2026-05-22T02:00:00+09:00",
+    "expires_at": "2026-05-22T02:30:00+09:00",
+    "idempotent": false
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
@@ -1890,14 +1917,15 @@ Content-Type: application/json
     "submission_id": 1001,
     "question_id": 10,
     "selected_option_id": 44,
-    "is_answered": true,
-    "saved_at": "2026-05-22 02:03 KST"
+    "answer_text": null,
+    "answered_at": "2026-05-22T02:03:00+09:00"
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
-근거: `Backend/app/main.py:1492`, `:1682`, `:1706`, `Backend/tests/test_exam_contract_alignment.py:261`, `Front/tests/e2e/exam-workflow.spec.ts:244`.
+근거: `Backend/app/main.py:1494`, `:1708`, `:1712`, `Backend/tests/test_exam_contract_alignment.py:261`, `Front/tests/e2e/exam-workflow.spec.ts:244`.
 
 #### 5.4.2.5 selected LMS: Q&A / learning progress / grade feedback
 
@@ -1922,16 +1950,28 @@ Content-Type: application/json
 {
   "success": true,
   "data": {
-    "thread_id": 15,
-    "course_code": "CSE116",
+    "id": 15,
+    "student_id": "20201239",
+    "student_name": "Demo Student",
     "title": "과제 제출 형식 문의",
+    "body": "첨부파일 형식 제한이 있나요?",
     "status": "open",
-    "latest_post": {
-      "author_login_id": "20201239",
-      "body": "첨부파일 형식 제한이 있나요?"
-    }
+    "created_at": "2026-05-22T02:04:00+09:00",
+    "updated_at": "2026-05-22T02:04:00+09:00",
+    "posts": [
+      {
+        "id": 31,
+        "author_id": "20201239",
+        "author_name": "Demo Student",
+        "author_role": "student",
+        "body": "첨부파일 형식 제한이 있나요?",
+        "post_type": "question",
+        "created_at": "2026-05-22T02:04:00+09:00"
+      }
+    ]
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
@@ -1956,11 +1996,19 @@ Content-Type: application/json
   "success": true,
   "data": {
     "learning_item_id": 7,
-    "student_login_id": "20201239",
+    "learning_item_title": "1주차 요구사항 분석",
+    "title": "1주차 요구사항 분석",
+    "kind": "material",
+    "student_id": "20201239",
+    "student_name": "Demo Student",
     "progress_percent": 80,
-    "updated_at": "2026-05-22 02:04 KST"
+    "status": "in_progress",
+    "last_viewed_at": "2026-05-22T02:04:00+09:00",
+    "completed_at": null,
+    "updated_at": "2026-05-22T02:04:00+09:00"
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
@@ -1979,21 +2027,46 @@ Authorization: Bearer <student-access-token>
 {
   "success": true,
   "data": {
+    "course_code": "CSE116",
+    "student_id": "20201239",
+    "student_name": "Demo Student",
+    "overall_percent": 92,
+    "items": [
+      {
+        "type": "assignment",
+        "item_type": "assignment",
+        "assignment_id": 3,
+        "item_id": 3,
+        "title": "요구사항 분석 보고서",
+        "score": 92,
+        "max_score": 100,
+        "percent": 92,
+        "feedback": "요구사항 분석이 구체적입니다.",
+        "grading_status": "published"
+      }
+    ],
     "assignments": [
       {
+        "type": "assignment",
+        "item_type": "assignment",
         "assignment_id": 3,
+        "item_id": 3,
+        "title": "요구사항 분석 보고서",
         "score": 92,
+        "percent": 92,
         "max_score": 100,
         "grading_status": "published",
         "feedback": "요구사항 분석이 구체적입니다."
       }
-    ]
+    ],
+    "exams": []
   },
-  "error": null
+  "message": "ok",
+  "meta": {}
 }
 ```
 
-근거: `Backend/app/main.py:1280`, `:1302`, `:1313`, `:1371`, `:1382`, `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`.
+근거: `Backend/app/main.py:1282`, `:1315`, `:1384`, `Backend/app/lms_selected.py:143`, `:235`, `:308`, `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`.
 
 #### 5.4.2.6 PresenceService collector snapshot ingest
 
@@ -2270,180 +2343,180 @@ Source: `Front/src/api.ts:968-1150`
 0974:     assignmentId: number,
 0975:     payload: {
 0976:       submission_text?: string | null
-0977:       files?: File[]
-0978:     },
-0979:   ) => {
-0980:     const formData = new FormData()
-0981:     if (payload.submission_text != null) {
-0982:       formData.append('submission_text', payload.submission_text)
-0983:     }
-0984:     for (const file of payload.files ?? []) {
-0985:       formData.append('files', file)
-0986:     }
-0987:     return request<StudentAssignmentDetail>(
-0988:       `/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/submission`,
-0989:       {
-0990:         method: 'POST',
-0991:         body: formData,
-0992:       },
-0993:     )
-0994:   },
-0995:   buildStudentAssignmentAttachmentUrl: (
-0996:     studentId: string,
-0997:     courseCode: string,
-0998:     assignmentId: number,
-0999:     attachmentId: number,
-1000:   ) =>
-1001:     buildApiUrl(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/attachments/${pathSegment(attachmentId)}`),
-1002:   listProfessorAssignments: (professorId: string, courseCode: string) =>
-1003:     request<ProfessorAssignmentSummary[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments`),
-1004:   getProfessorAssignmentDetail: (professorId: string, courseCode: string, assignmentId: number) =>
-1005:     request<ProfessorAssignmentDetail>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}`),
-1006:   createProfessorAssignment: (professorId: string, courseCode: string, payload: ProfessorAssignmentCreatePayload) =>
-1007:     request<ProfessorAssignmentDetail>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments`, {
-1008:       method: 'POST',
-1009:       body: JSON.stringify(payload),
-1010:     }),
-1011:   gradeProfessorAssignmentSubmission: (
-1012:     professorId: string,
-1013:     courseCode: string,
-1014:     assignmentId: number,
-1015:     submissionId: number,
-1016:     payload: AssignmentGradePayload,
-1017:   ) =>
-1018:     request<ProfessorAssignmentDetail | ProfessorAssignmentSubmission>(
-1019:       `/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/submissions/${pathSegment(submissionId)}/grade`,
-1020:       {
-1021:         method: 'PUT',
-1022:         body: JSON.stringify(payload),
-1023:       },
-1024:     ),
-1025:   getStudentGrades: (studentId: string, courseCode: string) =>
-1026:     request<StudentCourseGrades>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/grades`),
-1027:   getProfessorGrades: (professorId: string, courseCode: string) =>
-1028:     request<ProfessorCourseGradeSummary[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/grades`),
-1029:   listStudentQna: (studentId: string, courseCode: string) =>
-1030:     request<CourseQnaThread[]>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/qna`),
-1031:   createStudentQna: (studentId: string, courseCode: string, payload: StudentQnaCreatePayload) =>
-1032:     request<CourseQnaThread>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/qna`, {
-1033:       method: 'POST',
-1034:       body: JSON.stringify(payload),
-1035:     }),
-1036:   listProfessorQna: (professorId: string, courseCode: string) =>
-1037:     request<CourseQnaThread[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/qna`),
-1038:   answerProfessorQna: (professorId: string, courseCode: string, threadId: number, payload: ProfessorQnaAnswerPayload) =>
-1039:     request<CourseQnaThread>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/qna/${pathSegment(threadId)}/answer`, {
-1040:       method: 'POST',
-1041:       body: JSON.stringify(payload),
-1042:     }),
-1043:   listStudentLearningProgress: (studentId: string, courseCode: string) =>
-1044:     request<StudentLearningProgressItem[]>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-progress`),
-1045:   updateStudentLearningProgress: (
-1046:     studentId: string,
-1047:     courseCode: string,
-1048:     learningItemId: number,
-1049:     payload: LearningProgressUpdatePayload,
-1050:   ) =>
-1051:     request<StudentLearningProgressItem>(
-1052:       `/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}/progress`,
-1053:       {
-1054:         method: 'PUT',
-1055:         body: JSON.stringify(payload),
-1056:       },
-1057:     ),
-1058:   listProfessorLearningProgress: (professorId: string, courseCode: string) =>
-1059:     request<ProfessorLearningProgressRow[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-progress`),
-1060:   buildProfessorAssignmentAttachmentUrl: (
-1061:     professorId: string,
-1062:     courseCode: string,
-1063:     assignmentId: number,
-1064:     attachmentId: number,
-1065:   ) =>
-1066:     buildApiUrl(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/attachments/${pathSegment(attachmentId)}`),
-1067:   listStudentLearningItems: (studentId: string, courseCode: string) =>
-1068:     request<LearningItem[]>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-items`),
-1069:   listProfessorLearningItems: (professorId: string, courseCode: string) =>
-1070:     request<LearningItem[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items`),
-1071:   createProfessorLearningItem: (professorId: string, courseCode: string, payload: LearningItemCreatePayload) =>
-1072:     request<LearningItem>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items`, {
-1073:       method: 'POST',
-1074:       body: learningItemFormData(payload),
-1075:     }),
-1076:   deleteProfessorLearningItem: (professorId: string, courseCode: string, learningItemId: number) =>
-1077:     request<void>(
-1078:       `/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}`,
-1079:       {
-1080:         method: 'DELETE',
-1081:       },
-1082:     ),
-1083:   buildStudentLearningAttachmentUrl: (studentId: string, courseCode: string, learningItemId: number, attachmentId: number) =>
-1084:     buildApiUrl(
-1085:       `/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}/attachments/${pathSegment(attachmentId)}`,
+0977:       remove_attachment_ids?: number[]
+0978:       files?: File[]
+0979:     },
+0980:   ) => {
+0981:     const formData = new FormData()
+0982:     if (payload.submission_text != null) {
+0983:       formData.append('submission_text', payload.submission_text)
+0984:     }
+0985:     for (const attachmentId of payload.remove_attachment_ids ?? []) {
+0986:       formData.append('remove_attachment_ids', String(attachmentId))
+0987:     }
+0988:     for (const file of payload.files ?? []) {
+0989:       formData.append('files', file)
+0990:     }
+0991:     return request<StudentAssignmentDetail>(
+0992:       `/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/submission`,
+0993:       {
+0994:         method: 'POST',
+0995:         body: formData,
+0996:       },
+0997:     )
+0998:   },
+0999:   buildStudentAssignmentAttachmentUrl: (
+1000:     studentId: string,
+1001:     courseCode: string,
+1002:     assignmentId: number,
+1003:     attachmentId: number,
+1004:   ) =>
+1005:     buildApiUrl(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/attachments/${pathSegment(attachmentId)}`),
+1006:   listProfessorAssignments: (professorId: string, courseCode: string) =>
+1007:     request<ProfessorAssignmentSummary[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments`),
+1008:   getProfessorAssignmentDetail: (professorId: string, courseCode: string, assignmentId: number) =>
+1009:     request<ProfessorAssignmentDetail>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}`),
+1010:   createProfessorAssignment: (professorId: string, courseCode: string, payload: ProfessorAssignmentCreatePayload) =>
+1011:     request<ProfessorAssignmentDetail>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments`, {
+1012:       method: 'POST',
+1013:       body: JSON.stringify(payload),
+1014:     }),
+1015:   gradeProfessorAssignmentSubmission: (
+1016:     professorId: string,
+1017:     courseCode: string,
+1018:     assignmentId: number,
+1019:     submissionId: number,
+1020:     payload: AssignmentGradePayload,
+1021:   ) =>
+1022:     request<ProfessorAssignmentDetail | ProfessorAssignmentSubmission>(
+1023:       `/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/submissions/${pathSegment(submissionId)}/grade`,
+1024:       {
+1025:         method: 'PUT',
+1026:         body: JSON.stringify(payload),
+1027:       },
+1028:     ),
+1029:   getStudentGrades: (studentId: string, courseCode: string) =>
+1030:     request<StudentCourseGrades>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/grades`),
+1031:   getProfessorGrades: (professorId: string, courseCode: string) =>
+1032:     request<ProfessorCourseGradeSummary[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/grades`),
+1033:   listStudentQna: (studentId: string, courseCode: string) =>
+1034:     request<CourseQnaThread[]>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/qna`),
+1035:   createStudentQna: (studentId: string, courseCode: string, payload: StudentQnaCreatePayload) =>
+1036:     request<CourseQnaThread>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/qna`, {
+1037:       method: 'POST',
+1038:       body: JSON.stringify(payload),
+1039:     }),
+1040:   listProfessorQna: (professorId: string, courseCode: string) =>
+1041:     request<CourseQnaThread[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/qna`),
+1042:   answerProfessorQna: (professorId: string, courseCode: string, threadId: number, payload: ProfessorQnaAnswerPayload) =>
+1043:     request<CourseQnaThread>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/qna/${pathSegment(threadId)}/answer`, {
+1044:       method: 'POST',
+1045:       body: JSON.stringify(payload),
+1046:     }),
+1047:   listStudentLearningProgress: (studentId: string, courseCode: string) =>
+1048:     request<StudentLearningProgressItem[]>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-progress`),
+1049:   updateStudentLearningProgress: (
+1050:     studentId: string,
+1051:     courseCode: string,
+1052:     learningItemId: number,
+1053:     payload: LearningProgressUpdatePayload,
+1054:   ) =>
+1055:     request<StudentLearningProgressItem>(
+1056:       `/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}/progress`,
+1057:       {
+1058:         method: 'PUT',
+1059:         body: JSON.stringify(payload),
+1060:       },
+1061:     ),
+1062:   listProfessorLearningProgress: (professorId: string, courseCode: string) =>
+1063:     request<ProfessorLearningProgressRow[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-progress`),
+1064:   buildProfessorAssignmentAttachmentUrl: (
+1065:     professorId: string,
+1066:     courseCode: string,
+1067:     assignmentId: number,
+1068:     attachmentId: number,
+1069:   ) =>
+1070:     buildApiUrl(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/assignments/${pathSegment(assignmentId)}/attachments/${pathSegment(attachmentId)}`),
+1071:   listStudentLearningItems: (studentId: string, courseCode: string) =>
+1072:     request<LearningItem[]>(`/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-items`),
+1073:   listProfessorLearningItems: (professorId: string, courseCode: string) =>
+1074:     request<LearningItem[]>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items`),
+1075:   createProfessorLearningItem: (professorId: string, courseCode: string, payload: LearningItemCreatePayload) =>
+1076:     request<LearningItem>(`/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items`, {
+1077:       method: 'POST',
+1078:       body: learningItemFormData(payload),
+1079:     }),
+1080:   deleteProfessorLearningItem: (professorId: string, courseCode: string, learningItemId: number) =>
+1081:     request<void>(
+1082:       `/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}`,
+1083:       {
+1084:         method: 'DELETE',
+1085:       },
 1086:     ),
-1087:   buildProfessorLearningAttachmentUrl: (professorId: string, courseCode: string, learningItemId: number, attachmentId: number) =>
+1087:   buildStudentLearningAttachmentUrl: (studentId: string, courseCode: string, learningItemId: number, attachmentId: number) =>
 1088:     buildApiUrl(
-1089:       `/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}/attachments/${pathSegment(attachmentId)}`,
+1089:       `/api/students/${pathSegment(studentId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}/attachments/${pathSegment(attachmentId)}`,
 1090:     ),
-1091:   listStudentExams: (studentId: string, courseCode: string) =>
-1092:     request<StudentExamSummary[]>(`/api/students/${studentId}/courses/${courseCode}/exams`),
-1093:   getStudentExamDetail: (studentId: string, courseCode: string, examId: number) =>
-1094:     request<StudentExamDetail>(`/api/students/${studentId}/courses/${courseCode}/exams/${examId}`),
-1095:   startStudentExam: (studentId: string, courseCode: string, examId: number) =>
-1096:     request<ExamSubmissionStart>(`/api/students/${studentId}/courses/${courseCode}/exams/${examId}/start`, {
-1097:       method: 'POST',
-1098:     }),
-1099:   saveStudentExamAnswer: (
-1100:     studentId: string,
-1101:     courseCode: string,
-1102:     examId: number,
-1103:     submissionId: number,
-1104:     questionId: number,
-1105:     payload: StudentExamSaveAnswerPayload,
-1106:   ) =>
-1107:     request<StudentExamSavedAnswer>(
-1108:       `/api/students/${studentId}/courses/${courseCode}/exams/${examId}/submissions/${submissionId}/answers/${questionId}`,
-1109:       {
-1110:         method: 'PUT',
-1111:         body: JSON.stringify(payload),
-1112:       },
-1113:     ),
-1114:   submitStudentExam: (studentId: string, courseCode: string, examId: number, payload: StudentExamSubmitPayload) =>
-1115:     request<StudentExamSubmitResult>(`/api/students/${studentId}/courses/${courseCode}/exams/${examId}/submit`, {
-1116:       method: 'POST',
-1117:       body: JSON.stringify(payload),
-1118:     }),
-1119:   listProfessorExams: (professorId: string, courseCode: string) =>
-1120:     request<ExamSummary[]>(`/api/professors/${professorId}/courses/${courseCode}/exams`),
-1121:   getProfessorExamDetail: (professorId: string, courseCode: string, examId: number) =>
-1122:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}`),
-1123:   createProfessorExam: (professorId: string, courseCode: string, payload: ProfessorExamCreatePayload) =>
-1124:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams`, {
-1125:       method: 'POST',
-1126:       body: JSON.stringify(payload),
-1127:     }),
-1128:   updateProfessorExam: (professorId: string, courseCode: string, examId: number, payload: ProfessorExamCreatePayload) =>
-1129:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}`, {
-1130:       method: 'PUT',
-1131:       body: JSON.stringify(payload),
-1132:     }),
-1133:   deleteProfessorExam: (professorId: string, courseCode: string, examId: number) =>
-1134:     request<void>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}`, {
-1135:       method: 'DELETE',
+1091:   buildProfessorLearningAttachmentUrl: (professorId: string, courseCode: string, learningItemId: number, attachmentId: number) =>
+1092:     buildApiUrl(
+1093:       `/api/professors/${pathSegment(professorId)}/courses/${pathSegment(courseCode)}/learning-items/${pathSegment(learningItemId)}/attachments/${pathSegment(attachmentId)}`,
+1094:     ),
+1095:   listStudentExams: (studentId: string, courseCode: string) =>
+1096:     request<StudentExamSummary[]>(`/api/students/${studentId}/courses/${courseCode}/exams`),
+1097:   getStudentExamDetail: (studentId: string, courseCode: string, examId: number) =>
+1098:     request<StudentExamDetail>(`/api/students/${studentId}/courses/${courseCode}/exams/${examId}`),
+1099:   startStudentExam: (studentId: string, courseCode: string, examId: number) =>
+1100:     request<ExamSubmissionStart>(`/api/students/${studentId}/courses/${courseCode}/exams/${examId}/start`, {
+1101:       method: 'POST',
+1102:     }),
+1103:   saveStudentExamAnswer: (
+1104:     studentId: string,
+1105:     courseCode: string,
+1106:     examId: number,
+1107:     submissionId: number,
+1108:     questionId: number,
+1109:     payload: StudentExamSaveAnswerPayload,
+1110:   ) =>
+1111:     request<StudentExamSavedAnswer>(
+1112:       `/api/students/${studentId}/courses/${courseCode}/exams/${examId}/submissions/${submissionId}/answers/${questionId}`,
+1113:       {
+1114:         method: 'PUT',
+1115:         body: JSON.stringify(payload),
+1116:       },
+1117:     ),
+1118:   submitStudentExam: (studentId: string, courseCode: string, examId: number, payload: StudentExamSubmitPayload) =>
+1119:     request<StudentExamSubmitResult>(`/api/students/${studentId}/courses/${courseCode}/exams/${examId}/submit`, {
+1120:       method: 'POST',
+1121:       body: JSON.stringify(payload),
+1122:     }),
+1123:   listProfessorExams: (professorId: string, courseCode: string) =>
+1124:     request<ExamSummary[]>(`/api/professors/${professorId}/courses/${courseCode}/exams`),
+1125:   getProfessorExamDetail: (professorId: string, courseCode: string, examId: number) =>
+1126:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}`),
+1127:   createProfessorExam: (professorId: string, courseCode: string, payload: ProfessorExamCreatePayload) =>
+1128:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams`, {
+1129:       method: 'POST',
+1130:       body: JSON.stringify(payload),
+1131:     }),
+1132:   updateProfessorExam: (professorId: string, courseCode: string, examId: number, payload: ProfessorExamCreatePayload) =>
+1133:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}`, {
+1134:       method: 'PUT',
+1135:       body: JSON.stringify(payload),
 1136:     }),
-1137:   publishProfessorExam: (professorId: string, courseCode: string, examId: number) =>
-1138:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}/publish`, {
-1139:       method: 'POST',
+1137:   deleteProfessorExam: (professorId: string, courseCode: string, examId: number) =>
+1138:     request<void>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}`, {
+1139:       method: 'DELETE',
 1140:     }),
-1141:   closeProfessorExam: (professorId: string, courseCode: string, examId: number) =>
-1142:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}/close`, {
+1141:   publishProfessorExam: (professorId: string, courseCode: string, examId: number) =>
+1142:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}/publish`, {
 1143:       method: 'POST',
 1144:     }),
-1145:   uploadProfessorExamQuestionAttachment: (
-1146:     professorId: string,
-1147:     courseCode: string,
-1148:     examId: number,
-1149:     questionId: number,
-1150:     files: File[],
+1145:   closeProfessorExam: (professorId: string, courseCode: string, examId: number) =>
+1146:     request<ProfessorExamDetail>(`/api/professors/${professorId}/courses/${courseCode}/exams/${examId}/close`, {
+1147:       method: 'POST',
+1148:     }),
+1149:   uploadProfessorExamQuestionAttachment: (
+1150:     professorId: string,
 ```
 
 #### G.3 Front route parser와 URL build 규칙
@@ -2598,75 +2671,75 @@ Source: `Front/src/router.ts:1-140`
 Source: `Front/src/App.tsx:4677-4745`
 
 ```tsx
-4677:             {attendanceModalOpen && attendanceModalAnchorSlot ? (
-4678:               <div className="attendance-modal-backdrop" role="presentation" onClick={() => setAttendanceModalOpen(false)}>
-4679:                 <div className="attendance-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
-4680:                   <div className="attendance-modal-head">
-4681:                     <strong>출석 시작 · {attendanceModalAnchorSlot.session_date}</strong>
-4682:                     <button type="button" className="text-button" onClick={() => setAttendanceModalOpen(false)}>닫기</button>
-4683:                   </div>
-4684:                   <div className="attendance-mode-group">
-4685:                     {([
-4686:                       ['manual', '일반출석'],
-4687:                       ['smart', '스마트출석'],
-4688:                       ['canceled', '휴강'],
-4689:                     ] as const).map(([mode, label]) => (
-4690:                       <button
-4691:                         key={mode}
-4692:                         type="button"
-4693:                         className={`filter-chip${selectedAttendanceMode === mode ? ' active' : ''}`}
-4694:                         onClick={() => setSelectedAttendanceMode(mode)}
-4695:                       >
-4696:                         {label}
-4697:                       </button>
-4698:                     ))}
-4699:                   </div>
-4700:                   <div className="attendance-modal-slot-list">
-4701:                     {modalDateSlots.map((slot) => (
-4702:                       <label key={slot.projection_key} className="attendance-modal-slot-option">
-4703:                         <input
-4704:                           type="checkbox"
-4705:                           checked={selectedBatchProjectionKeys.includes(slot.projection_key)}
-4706:                           onChange={() => toggleModalProjectionKey(slot.projection_key)}
-4707:                         />
-4708:                         <span>{slot.lesson_index_within_week}차시 · {slot.period_label} · {slot.slot_state}</span>
-4709:                       </label>
-4710:                     ))}
-4711:                   </div>
-4712:                   <div className="attendance-modal-actions">
-4713:                     <span className="caption-text">선택된 차시 {selectedBatchProjectionKeys.length}건</span>
-4714:                     <button type="button" onClick={() => void applyAttendanceBatch()} disabled={selectedBatchProjectionKeys.length === 0}>
-4715:                       선택 차시에 적용
-4716:                     </button>
-4717:                   </div>
-4718:                 </div>
-4719:               </div>
-4720:             ) : null}
-4721:
-4722:             {attendanceHistory ? (
-4723:               <div className="attendance-modal-backdrop" role="presentation" onClick={() => setAttendanceHistory(null)}>
-4724:                 <div className="attendance-modal attendance-modal--history" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
-4725:                   <div className="attendance-modal-head">
-4726:                     <strong>학생 출석 이력 · {attendanceHistory.student_name}</strong>
-4727:                     <button type="button" className="text-button" onClick={() => setAttendanceHistory(null)}>닫기</button>
-4728:                   </div>
-4729:                   <span className="caption-text">삭제 불가 이력</span>
-4730:                   <div className="attendance-history-list">
-4731:                     {attendanceHistory.entries.map((entry) => (
-4732:                       <article key={entry.audit_id} className="attendance-history-item">
-4733:                         <div className="attendance-history-head">
-4734:                           <strong>{entry.new_status ?? '상태 없음'}</strong>
-4735:                           <span>{entry.changed_at}</span>
-4736:                         </div>
-4737:                         <p>{entry.actor_name}({entry.actor_login_id}) · {entry.change_source}</p>
-4738:                         <p>{entry.previous_status ?? '-'} → {entry.new_status ?? '-'}</p>
-4739:                         <p>사유: {entry.reason ?? '-'}</p>
-4740:                       </article>
-4741:                     ))}
-4742:                   </div>
-4743:                 </div>
-4744:               </div>
-4745:             ) : null}
+4677:                       {attendanceCsvBusyVariant === 'full' ? '전체본 생성 중...' : '전체본 CSV'}
+4678:                     </button>
+4679:                   </div>
+4680:                 }
+4681:               >
+4682:                 {attendanceStudentStats ? (
+4683:                   <div className="attendance-roster-scroll">
+4684:                     <table className="attendance-stats-table">
+4685:                       <thead>
+4686:                         <tr>
+4687:                           <th scope="col">학번</th>
+4688:                           <th scope="col">이름</th>
+4689:                           <th scope="col">출석 차시</th>
+4690:                           <th scope="col">지각 차시</th>
+4691:                           <th scope="col">결석 차시</th>
+4692:                           <th scope="col">공결 차시</th>
+4693:                         </tr>
+4694:                       </thead>
+4695:                       <tbody>
+4696:                         {attendanceStudentStats.rows.map((row) => (
+4697:                           <tr key={`attendance-stat-${row.student_id}`}>
+4698:                             <td>{row.student_id}</td>
+4699:                             <td>{row.student_name}</td>
+4700:                             <td>{row.present}</td>
+4701:                             <td>{row.late}</td>
+4702:                             <td>{row.absent}</td>
+4703:                             <td>{row.official}</td>
+4704:                           </tr>
+4705:                         ))}
+4706:                       </tbody>
+4707:                     </table>
+4708:                   </div>
+4709:                 ) : (
+4710:                   <p className="empty-state">학생별 누계 통계를 불러오는 중입니다.</p>
+4711:                 )}
+4712:               </SectionCard>
+4713:             ) : null}
+4714:             {attendanceMessage ? <p className="success-text">{attendanceMessage}</p> : null}
+4715:
+4716:             {attendanceModalOpen && attendanceModalAnchorSlot ? (
+4717:               <div className="attendance-modal-backdrop" role="presentation" onClick={() => setAttendanceModalOpen(false)}>
+4718:                 <div className="attendance-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+4719:                   <div className="attendance-modal-head">
+4720:                     <strong>출석 시작 · {attendanceModalAnchorSlot.session_date}</strong>
+4721:                     <button type="button" className="text-button" onClick={() => setAttendanceModalOpen(false)}>닫기</button>
+4722:                   </div>
+4723:                   <div className="attendance-mode-group">
+4724:                     {([
+4725:                       ['manual', '일반출석'],
+4726:                       ['smart', '스마트출석'],
+4727:                       ['canceled', '휴강'],
+4728:                     ] as const).map(([mode, label]) => (
+4729:                       <button
+4730:                         key={mode}
+4731:                         type="button"
+4732:                         className={`filter-chip${selectedAttendanceMode === mode ? ' active' : ''}`}
+4733:                         onClick={() => setSelectedAttendanceMode(mode)}
+4734:                       >
+4735:                         {label}
+4736:                       </button>
+4737:                     ))}
+4738:                   </div>
+4739:                   <div className="attendance-modal-slot-list">
+4740:                     {modalDateSlots.map((slot) => (
+4741:                       <label key={slot.projection_key} className="attendance-modal-slot-option">
+4742:                         <input
+4743:                           type="checkbox"
+4744:                           checked={selectedBatchProjectionKeys.includes(slot.projection_key)}
+4745:                           onChange={() => toggleModalProjectionKey(slot.projection_key)}
 ```
 
 #### G.5 Front selected LMS UI 핵심
@@ -2674,152 +2747,152 @@ Source: `Front/src/App.tsx:4677-4745`
 Source: `Front/src/App.tsx:5800-5945`
 
 ```tsx
-5800:         </div>
-5801:         {thread.posts?.length ? (
-5802:           <div className="helper-list">
-5803:             {thread.posts.map((post) => (
-5804:               <div key={post.id} className="helper-row">
-5805:                 <strong>{post.post_type === 'answer' ? '답변' : post.post_type === 'question' ? '질문' : '댓글'}</strong>
-5806:                 <span>{post.body}</span>
-5807:               </div>
-5808:             ))}
-5809:           </div>
-5810:         ) : null}
-5811:         {isProfessor ? (
-5812:           <div className="stack-form">
-5813:             <label>
-5814:               답변 작성
-5815:               <textarea
-5816:                 rows={3}
-5817:                 value={qnaAnswerDrafts[thread.id] ?? ''}
-5818:                 onChange={(event) => setQnaAnswerDrafts((current) => ({ ...current, [thread.id]: event.target.value }))}
-5819:                 placeholder="학생 문의에 대한 답변을 입력하세요."
-5820:               />
-5821:             </label>
-5822:             <label className="inline-check">
-5823:               <input
-5824:                 type="checkbox"
-5825:                 checked={qnaAnswerCloseDrafts[thread.id] ?? false}
-5826:                 onChange={(event) => setQnaAnswerCloseDrafts((current) => ({ ...current, [thread.id]: event.target.checked }))}
-5827:               />
-5828:               답변 후 문의 종료
-5829:             </label>
-5830:             <div className="exam-detail-actions">
-5831:               <button type="button" className="primary-button" onClick={() => void handleProfessorQnaAnswer(thread.id)}>
-5832:                 답변 저장
-5833:               </button>
-5834:             </div>
-5835:           </div>
-5836:         ) : null}
-5837:       </article>
-5838:     )
-5839:   }
-5840:
-5841:   function renderCourseSelectedLms() {
-5842:     if (!isStudent && !isProfessor) {
-5843:       return (
-5844:         <SectionCard title="성적·문의·진도">
-5845:           <p className="empty-state">관리자 계정에서는 선택 LMS 화면을 직접 사용할 수 없습니다.</p>
-5846:         </SectionCard>
-5847:       )
-5848:     }
-5849:
-5850:     return (
-5851:       <div className="course-stack">
-5852:         {lmsMessage ? <p className="banner banner--success">{lmsMessage}</p> : null}
-5853:         {lmsLoading ? <p className="empty-state">선택 LMS 정보를 불러오는 중입니다.</p> : null}
-5854:
-5855:         {isStudent ? (
-5856:           <>
-5857:             <SectionCard title="성적·피드백" action={<span className="info-chip">평균 {formatOptionalPercent(studentGrades?.overall_percent)}</span>}>
-5858:               {renderGradeItems(studentGrades?.items ?? [])}
-5859:             </SectionCard>
-5860:
-5861:             <SectionCard title="학습 진도율" action={<span className="info-chip">{studentLearningProgress.length}건</span>}>
-5862:               {studentLearningProgress.length === 0 ? <p className="empty-state">표시할 진도 정보가 없습니다.</p> : null}
-5863:               <div className="entity-list">
-5864:                 {studentLearningProgress.map((item) => (
-5865:                   <article key={item.learning_item_id} className="entity-row entity-row--wide">
-5866:                     <div>
-5867:                       <p className="entity-title">{item.title}</p>
-5868:                       <p className="entity-subtitle">
-5869:                         {item.week_label ?? '주차 미지정'} · {getLearningProgressStatusLabel(item.status)} · 최근 {formatDateTime(item.updated_at)}
-5870:                       </p>
-5871:                     </div>
-5872:                     <div className="entity-actions">
-5873:                       <input
-5874:                         aria-label={`${item.title} 진도율`}
-5875:                         type="number"
-5876:                         min={0}
-5877:                         max={100}
-5878:                         step={1}
-5879:                         value={learningProgressDrafts[item.learning_item_id] ?? String(item.progress_percent ?? 0)}
-5880:                         onChange={(event) => setLearningProgressDrafts((current) => ({
-5881:                           ...current,
-5882:                           [item.learning_item_id]: event.target.value,
-5883:                         }))}
-5884:                       />
-5885:                       <button type="button" className="text-button" onClick={() => void handleStudentLearningProgressSave(item)}>
-5886:                         진도 저장
-5887:                       </button>
-5888:                     </div>
-5889:                   </article>
-5890:                 ))}
-5891:               </div>
-5892:             </SectionCard>
-5893:
-5894:             <SectionCard title="질문게시판·문의" action={<span className="info-chip">{qnaThreads.length}건</span>}>
-5895:               <form className="stack-form" onSubmit={handleStudentQnaCreate}>
-5896:                 <label>
-5897:                   문의 제목
-5898:                   <input value={qnaTitle} onChange={(event) => setQnaTitle(event.target.value)} placeholder="문의 제목" />
-5899:                 </label>
-5900:                 <label>
-5901:                   문의 내용
-5902:                   <textarea rows={4} value={qnaBody} onChange={(event) => setQnaBody(event.target.value)} placeholder="교수님께 문의할 내용을 입력하세요." />
-5903:                 </label>
-5904:                 <button type="submit" className="primary-button">문의 등록</button>
-5905:               </form>
-5906:               <div className="exam-list-grid">
-5907:                 {qnaThreads.map(renderQnaThread)}
-5908:               </div>
-5909:               {qnaThreads.length === 0 ? <p className="empty-state">등록된 문의가 없습니다.</p> : null}
-5910:             </SectionCard>
-5911:           </>
-5912:         ) : null}
-5913:
-5914:         {isProfessor ? (
-5915:           <>
-5916:             <SectionCard title="성적 현황" action={<span className="info-chip">{professorGrades.length}명</span>}>
-5917:               {professorGrades.length === 0 ? <p className="empty-state">표시할 성적 현황이 없습니다.</p> : null}
-5918:               <div className="course-stack">
-5919:                 {professorGrades.map((student) => (
-5920:                   <article key={student.student_id} className="section-card section-card--compact">
-5921:                     <header className="section-head">
-5922:                       <h3>{student.student_name}</h3>
-5923:                       <span className="info-chip">{student.student_id} · 평균 {formatOptionalPercent(student.overall_percent)}</span>
-5924:                     </header>
-5925:                     {renderGradeItems(student.items)}
-5926:                   </article>
-5927:                 ))}
-5928:               </div>
-5929:             </SectionCard>
-5930:
-5931:             <SectionCard title="학생별 학습 진도" action={<span className="info-chip">{professorLearningProgress.length}건</span>}>
-5932:               {professorLearningProgress.length === 0 ? <p className="empty-state">표시할 진도 현황이 없습니다.</p> : null}
-5933:               <div className="entity-list">
-5934:                 {professorLearningProgress.map((item) => (
-5935:                   <article key={`${item.student_id}-${item.learning_item_id}`} className="entity-row entity-row--wide">
-5936:                     <div>
-5937:                       <p className="entity-title">{item.student_name} · {item.title}</p>
-5938:                       <p className="entity-subtitle">{item.student_id} · {item.week_label ?? '주차 미지정'} · {getLearningProgressStatusLabel(item.status)}</p>
-5939:                     </div>
-5940:                     <div className="entity-actions">
-5941:                       <span className="badge">{formatOptionalPercent(item.progress_percent)}</span>
-5942:                     </div>
-5943:                   </article>
-5944:                 ))}
-5945:               </div>
+5800:                                   <option value="submitted">제출됨</option>
+5801:                                   <option value="graded">채점 완료</option>
+5802:                                   <option value="returned">반려/재제출</option>
+5803:                                 </select>
+5804:                               </label>
+5805:                             </div>
+5806:                             <label>
+5807:                               피드백
+5808:                               <textarea
+5809:                                 rows={4}
+5810:                                 value={assignmentGradeDrafts[selectedSubmission.id]?.feedback ?? ''}
+5811:                                 onChange={(event) => setAssignmentGradeDrafts((current) => ({
+5812:                                   ...current,
+5813:                                   [selectedSubmission.id]: {
+5814:                                     score: current[selectedSubmission.id]?.score ?? (selectedSubmission.score == null ? '' : String(selectedSubmission.score)),
+5815:                                     feedback: event.target.value,
+5816:                                     gradingStatus: current[selectedSubmission.id]?.gradingStatus ?? 'graded',
+5817:                                   },
+5818:                                 }))}
+5819:                                 placeholder="학생에게 공개할 피드백을 입력하세요."
+5820:                               />
+5821:                             </label>
+5822:                             <div className="exam-detail-actions">
+5823:                               <button type="submit" className="primary-button" disabled={assignmentBusyKey === `grade-${selectedSubmission.id}`}>
+5824:                                 {assignmentBusyKey === `grade-${selectedSubmission.id}` ? '저장 중...' : '채점 저장'}
+5825:                               </button>
+5826:                               <span className="caption-text">
+5827:                                 현재 상태: {getGradingStatusLabel(selectedSubmission.grading_status)} · {formatOptionalScore(selectedSubmission.score, '점수 없음')}
+5828:                               </span>
+5829:                             </div>
+5830:                           </form>
+5831:                           {selectedSubmission.attachments.length > 0 ? (
+5832:                             <div className="assignment-attachment-stack">
+5833:                               <strong>첨부 파일</strong>
+5834:                               <div className="assignment-attachment-list">
+5835:                                 {selectedSubmission.attachments.map((attachment) => (
+5836:                                   <a
+5837:                                     key={attachment.id}
+5838:                                     className="assignment-attachment-chip"
+5839:                                     href={api.buildProfessorAssignmentAttachmentUrl(
+5840:                                       currentUser!.login_id,
+5841:                                       selectedCourse!.course_code,
+5842:                                       professorAssignmentDetail.id,
+5843:                                       attachment.id,
+5844:                                     )}
+5845:                                     target="_blank"
+5846:                                     rel="noreferrer"
+5847:                                   >
+5848:                                     <span>{attachment.original_filename}</span>
+5849:                                     <small>{formatFileSize(attachment.file_size_bytes)}</small>
+5850:                                   </a>
+5851:                                 ))}
+5852:                               </div>
+5853:                             </div>
+5854:                           ) : null}
+5855:                         </article>
+5856:                       ) : null}
+5857:                     </div>
+5858:                   )}
+5859:                 </article>
+5860:               </div>
+5861:             </SectionCard>
+5862:           ) : null}
+5863:         </div>
+5864:       )
+5865:     }
+5866:
+5867:     if (isStudent) {
+5868:       return renderStudentAssignmentSection()
+5869:     }
+5870:     if (isProfessor) {
+5871:       return renderProfessorAssignmentSection()
+5872:     }
+5873:     return (
+5874:       <SectionCard title="과제">
+5875:         <p className="empty-state">관리자 계정에서는 과제 화면을 직접 사용할 수 없습니다.</p>
+5876:       </SectionCard>
+5877:     )
+5878:   }
+5879:
+5880:
+5881:   function renderGradeItems(items: GradeBookItem[]) {
+5882:     if (items.length === 0) {
+5883:       return <p className="empty-state">표시할 성적 항목이 없습니다.</p>
+5884:     }
+5885:
+5886:     return (
+5887:       <div className="entity-list">
+5888:         {items.map((item) => (
+5889:           <article key={getGradeItemKey(item)} className="entity-row entity-row--wide">
+5890:             <div>
+5891:               <p className="entity-title">{item.title}</p>
+5892:               <p className="entity-subtitle">
+5893:                 {item.item_type === 'assignment' ? '과제' : item.item_type === 'exam' ? '시험' : item.item_type}
+5894:                 {item.grading_status ? ` · ${getGradingStatusLabel(item.grading_status)}` : ''}
+5895:                 {item.feedback ? ` · 피드백: ${item.feedback}` : ''}
+5896:               </p>
+5897:             </div>
+5898:             <div className="entity-actions">
+5899:               <span className="info-chip">{formatOptionalScore(item.score, '점수 없음')} / {formatOptionalScore(item.max_score, '-')}</span>
+5900:               <span className="badge">{formatOptionalPercent(item.percent)}</span>
+5901:             </div>
+5902:           </article>
+5903:         ))}
+5904:       </div>
+5905:     )
+5906:   }
+5907:
+5908:   function renderQnaThread(thread: CourseQnaThread) {
+5909:     const isClosedThread = thread.status === 'closed'
+5910:
+5911:     return (
+5912:       <article key={thread.id} className="exam-list-card exam-list-card--student">
+5913:         <div className="exam-list-card-top">
+5914:           <div className="exam-card-copy">
+5915:             <strong>{thread.title}</strong>
+5916:             <p>{thread.body}</p>
+5917:             <span className="caption-text">
+5918:               {thread.student_name ?? thread.student_id ?? '학생'} · {formatBoardDate(thread.updated_at ?? thread.created_at)}
+5919:             </span>
+5920:           </div>
+5921:           <span className={`status-pill status-pill--${getQnaStatusTone(thread.status)}`}>
+5922:             {getQnaStatusLabel(thread.status)}
+5923:           </span>
+5924:         </div>
+5925:         {thread.posts?.length ? (
+5926:           <div className="helper-list">
+5927:             {thread.posts.map((post) => (
+5928:               <div key={post.id} className="helper-row">
+5929:                 <strong>{post.post_type === 'answer' ? '답변' : post.post_type === 'question' ? '질문' : '댓글'}</strong>
+5930:                 <span>{post.body}</span>
+5931:               </div>
+5932:             ))}
+5933:           </div>
+5934:         ) : null}
+5935:         {isProfessor ? (
+5936:           <div className="stack-form">
+5937:             {isClosedThread ? (
+5938:               <p className="caption-text">종료된 문의입니다. 추가 답변은 등록할 수 없습니다.</p>
+5939:             ) : (
+5940:               <>
+5941:                 <label>
+5942:                   답변 작성
+5943:                   <textarea
+5944:                     rows={3}
+5945:                     value={qnaAnswerDrafts[thread.id] ?? ''}
 ```
 
 #### G.6 Backend 인증/세션/권한 endpoint
@@ -3035,316 +3108,316 @@ Source: `Backend/app/main.py:1102-1456`
 1144:     course_code: str,
 1145:     assignment_id: int,
 1146:     submission_text: str | None = Form(default=None),
-1147:     files: list[UploadFile] = File(default_factory=list),
-1148:     current_user: User = Depends(require_authenticated_user),
-1149:     db: Session = Depends(get_db),
-1150: ) -> StudentAssignmentDetailRead:
-1151:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1152:     return StudentAssignmentDetailRead(
-1153:         **submit_student_assignment(
-1154:             db,
-1155:             student_user_id=student.id,
-1156:             course_id=course.id,
-1157:             assignment_id=assignment_id,
-1158:             submission_text=submission_text,
-1159:             files=files,
-1160:         )
-1161:     )
-1162:
-1163:
-1164: @app.get("/api/professors/{professor_id}/courses/{course_code}/assignments", response_model=list[ProfessorAssignmentSummaryRead])
-1165: def get_professor_course_assignments(
-1166:     professor_id: str,
-1167:     course_code: str,
-1168:     current_user: User = Depends(require_authenticated_user),
-1169:     db: Session = Depends(get_db),
-1170: ) -> list[ProfessorAssignmentSummaryRead]:
-1171:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1172:     return [ProfessorAssignmentSummaryRead(**assignment) for assignment in list_professor_assignments(db, course_id=course.id)]
-1173:
-1174:
-1175: @app.post(
-1176:     "/api/professors/{professor_id}/courses/{course_code}/assignments",
-1177:     response_model=ProfessorAssignmentDetailRead,
-1178:     status_code=status.HTTP_201_CREATED,
-1179: )
-1180: def create_professor_course_assignment(
-1181:     professor_id: str,
-1182:     course_code: str,
-1183:     payload: ProfessorAssignmentCreateRequest,
-1184:     current_user: User = Depends(require_authenticated_user),
-1185:     db: Session = Depends(get_db),
-1186: ) -> ProfessorAssignmentDetailRead:
-1187:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1188:     return ProfessorAssignmentDetailRead(
-1189:         **create_professor_assignment(
-1190:             db,
-1191:             course_id=course.id,
-1192:             payload=payload.model_dump(),
-1193:         )
-1194:     )
-1195:
-1196:
-1197: @app.get(
-1198:     "/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}",
-1199:     response_model=ProfessorAssignmentDetailRead,
-1200: )
-1201: def get_professor_course_assignment_detail(
-1202:     professor_id: str,
-1203:     course_code: str,
-1204:     assignment_id: int,
-1205:     current_user: User = Depends(require_authenticated_user),
-1206:     db: Session = Depends(get_db),
-1207: ) -> ProfessorAssignmentDetailRead:
-1208:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1209:     return ProfessorAssignmentDetailRead(
-1210:         **get_professor_assignment_detail(
-1211:             db,
-1212:             course_id=course.id,
-1213:             assignment_id=assignment_id,
-1214:         )
-1215:     )
-1216:
-1217:
-1218: @app.put("/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}/submissions/{submission_id}/grade")
-1219: def grade_professor_assignment_submission(
-1220:     professor_id: str,
-1221:     course_code: str,
-1222:     assignment_id: int,
-1223:     submission_id: int,
-1224:     payload: AssignmentGradeRequest,
-1225:     current_user: User = Depends(require_authenticated_user),
-1226:     db: Session = Depends(get_db),
-1227: ) -> ProfessorAssignmentDetailRead:
-1228:     professor, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1229:     return ProfessorAssignmentDetailRead(**grade_assignment_submission(
-1230:         db,
-1231:         course_id=course.id,
-1232:         assignment_id=assignment_id,
-1233:         submission_id=submission_id,
-1234:         grader_user_id=professor.id,
-1235:         payload=payload.model_dump(),
-1236:     ))
-1237:
-1238:
-1239: @app.get("/api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/attachments/{attachment_id}")
-1240: def download_student_assignment_attachment(
-1241:     student_id: str,
-1242:     course_code: str,
-1243:     assignment_id: int,
-1244:     attachment_id: int,
-1245:     range_header: str | None = Header(default=None, alias="Range"),
-1246:     current_user: User = Depends(require_authenticated_user),
-1247:     db: Session = Depends(get_db),
-1248: ) -> StreamingResponse:
-1249:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1250:     download = get_student_assignment_attachment_download(
-1251:         db,
-1252:         student_user_id=student.id,
-1253:         course_id=course.id,
-1254:         assignment_id=assignment_id,
-1255:         attachment_id=attachment_id,
-1256:     )
-1257:     return _stream_storage_download(download, range_header)
-1258:
-1259:
-1260: @app.get("/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}/attachments/{attachment_id}")
-1261: def download_professor_assignment_attachment(
-1262:     professor_id: str,
-1263:     course_code: str,
-1264:     assignment_id: int,
-1265:     attachment_id: int,
-1266:     range_header: str | None = Header(default=None, alias="Range"),
-1267:     current_user: User = Depends(require_authenticated_user),
-1268:     db: Session = Depends(get_db),
-1269: ) -> StreamingResponse:
-1270:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1271:     download = get_professor_assignment_attachment_download(
-1272:         db,
-1273:         course_id=course.id,
-1274:         assignment_id=assignment_id,
-1275:         attachment_id=attachment_id,
-1276:     )
-1277:     return _stream_storage_download(download, range_header)
-1278:
-1279:
-1280: @app.get("/api/students/{student_id}/courses/{course_code}/grades")
-1281: def get_student_course_grades(
-1282:     student_id: str,
-1283:     course_code: str,
-1284:     current_user: User = Depends(require_authenticated_user),
-1285:     db: Session = Depends(get_db),
-1286: ) -> dict[str, Any]:
-1287:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1288:     return build_student_grades(db, student=student, course=course)
-1289:
-1290:
-1291: @app.get("/api/professors/{professor_id}/courses/{course_code}/grades")
-1292: def get_professor_course_grades(
-1293:     professor_id: str,
-1294:     course_code: str,
-1295:     current_user: User = Depends(require_authenticated_user),
-1296:     db: Session = Depends(get_db),
-1297: ) -> list[dict[str, Any]]:
-1298:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1299:     return build_professor_grades(db, course=course)
-1300:
-1301:
-1302: @app.get("/api/students/{student_id}/courses/{course_code}/qna")
-1303: def get_student_course_qna(
-1304:     student_id: str,
-1305:     course_code: str,
-1306:     current_user: User = Depends(require_authenticated_user),
-1307:     db: Session = Depends(get_db),
-1308: ) -> list[dict[str, Any]]:
-1309:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1310:     return list_student_qna_threads(db, course=course, student=student)
-1311:
-1312:
-1313: @app.post("/api/students/{student_id}/courses/{course_code}/qna", status_code=status.HTTP_201_CREATED)
-1314: def post_student_course_qna(
-1315:     student_id: str,
-1316:     course_code: str,
-1317:     payload: QnaCreateRequest,
-1318:     current_user: User = Depends(require_authenticated_user),
-1319:     db: Session = Depends(get_db),
-1320: ) -> dict[str, Any]:
-1321:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1322:     return create_student_qna_thread(db, course=course, student=student, title=payload.title, body=payload.body)
-1323:
-1324:
-1325: @app.get("/api/professors/{professor_id}/courses/{course_code}/qna")
-1326: def get_professor_course_qna(
-1327:     professor_id: str,
-1328:     course_code: str,
-1329:     current_user: User = Depends(require_authenticated_user),
-1330:     db: Session = Depends(get_db),
-1331: ) -> list[dict[str, Any]]:
-1332:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1333:     return list_professor_qna_threads(db, course=course)
-1334:
-1335:
-1336: @app.post("/api/professors/{professor_id}/courses/{course_code}/qna/{thread_id}/answer", status_code=status.HTTP_201_CREATED)
-1337: def post_professor_course_qna_answer(
-1338:     professor_id: str,
-1339:     course_code: str,
-1340:     thread_id: int,
-1341:     payload: QnaAnswerRequest,
-1342:     current_user: User = Depends(require_authenticated_user),
-1343:     db: Session = Depends(get_db),
-1344: ) -> dict[str, Any]:
-1345:     professor, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1346:     return answer_qna_thread(db, course=course, professor=professor, thread_id=thread_id, body=payload.body, close=payload.close)
-1347:
-1348:
-1349: @app.get("/api/students/{student_id}/courses/{course_code}/learning-items", response_model=list[LearningItemRead])
-1350: def get_student_learning_items(
-1351:     student_id: str,
-1352:     course_code: str,
-1353:     current_user: User = Depends(require_authenticated_user),
-1354:     db: Session = Depends(get_db),
-1355: ) -> list[LearningItemRead]:
-1356:     _, course = require_student_course_access(student_id, course_code, current_user, db)
-1357:     return [LearningItemRead(**item) for item in list_learning_items_for_course(db, course=course)]
-1358:
-1359:
-1360: @app.get("/api/professors/{professor_id}/courses/{course_code}/learning-items", response_model=list[LearningItemRead])
-1361: def get_professor_learning_items(
-1362:     professor_id: str,
-1363:     course_code: str,
-1364:     current_user: User = Depends(require_authenticated_user),
-1365:     db: Session = Depends(get_db),
-1366: ) -> list[LearningItemRead]:
-1367:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1368:     return [LearningItemRead(**item) for item in list_learning_items_for_course(db, course=course, include_unpublished=True)]
-1369:
-1370:
-1371: @app.get("/api/students/{student_id}/courses/{course_code}/learning-progress")
-1372: def get_student_course_learning_progress(
-1373:     student_id: str,
-1374:     course_code: str,
-1375:     current_user: User = Depends(require_authenticated_user),
-1376:     db: Session = Depends(get_db),
-1377: ) -> list[dict[str, Any]]:
-1378:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1379:     return list_student_learning_progress(db, course=course, student=student)
-1380:
-1381:
-1382: @app.put("/api/students/{student_id}/courses/{course_code}/learning-items/{learning_item_id}/progress")
-1383: def put_student_course_learning_progress(
-1384:     student_id: str,
-1385:     course_code: str,
-1386:     learning_item_id: int,
-1387:     payload: LearningProgressUpdateRequest,
-1388:     current_user: User = Depends(require_authenticated_user),
-1389:     db: Session = Depends(get_db),
-1390: ) -> dict[str, Any]:
-1391:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1392:     return update_student_learning_progress(
-1393:         db,
-1394:         course=course,
-1395:         student=student,
-1396:         learning_item_id=learning_item_id,
-1397:         progress_percent=payload.progress_percent,
-1398:         status=payload.status,
-1399:     )
-1400:
-1401:
-1402: @app.get("/api/professors/{professor_id}/courses/{course_code}/learning-progress")
-1403: def get_professor_course_learning_progress(
-1404:     professor_id: str,
-1405:     course_code: str,
-1406:     current_user: User = Depends(require_authenticated_user),
-1407:     db: Session = Depends(get_db),
-1408: ) -> list[dict[str, Any]]:
-1409:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1410:     return build_professor_learning_progress(db, course=course)
-1411:
-1412:
-1413: @app.post("/api/professors/{professor_id}/courses/{course_code}/learning-items", response_model=LearningItemRead, status_code=status.HTTP_201_CREATED)
-1414: def add_professor_learning_item(
-1415:     professor_id: str,
-1416:     course_code: str,
-1417:     kind: str = Form("material"),
-1418:     title: str = Form(...),
-1419:     description: str | None = Form(None),
-1420:     files: list[UploadFile] = File(default_factory=list),
-1421:     current_user: User = Depends(require_authenticated_user),
-1422:     db: Session = Depends(get_db),
-1423: ) -> LearningItemRead:
-1424:     professor, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1425:     return LearningItemRead(**create_learning_item(db, course=course, professor=professor, kind=kind, title=title, description=description, files=files))
-1426:
-1427:
-1428: @app.delete("/api/professors/{professor_id}/courses/{course_code}/learning-items/{learning_item_id}", status_code=status.HTTP_204_NO_CONTENT)
-1429: def remove_professor_learning_item(
-1430:     professor_id: str,
-1431:     course_code: str,
-1432:     learning_item_id: int,
-1433:     current_user: User = Depends(require_authenticated_user),
-1434:     db: Session = Depends(get_db),
-1435: ) -> Response:
-1436:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1437:     delete_learning_item(db, course_id=course.id, learning_item_id=learning_item_id)
-1438:     return Response(status_code=status.HTTP_204_NO_CONTENT)
-1439:
-1440:
-1441: @app.get("/api/students/{student_id}/courses/{course_code}/learning-items/{learning_item_id}/attachments/{attachment_id}")
-1442: def download_student_learning_attachment(
-1443:     student_id: str,
-1444:     course_code: str,
-1445:     learning_item_id: int,
-1446:     attachment_id: int,
-1447:     range_header: str | None = Header(default=None, alias="Range"),
-1448:     current_user: User = Depends(require_authenticated_user),
-1449:     db: Session = Depends(get_db),
-1450: ) -> StreamingResponse:
-1451:     _, course = require_student_course_access(student_id, course_code, current_user, db)
-1452:     return _stream_storage_download(get_learning_attachment_download(db, course=course, learning_item_id=learning_item_id, attachment_id=attachment_id), range_header)
-1453:
-1454:
-1455: @app.get("/api/professors/{professor_id}/courses/{course_code}/learning-items/{learning_item_id}/attachments/{attachment_id}")
-1456: def download_professor_learning_attachment(
+1147:     remove_attachment_ids: list[int] = Form(default_factory=list),
+1148:     files: list[UploadFile] = File(default_factory=list),
+1149:     current_user: User = Depends(require_authenticated_user),
+1150:     db: Session = Depends(get_db),
+1151: ) -> StudentAssignmentDetailRead:
+1152:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1153:     return StudentAssignmentDetailRead(
+1154:         **submit_student_assignment(
+1155:             db,
+1156:             student_user_id=student.id,
+1157:             course_id=course.id,
+1158:             assignment_id=assignment_id,
+1159:             submission_text=submission_text,
+1160:             files=files,
+1161:             remove_attachment_ids=remove_attachment_ids,
+1162:         )
+1163:     )
+1164:
+1165:
+1166: @app.get("/api/professors/{professor_id}/courses/{course_code}/assignments", response_model=list[ProfessorAssignmentSummaryRead])
+1167: def get_professor_course_assignments(
+1168:     professor_id: str,
+1169:     course_code: str,
+1170:     current_user: User = Depends(require_authenticated_user),
+1171:     db: Session = Depends(get_db),
+1172: ) -> list[ProfessorAssignmentSummaryRead]:
+1173:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1174:     return [ProfessorAssignmentSummaryRead(**assignment) for assignment in list_professor_assignments(db, course_id=course.id)]
+1175:
+1176:
+1177: @app.post(
+1178:     "/api/professors/{professor_id}/courses/{course_code}/assignments",
+1179:     response_model=ProfessorAssignmentDetailRead,
+1180:     status_code=status.HTTP_201_CREATED,
+1181: )
+1182: def create_professor_course_assignment(
+1183:     professor_id: str,
+1184:     course_code: str,
+1185:     payload: ProfessorAssignmentCreateRequest,
+1186:     current_user: User = Depends(require_authenticated_user),
+1187:     db: Session = Depends(get_db),
+1188: ) -> ProfessorAssignmentDetailRead:
+1189:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1190:     return ProfessorAssignmentDetailRead(
+1191:         **create_professor_assignment(
+1192:             db,
+1193:             course_id=course.id,
+1194:             payload=payload.model_dump(),
+1195:         )
+1196:     )
+1197:
+1198:
+1199: @app.get(
+1200:     "/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}",
+1201:     response_model=ProfessorAssignmentDetailRead,
+1202: )
+1203: def get_professor_course_assignment_detail(
+1204:     professor_id: str,
+1205:     course_code: str,
+1206:     assignment_id: int,
+1207:     current_user: User = Depends(require_authenticated_user),
+1208:     db: Session = Depends(get_db),
+1209: ) -> ProfessorAssignmentDetailRead:
+1210:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1211:     return ProfessorAssignmentDetailRead(
+1212:         **get_professor_assignment_detail(
+1213:             db,
+1214:             course_id=course.id,
+1215:             assignment_id=assignment_id,
+1216:         )
+1217:     )
+1218:
+1219:
+1220: @app.put("/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}/submissions/{submission_id}/grade")
+1221: def grade_professor_assignment_submission(
+1222:     professor_id: str,
+1223:     course_code: str,
+1224:     assignment_id: int,
+1225:     submission_id: int,
+1226:     payload: AssignmentGradeRequest,
+1227:     current_user: User = Depends(require_authenticated_user),
+1228:     db: Session = Depends(get_db),
+1229: ) -> ProfessorAssignmentDetailRead:
+1230:     professor, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1231:     return ProfessorAssignmentDetailRead(**grade_assignment_submission(
+1232:         db,
+1233:         course_id=course.id,
+1234:         assignment_id=assignment_id,
+1235:         submission_id=submission_id,
+1236:         grader_user_id=professor.id,
+1237:         payload=payload.model_dump(),
+1238:     ))
+1239:
+1240:
+1241: @app.get("/api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/attachments/{attachment_id}")
+1242: def download_student_assignment_attachment(
+1243:     student_id: str,
+1244:     course_code: str,
+1245:     assignment_id: int,
+1246:     attachment_id: int,
+1247:     range_header: str | None = Header(default=None, alias="Range"),
+1248:     current_user: User = Depends(require_authenticated_user),
+1249:     db: Session = Depends(get_db),
+1250: ) -> StreamingResponse:
+1251:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1252:     download = get_student_assignment_attachment_download(
+1253:         db,
+1254:         student_user_id=student.id,
+1255:         course_id=course.id,
+1256:         assignment_id=assignment_id,
+1257:         attachment_id=attachment_id,
+1258:     )
+1259:     return _stream_storage_download(download, range_header)
+1260:
+1261:
+1262: @app.get("/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}/attachments/{attachment_id}")
+1263: def download_professor_assignment_attachment(
+1264:     professor_id: str,
+1265:     course_code: str,
+1266:     assignment_id: int,
+1267:     attachment_id: int,
+1268:     range_header: str | None = Header(default=None, alias="Range"),
+1269:     current_user: User = Depends(require_authenticated_user),
+1270:     db: Session = Depends(get_db),
+1271: ) -> StreamingResponse:
+1272:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1273:     download = get_professor_assignment_attachment_download(
+1274:         db,
+1275:         course_id=course.id,
+1276:         assignment_id=assignment_id,
+1277:         attachment_id=attachment_id,
+1278:     )
+1279:     return _stream_storage_download(download, range_header)
+1280:
+1281:
+1282: @app.get("/api/students/{student_id}/courses/{course_code}/grades")
+1283: def get_student_course_grades(
+1284:     student_id: str,
+1285:     course_code: str,
+1286:     current_user: User = Depends(require_authenticated_user),
+1287:     db: Session = Depends(get_db),
+1288: ) -> dict[str, Any]:
+1289:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1290:     return build_student_grades(db, student=student, course=course)
+1291:
+1292:
+1293: @app.get("/api/professors/{professor_id}/courses/{course_code}/grades")
+1294: def get_professor_course_grades(
+1295:     professor_id: str,
+1296:     course_code: str,
+1297:     current_user: User = Depends(require_authenticated_user),
+1298:     db: Session = Depends(get_db),
+1299: ) -> list[dict[str, Any]]:
+1300:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1301:     return build_professor_grades(db, course=course)
+1302:
+1303:
+1304: @app.get("/api/students/{student_id}/courses/{course_code}/qna")
+1305: def get_student_course_qna(
+1306:     student_id: str,
+1307:     course_code: str,
+1308:     current_user: User = Depends(require_authenticated_user),
+1309:     db: Session = Depends(get_db),
+1310: ) -> list[dict[str, Any]]:
+1311:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1312:     return list_student_qna_threads(db, course=course, student=student)
+1313:
+1314:
+1315: @app.post("/api/students/{student_id}/courses/{course_code}/qna", status_code=status.HTTP_201_CREATED)
+1316: def post_student_course_qna(
+1317:     student_id: str,
+1318:     course_code: str,
+1319:     payload: QnaCreateRequest,
+1320:     current_user: User = Depends(require_authenticated_user),
+1321:     db: Session = Depends(get_db),
+1322: ) -> dict[str, Any]:
+1323:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1324:     return create_student_qna_thread(db, course=course, student=student, title=payload.title, body=payload.body)
+1325:
+1326:
+1327: @app.get("/api/professors/{professor_id}/courses/{course_code}/qna")
+1328: def get_professor_course_qna(
+1329:     professor_id: str,
+1330:     course_code: str,
+1331:     current_user: User = Depends(require_authenticated_user),
+1332:     db: Session = Depends(get_db),
+1333: ) -> list[dict[str, Any]]:
+1334:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1335:     return list_professor_qna_threads(db, course=course)
+1336:
+1337:
+1338: @app.post("/api/professors/{professor_id}/courses/{course_code}/qna/{thread_id}/answer", status_code=status.HTTP_201_CREATED)
+1339: def post_professor_course_qna_answer(
+1340:     professor_id: str,
+1341:     course_code: str,
+1342:     thread_id: int,
+1343:     payload: QnaAnswerRequest,
+1344:     current_user: User = Depends(require_authenticated_user),
+1345:     db: Session = Depends(get_db),
+1346: ) -> dict[str, Any]:
+1347:     professor, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1348:     return answer_qna_thread(db, course=course, professor=professor, thread_id=thread_id, body=payload.body, close=payload.close)
+1349:
+1350:
+1351: @app.get("/api/students/{student_id}/courses/{course_code}/learning-items", response_model=list[LearningItemRead])
+1352: def get_student_learning_items(
+1353:     student_id: str,
+1354:     course_code: str,
+1355:     current_user: User = Depends(require_authenticated_user),
+1356:     db: Session = Depends(get_db),
+1357: ) -> list[LearningItemRead]:
+1358:     _, course = require_student_course_access(student_id, course_code, current_user, db)
+1359:     return [LearningItemRead(**item) for item in list_learning_items_for_course(db, course=course)]
+1360:
+1361:
+1362: @app.get("/api/professors/{professor_id}/courses/{course_code}/learning-items", response_model=list[LearningItemRead])
+1363: def get_professor_learning_items(
+1364:     professor_id: str,
+1365:     course_code: str,
+1366:     current_user: User = Depends(require_authenticated_user),
+1367:     db: Session = Depends(get_db),
+1368: ) -> list[LearningItemRead]:
+1369:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1370:     return [LearningItemRead(**item) for item in list_learning_items_for_course(db, course=course, include_unpublished=True)]
+1371:
+1372:
+1373: @app.get("/api/students/{student_id}/courses/{course_code}/learning-progress")
+1374: def get_student_course_learning_progress(
+1375:     student_id: str,
+1376:     course_code: str,
+1377:     current_user: User = Depends(require_authenticated_user),
+1378:     db: Session = Depends(get_db),
+1379: ) -> list[dict[str, Any]]:
+1380:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1381:     return list_student_learning_progress(db, course=course, student=student)
+1382:
+1383:
+1384: @app.put("/api/students/{student_id}/courses/{course_code}/learning-items/{learning_item_id}/progress")
+1385: def put_student_course_learning_progress(
+1386:     student_id: str,
+1387:     course_code: str,
+1388:     learning_item_id: int,
+1389:     payload: LearningProgressUpdateRequest,
+1390:     current_user: User = Depends(require_authenticated_user),
+1391:     db: Session = Depends(get_db),
+1392: ) -> dict[str, Any]:
+1393:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1394:     return update_student_learning_progress(
+1395:         db,
+1396:         course=course,
+1397:         student=student,
+1398:         learning_item_id=learning_item_id,
+1399:         progress_percent=payload.progress_percent,
+1400:         status=payload.status,
+1401:     )
+1402:
+1403:
+1404: @app.get("/api/professors/{professor_id}/courses/{course_code}/learning-progress")
+1405: def get_professor_course_learning_progress(
+1406:     professor_id: str,
+1407:     course_code: str,
+1408:     current_user: User = Depends(require_authenticated_user),
+1409:     db: Session = Depends(get_db),
+1410: ) -> list[dict[str, Any]]:
+1411:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1412:     return build_professor_learning_progress(db, course=course)
+1413:
+1414:
+1415: @app.post("/api/professors/{professor_id}/courses/{course_code}/learning-items", response_model=LearningItemRead, status_code=status.HTTP_201_CREATED)
+1416: def add_professor_learning_item(
+1417:     professor_id: str,
+1418:     course_code: str,
+1419:     kind: str = Form("material"),
+1420:     title: str = Form(...),
+1421:     description: str | None = Form(None),
+1422:     files: list[UploadFile] = File(default_factory=list),
+1423:     current_user: User = Depends(require_authenticated_user),
+1424:     db: Session = Depends(get_db),
+1425: ) -> LearningItemRead:
+1426:     professor, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1427:     return LearningItemRead(**create_learning_item(db, course=course, professor=professor, kind=kind, title=title, description=description, files=files))
+1428:
+1429:
+1430: @app.delete("/api/professors/{professor_id}/courses/{course_code}/learning-items/{learning_item_id}", status_code=status.HTTP_204_NO_CONTENT)
+1431: def remove_professor_learning_item(
+1432:     professor_id: str,
+1433:     course_code: str,
+1434:     learning_item_id: int,
+1435:     current_user: User = Depends(require_authenticated_user),
+1436:     db: Session = Depends(get_db),
+1437: ) -> Response:
+1438:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1439:     delete_learning_item(db, course_id=course.id, learning_item_id=learning_item_id)
+1440:     return Response(status_code=status.HTTP_204_NO_CONTENT)
+1441:
+1442:
+1443: @app.get("/api/students/{student_id}/courses/{course_code}/learning-items/{learning_item_id}/attachments/{attachment_id}")
+1444: def download_student_learning_attachment(
+1445:     student_id: str,
+1446:     course_code: str,
+1447:     learning_item_id: int,
+1448:     attachment_id: int,
+1449:     range_header: str | None = Header(default=None, alias="Range"),
+1450:     current_user: User = Depends(require_authenticated_user),
+1451:     db: Session = Depends(get_db),
+1452: ) -> StreamingResponse:
+1453:     _, course = require_student_course_access(student_id, course_code, current_user, db)
+1454:     return _stream_storage_download(get_learning_attachment_download(db, course=course, learning_item_id=learning_item_id, attachment_id=attachment_id), range_header)
+1455:
+1456:
 ```
 
 #### G.8 Backend exam endpoints
@@ -3352,568 +3425,598 @@ Source: `Backend/app/main.py:1102-1456`
 Source: `Backend/app/main.py:1469-1715`
 
 ```py
-1469: @app.get("/api/students/{student_id}/courses/{course_code}/exams", response_model=list[StudentExamSummaryRead])
-1470: def get_student_course_exams(
-1471:     student_id: str,
-1472:     course_code: str,
-1473:     current_user: User = Depends(require_authenticated_user),
-1474:     db: Session = Depends(get_db),
-1475: ) -> list[StudentExamSummaryRead]:
-1476:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1477:     return [StudentExamSummaryRead(**exam) for exam in list_student_exams(db, student.id, course.id)]
-1478:
-1479:
-1480: @app.get("/api/students/{student_id}/courses/{course_code}/exams/{exam_id}", response_model=StudentExamDetailRead)
-1481: def get_student_course_exam_detail(
-1482:     student_id: str,
-1483:     course_code: str,
-1484:     exam_id: int,
-1485:     current_user: User = Depends(require_authenticated_user),
-1486:     db: Session = Depends(get_db),
-1487: ) -> StudentExamDetailRead:
-1488:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1489:     return StudentExamDetailRead(**get_student_exam_detail(db, student.id, course.id, exam_id))
-1490:
-1491:
-1492: @app.post("/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/start", response_model=ExamSubmissionStartRead)
-1493: def start_student_course_exam(
-1494:     student_id: str,
-1495:     course_code: str,
-1496:     exam_id: int,
-1497:     current_user: User = Depends(require_authenticated_user),
-1498:     db: Session = Depends(get_db),
-1499: ) -> ExamSubmissionStartRead:
-1500:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1501:     return ExamSubmissionStartRead(
-1502:         **start_student_exam(
-1503:             db=db,
-1504:             presence_client=presence_client,
-1505:             student_id=student_id,
-1506:             student_user_id=student.id,
-1507:             course_code=course_code,
-1508:             course_id=course.id,
-1509:             exam_id=exam_id,
-1510:         )
-1511:     )
-1512:
-1513:
-1514: @app.get("/api/professors/{professor_id}/courses/{course_code}/exams", response_model=list[ExamSummaryRead])
-1515: def get_professor_course_exams(
-1516:     professor_id: str,
-1517:     course_code: str,
-1518:     current_user: User = Depends(require_authenticated_user),
-1519:     db: Session = Depends(get_db),
-1520: ) -> list[ExamSummaryRead]:
-1521:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1522:     return [ExamSummaryRead(**exam) for exam in list_professor_exams(db, course.id)]
-1523:
-1524:
-1525: @app.post(
-1526:     "/api/professors/{professor_id}/courses/{course_code}/exams",
-1527:     response_model=ProfessorExamDetailRead,
-1528:     status_code=status.HTTP_201_CREATED,
-1529: )
-1530: def create_professor_course_exam(
-1531:     professor_id: str,
-1532:     course_code: str,
-1533:     payload: ProfessorExamCreateRequest,
-1534:     current_user: User = Depends(require_authenticated_user),
-1535:     db: Session = Depends(get_db),
-1536:  ) -> ProfessorExamDetailRead:
-1537:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1538:     return ProfessorExamDetailRead(**create_professor_exam(db=db, course_id=course.id, payload=payload.model_dump()))
-1539:
-1540:
-1541: @app.get(
-1542:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}",
-1543:     response_model=ProfessorExamDetailRead,
-1544: )
-1545: def get_professor_course_exam_detail(
-1546:     professor_id: str,
-1547:     course_code: str,
-1548:     exam_id: int,
-1549:     current_user: User = Depends(require_authenticated_user),
-1550:     db: Session = Depends(get_db),
-1551: ) -> ProfessorExamDetailRead:
-1552:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1553:     return ProfessorExamDetailRead(**get_professor_exam_detail(db=db, course_id=course.id, exam_id=exam_id))
-1554:
-1555:
-1556: @app.put(
-1557:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}",
-1558:     response_model=ProfessorExamDetailRead,
-1559: )
-1560: def update_professor_course_exam(
-1561:     professor_id: str,
-1562:     course_code: str,
-1563:     exam_id: int,
-1564:     payload: ProfessorExamCreateRequest,
-1565:     current_user: User = Depends(require_authenticated_user),
-1566:     db: Session = Depends(get_db),
-1567: ) -> ProfessorExamDetailRead:
-1568:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1569:     return ProfessorExamDetailRead(
-1570:         **update_professor_exam(
-1571:             db=db,
-1572:             course_id=course.id,
-1573:             exam_id=exam_id,
-1574:             payload=payload.model_dump(),
-1575:         )
-1576:     )
-1577:
-1578:
-1579: @app.delete(
-1580:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}",
-1581:     status_code=status.HTTP_204_NO_CONTENT,
-1582: )
-1583: def delete_professor_course_exam(
-1584:     professor_id: str,
-1585:     course_code: str,
-1586:     exam_id: int,
-1587:     current_user: User = Depends(require_authenticated_user),
-1588:     db: Session = Depends(get_db),
-1589: ) -> Response:
-1590:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1591:     delete_professor_exam(db=db, course_id=course.id, exam_id=exam_id)
-1592:     return Response(status_code=status.HTTP_204_NO_CONTENT)
-1593:
-1594:
-1595: @app.post(
-1596:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/publish",
-1597:     response_model=ProfessorExamDetailRead,
-1598: )
-1599: def publish_professor_course_exam(
-1600:     professor_id: str,
-1601:     course_code: str,
-1602:     exam_id: int,
-1603:     current_user: User = Depends(require_authenticated_user),
-1604:     db: Session = Depends(get_db),
-1605: ) -> ProfessorExamDetailRead:
-1606:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1607:     return ProfessorExamDetailRead(**publish_professor_exam(db=db, course_id=course.id, exam_id=exam_id))
-1608:
-1609:
-1610: @app.post(
-1611:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/close",
-1612:     response_model=ProfessorExamDetailRead,
-1613: )
-1614: def close_professor_course_exam(
-1615:     professor_id: str,
-1616:     course_code: str,
-1617:     exam_id: int,
-1618:     current_user: User = Depends(require_authenticated_user),
-1619:     db: Session = Depends(get_db),
-1620: ) -> ProfessorExamDetailRead:
-1621:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1622:     return ProfessorExamDetailRead(**close_professor_exam(db=db, course_id=course.id, exam_id=exam_id))
-1623:
-1624:
-1625: @app.post(
-1626:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/questions/{question_id}/attachments",
-1627:     response_model=list[ExamMediaAttachmentRead],
-1628:     status_code=status.HTTP_201_CREATED,
-1629: )
-1630: def upload_professor_exam_question_media(
-1631:     professor_id: str,
-1632:     course_code: str,
-1633:     exam_id: int,
-1634:     question_id: int,
-1635:     files: list[UploadFile] = File(default_factory=list),
-1636:     current_user: User = Depends(require_authenticated_user),
-1637:     db: Session = Depends(get_db),
-1638: ) -> list[ExamMediaAttachmentRead]:
-1639:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1640:     return [
-1641:         ExamMediaAttachmentRead(**item)
-1642:         for item in upload_exam_question_attachments(db, course_id=course.id, exam_id=exam_id, question_id=question_id, files=files)
-1643:     ]
-1644:
-1645:
-1646: @app.get("/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/questions/{question_id}/attachments/{attachment_id}")
-1647: def download_student_exam_question_media(
-1648:     student_id: str,
-1649:     course_code: str,
-1650:     exam_id: int,
-1651:     question_id: int,
-1652:     attachment_id: int,
-1653:     range_header: str | None = Header(default=None, alias="Range"),
-1654:     current_user: User = Depends(require_authenticated_user),
-1655:     db: Session = Depends(get_db),
-1656: ) -> StreamingResponse:
-1657:     _, course = require_student_course_access(student_id, course_code, current_user, db)
-1658:     return _stream_storage_download(
-1659:         get_exam_question_attachment_download(db, course_id=course.id, exam_id=exam_id, question_id=question_id, attachment_id=attachment_id),
-1660:         range_header,
-1661:     )
-1662:
-1663:
-1664: @app.get("/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/questions/{question_id}/attachments/{attachment_id}")
-1665: def download_professor_exam_question_media(
-1666:     professor_id: str,
-1667:     course_code: str,
-1668:     exam_id: int,
-1669:     question_id: int,
-1670:     attachment_id: int,
-1671:     range_header: str | None = Header(default=None, alias="Range"),
-1672:     current_user: User = Depends(require_authenticated_user),
-1673:     db: Session = Depends(get_db),
-1674: ) -> StreamingResponse:
-1675:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
-1676:     return _stream_storage_download(
-1677:         get_exam_question_attachment_download(db, course_id=course.id, exam_id=exam_id, question_id=question_id, attachment_id=attachment_id),
-1678:         range_header,
-1679:     )
-1680:
-1681:
-1682: @app.post(
-1683:     "/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submit",
-1684:     response_model=StudentExamSubmitResultRead,
-1685: )
-1686: def submit_student_course_exam(
-1687:     student_id: str,
-1688:     course_code: str,
-1689:     exam_id: int,
-1690:     payload: StudentExamSubmitRequest,
-1691:     current_user: User = Depends(require_authenticated_user),
-1692:     db: Session = Depends(get_db),
-1693: ) -> StudentExamSubmitResultRead:
-1694:     student, course = require_student_course_access(student_id, course_code, current_user, db)
-1695:     return StudentExamSubmitResultRead(
-1696:         **submit_student_exam(
-1697:             db=db,
-1698:             student_user_id=student.id,
-1699:             course_id=course.id,
-1700:             exam_id=exam_id,
-1701:             payload=payload.model_dump(),
-1702:         )
-1703:     )
-1704:
-1705:
-1706: @app.put(
-1707:     "/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submissions/{submission_id}/answers/{question_id}",
-1708:     response_model=StudentExamSaveAnswerRead,
-1709: )
-1710: def save_student_course_exam_answer(
-1711:     student_id: str,
-1712:     course_code: str,
-1713:     exam_id: int,
-1714:     submission_id: int,
-1715:     question_id: int,
+1469:
+1470:
+1471: @app.get("/api/students/{student_id}/courses/{course_code}/exams", response_model=list[StudentExamSummaryRead])
+1472: def get_student_course_exams(
+1473:     student_id: str,
+1474:     course_code: str,
+1475:     current_user: User = Depends(require_authenticated_user),
+1476:     db: Session = Depends(get_db),
+1477: ) -> list[StudentExamSummaryRead]:
+1478:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1479:     return [StudentExamSummaryRead(**exam) for exam in list_student_exams(db, student.id, course.id)]
+1480:
+1481:
+1482: @app.get("/api/students/{student_id}/courses/{course_code}/exams/{exam_id}", response_model=StudentExamDetailRead)
+1483: def get_student_course_exam_detail(
+1484:     student_id: str,
+1485:     course_code: str,
+1486:     exam_id: int,
+1487:     current_user: User = Depends(require_authenticated_user),
+1488:     db: Session = Depends(get_db),
+1489: ) -> StudentExamDetailRead:
+1490:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1491:     return StudentExamDetailRead(**get_student_exam_detail(db, student.id, course.id, exam_id))
+1492:
+1493:
+1494: @app.post("/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/start", response_model=ExamSubmissionStartRead)
+1495: def start_student_course_exam(
+1496:     student_id: str,
+1497:     course_code: str,
+1498:     exam_id: int,
+1499:     current_user: User = Depends(require_authenticated_user),
+1500:     db: Session = Depends(get_db),
+1501: ) -> ExamSubmissionStartRead:
+1502:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1503:     return ExamSubmissionStartRead(
+1504:         **start_student_exam(
+1505:             db=db,
+1506:             presence_client=presence_client,
+1507:             student_id=student_id,
+1508:             student_user_id=student.id,
+1509:             course_code=course_code,
+1510:             course_id=course.id,
+1511:             exam_id=exam_id,
+1512:         )
+1513:     )
+1514:
+1515:
+1516: @app.get("/api/professors/{professor_id}/courses/{course_code}/exams", response_model=list[ExamSummaryRead])
+1517: def get_professor_course_exams(
+1518:     professor_id: str,
+1519:     course_code: str,
+1520:     current_user: User = Depends(require_authenticated_user),
+1521:     db: Session = Depends(get_db),
+1522: ) -> list[ExamSummaryRead]:
+1523:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1524:     return [ExamSummaryRead(**exam) for exam in list_professor_exams(db, course.id)]
+1525:
+1526:
+1527: @app.post(
+1528:     "/api/professors/{professor_id}/courses/{course_code}/exams",
+1529:     response_model=ProfessorExamDetailRead,
+1530:     status_code=status.HTTP_201_CREATED,
+1531: )
+1532: def create_professor_course_exam(
+1533:     professor_id: str,
+1534:     course_code: str,
+1535:     payload: ProfessorExamCreateRequest,
+1536:     current_user: User = Depends(require_authenticated_user),
+1537:     db: Session = Depends(get_db),
+1538:  ) -> ProfessorExamDetailRead:
+1539:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1540:     return ProfessorExamDetailRead(**create_professor_exam(db=db, course_id=course.id, payload=payload.model_dump()))
+1541:
+1542:
+1543: @app.get(
+1544:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}",
+1545:     response_model=ProfessorExamDetailRead,
+1546: )
+1547: def get_professor_course_exam_detail(
+1548:     professor_id: str,
+1549:     course_code: str,
+1550:     exam_id: int,
+1551:     current_user: User = Depends(require_authenticated_user),
+1552:     db: Session = Depends(get_db),
+1553: ) -> ProfessorExamDetailRead:
+1554:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1555:     return ProfessorExamDetailRead(**get_professor_exam_detail(db=db, course_id=course.id, exam_id=exam_id))
+1556:
+1557:
+1558: @app.put(
+1559:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}",
+1560:     response_model=ProfessorExamDetailRead,
+1561: )
+1562: def update_professor_course_exam(
+1563:     professor_id: str,
+1564:     course_code: str,
+1565:     exam_id: int,
+1566:     payload: ProfessorExamCreateRequest,
+1567:     current_user: User = Depends(require_authenticated_user),
+1568:     db: Session = Depends(get_db),
+1569: ) -> ProfessorExamDetailRead:
+1570:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1571:     return ProfessorExamDetailRead(
+1572:         **update_professor_exam(
+1573:             db=db,
+1574:             course_id=course.id,
+1575:             exam_id=exam_id,
+1576:             payload=payload.model_dump(),
+1577:         )
+1578:     )
+1579:
+1580:
+1581: @app.delete(
+1582:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}",
+1583:     status_code=status.HTTP_204_NO_CONTENT,
+1584: )
+1585: def delete_professor_course_exam(
+1586:     professor_id: str,
+1587:     course_code: str,
+1588:     exam_id: int,
+1589:     current_user: User = Depends(require_authenticated_user),
+1590:     db: Session = Depends(get_db),
+1591: ) -> Response:
+1592:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1593:     delete_professor_exam(db=db, course_id=course.id, exam_id=exam_id)
+1594:     return Response(status_code=status.HTTP_204_NO_CONTENT)
+1595:
+1596:
+1597: @app.post(
+1598:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/publish",
+1599:     response_model=ProfessorExamDetailRead,
+1600: )
+1601: def publish_professor_course_exam(
+1602:     professor_id: str,
+1603:     course_code: str,
+1604:     exam_id: int,
+1605:     current_user: User = Depends(require_authenticated_user),
+1606:     db: Session = Depends(get_db),
+1607: ) -> ProfessorExamDetailRead:
+1608:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1609:     return ProfessorExamDetailRead(**publish_professor_exam(db=db, course_id=course.id, exam_id=exam_id))
+1610:
+1611:
+1612: @app.post(
+1613:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/close",
+1614:     response_model=ProfessorExamDetailRead,
+1615: )
+1616: def close_professor_course_exam(
+1617:     professor_id: str,
+1618:     course_code: str,
+1619:     exam_id: int,
+1620:     current_user: User = Depends(require_authenticated_user),
+1621:     db: Session = Depends(get_db),
+1622: ) -> ProfessorExamDetailRead:
+1623:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1624:     return ProfessorExamDetailRead(**close_professor_exam(db=db, course_id=course.id, exam_id=exam_id))
+1625:
+1626:
+1627: @app.post(
+1628:     "/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/questions/{question_id}/attachments",
+1629:     response_model=list[ExamMediaAttachmentRead],
+1630:     status_code=status.HTTP_201_CREATED,
+1631: )
+1632: def upload_professor_exam_question_media(
+1633:     professor_id: str,
+1634:     course_code: str,
+1635:     exam_id: int,
+1636:     question_id: int,
+1637:     files: list[UploadFile] = File(default_factory=list),
+1638:     current_user: User = Depends(require_authenticated_user),
+1639:     db: Session = Depends(get_db),
+1640: ) -> list[ExamMediaAttachmentRead]:
+1641:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1642:     return [
+1643:         ExamMediaAttachmentRead(**item)
+1644:         for item in upload_exam_question_attachments(db, course_id=course.id, exam_id=exam_id, question_id=question_id, files=files)
+1645:     ]
+1646:
+1647:
+1648: @app.get("/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/questions/{question_id}/attachments/{attachment_id}")
+1649: def download_student_exam_question_media(
+1650:     student_id: str,
+1651:     course_code: str,
+1652:     exam_id: int,
+1653:     question_id: int,
+1654:     attachment_id: int,
+1655:     range_header: str | None = Header(default=None, alias="Range"),
+1656:     current_user: User = Depends(require_authenticated_user),
+1657:     db: Session = Depends(get_db),
+1658: ) -> StreamingResponse:
+1659:     _, course = require_student_course_access(student_id, course_code, current_user, db)
+1660:     return _stream_storage_download(
+1661:         get_exam_question_attachment_download(db, course_id=course.id, exam_id=exam_id, question_id=question_id, attachment_id=attachment_id),
+1662:         range_header,
+1663:     )
+1664:
+1665:
+1666: @app.get("/api/professors/{professor_id}/courses/{course_code}/exams/{exam_id}/questions/{question_id}/attachments/{attachment_id}")
+1667: def download_professor_exam_question_media(
+1668:     professor_id: str,
+1669:     course_code: str,
+1670:     exam_id: int,
+1671:     question_id: int,
+1672:     attachment_id: int,
+1673:     range_header: str | None = Header(default=None, alias="Range"),
+1674:     current_user: User = Depends(require_authenticated_user),
+1675:     db: Session = Depends(get_db),
+1676: ) -> StreamingResponse:
+1677:     _, course = require_professor_course_ownership(professor_id, course_code, current_user, db)
+1678:     return _stream_storage_download(
+1679:         get_exam_question_attachment_download(db, course_id=course.id, exam_id=exam_id, question_id=question_id, attachment_id=attachment_id),
+1680:         range_header,
+1681:     )
+1682:
+1683:
+1684: @app.post(
+1685:     "/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submit",
+1686:     response_model=StudentExamSubmitResultRead,
+1687: )
+1688: def submit_student_course_exam(
+1689:     student_id: str,
+1690:     course_code: str,
+1691:     exam_id: int,
+1692:     payload: StudentExamSubmitRequest,
+1693:     current_user: User = Depends(require_authenticated_user),
+1694:     db: Session = Depends(get_db),
+1695: ) -> StudentExamSubmitResultRead:
+1696:     student, course = require_student_course_access(student_id, course_code, current_user, db)
+1697:     return StudentExamSubmitResultRead(
+1698:         **submit_student_exam(
+1699:             db=db,
+1700:             student_user_id=student.id,
+1701:             course_id=course.id,
+1702:             exam_id=exam_id,
+1703:             payload=payload.model_dump(),
+1704:         )
+1705:     )
+1706:
+1707:
+1708: @app.put(
+1709:     "/api/students/{student_id}/courses/{course_code}/exams/{exam_id}/submissions/{submission_id}/answers/{question_id}",
+1710:     response_model=StudentExamSaveAnswerRead,
+1711: )
+1712: def save_student_course_exam_answer(
+1713:     student_id: str,
+1714:     course_code: str,
+1715:     exam_id: int,
 ```
 
 #### G.9 Backend attendance endpoints + WebSocket
 
-Source: `Backend/app/main.py:2028-2335`
+Source: `Backend/app/main.py:2030-2367`
 
 ```py
-2028: @app.post(
-2029:     "/api/attendance/eligibility",
-2030:     response_model=AttendanceEligibilityResponse,
-2031: )
-2032: def attendance_eligibility(
-2033:     payload: AttendanceEligibilityRequest,
-2034:     current_user: User = Depends(require_authenticated_user),
-2035:     db: Session = Depends(get_db),
-2036: ) -> AttendanceEligibilityResponse:
-2037:     require_student_self(payload.student_id, current_user)
-2038:     result = check_attendance_eligibility(
-2039:         db=db,
-2040:         presence_client=presence_client,
-2041:         student_id=payload.student_id,
-2042:         course_id=payload.course_code,
-2043:         classroom_id=None,
-2044:         purpose="attendance",
-2045:     )
-2046:     return AttendanceEligibilityResponse(**result)
-2047:
-2048:
-2049: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/timeline")
-2050: def professor_attendance_timeline(
-2051:     professor_id: str,
-2052:     course_code: str,
-2053:     current_user: User = Depends(require_authenticated_user),
-2054:     db: Session = Depends(get_db),
-2055: ) -> dict[str, Any]:
-2056:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2057:     expired_events = expire_stale_attendance_sessions(db, course_code)
-2058:     _release_db_connection(db)
-2059:     _publish_expired_attendance_events_sync(expired_events)
-2060:     return build_attendance_timeline(db, professor_id, course_code)
-2061:
-2062:
-2063: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/report")
-2064: def professor_attendance_report(
-2065:     professor_id: str,
-2066:     course_code: str,
-2067:     current_user: User = Depends(require_authenticated_user),
-2068:     db: Session = Depends(get_db),
-2069: ) -> dict[str, Any]:
-2070:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2071:     expired_events = expire_stale_attendance_sessions(db, course_code)
-2072:     _release_db_connection(db)
-2073:     _publish_expired_attendance_events_sync(expired_events)
-2074:     return build_attendance_report(db, professor_id, course_code)
-2075:
-2076:
-2077: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/student-stats")
-2078: def professor_attendance_student_stats(
-2079:     professor_id: str,
-2080:     course_code: str,
-2081:     current_user: User = Depends(require_authenticated_user),
-2082:     db: Session = Depends(get_db),
-2083: ) -> dict[str, Any]:
-2084:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2085:     expired_events = expire_stale_attendance_sessions(db, course_code)
-2086:     _release_db_connection(db)
-2087:     _publish_expired_attendance_events_sync(expired_events)
-2088:     return build_professor_student_attendance_stats(db, professor_id, course_code)
-2089:
-2090:
-2091: @app.post("/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports", response_model=ReportExportRead, status_code=status.HTTP_201_CREATED)
-2092: def create_professor_attendance_report_export(
-2093:     professor_id: str,
-2094:     course_code: str,
-2095:     payload: AttendanceReportExportCreate | None = None,
-2096:     current_user: User = Depends(require_authenticated_user),
-2097:     db: Session = Depends(get_db),
-2098: ) -> ReportExportRead:
-2099:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2100:     export_type = payload.export_type if payload is not None else "attendance_summary_csv"
-2101:     return ReportExportRead(**create_attendance_csv_export(db, professor_id=professor_id, course_code=course_code, export_type=export_type))
-2102:
-2103:
-2104: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports", response_model=list[ReportExportRead])
-2105: def list_professor_attendance_report_exports(
-2106:     professor_id: str,
-2107:     course_code: str,
-2108:     current_user: User = Depends(require_authenticated_user),
-2109:     db: Session = Depends(get_db),
-2110: ) -> list[ReportExportRead]:
-2111:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2112:     return [ReportExportRead(**item) for item in list_attendance_csv_exports(db, professor_id=professor_id, course_code=course_code)]
-2113:
-2114:
-2115: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports/{export_id}/download")
-2116: def download_professor_attendance_report_export(
-2117:     professor_id: str,
-2118:     course_code: str,
-2119:     export_id: int,
-2120:     range_header: str | None = Header(default=None, alias="Range"),
-2121:     current_user: User = Depends(require_authenticated_user),
-2122:     db: Session = Depends(get_db),
-2123: ) -> StreamingResponse:
-2124:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2125:     return _stream_storage_download(get_report_export_download(db, professor_id=professor_id, course_code=course_code, export_id=export_id), range_header)
-2126:
-2127:
-2128: @app.post("/api/professors/{professor_id}/courses/{course_code}/attendance/sessions/batch")
-2129: def professor_open_attendance_sessions_batch(
-2130:     professor_id: str,
-2131:     course_code: str,
-2132:     payload: AttendanceSessionBatchRequest,
-2133:     current_user: User = Depends(require_authenticated_user),
-2134:     db: Session = Depends(get_db),
-2135: ) -> dict[str, Any]:
-2136:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2137:     result = open_attendance_sessions_batch(
-2138:         db,
-2139:         professor_id,
-2140:         course_code,
-2141:         projection_keys=payload.projection_keys,
-2142:         mode=payload.mode,
-2143:     )
-2144:     _release_db_connection(db)
-2145:     _publish_attendance_sync(
-2146:         course_code,
-2147:         attendance_event_payload(
-2148:             event_type="attendance.session.batch_applied",
-2149:             course_code=course_code,
-2150:             projection_keys=result["changed_projection_keys"],
-2151:             session_ids=result["changed_session_ids"],
-2152:             changed_payload={"results": result["results"], "mode": payload.mode},
-2153:         ),
-2154:     )
-2155:     return result
-2156:
-2157:
-2158: @app.post("/api/professors/{professor_id}/attendance/sessions/{session_id}/close")
-2159: def professor_close_attendance(
-2160:     professor_id: str,
-2161:     session_id: int,
-2162:     current_user: User = Depends(require_authenticated_user),
-2163:     db: Session = Depends(get_db),
-2164: ) -> dict[str, Any]:
-2165:     require_professor_self(professor_id, current_user)
-2166:     result = close_attendance_session(db, professor_id, session_id)
-2167:     if "course_code" in result:
-2168:         _release_db_connection(db)
-2169:         _publish_attendance_sync(
-2170:             result["course_code"],
-2171:             attendance_event_payload(
-2172:                 event_type="attendance.session.closed",
-2173:                 course_code=result["course_code"],
-2174:                 projection_keys=result.get("projection_keys", [result["projection_key"]]),
-2175:                 session_ids=[result["session_id"]],
-2176:                 version=result["version"],
-2177:             ),
-2178:         )
-2179:     return result
-2180:
-2181:
-2182: @app.get("/api/professors/{professor_id}/attendance/sessions/{session_id}/roster")
-2183: def professor_attendance_roster(
-2184:     professor_id: str,
-2185:     session_id: int,
-2186:     current_user: User = Depends(require_authenticated_user),
-2187:     db: Session = Depends(get_db),
-2188: ) -> dict[str, Any]:
-2189:     require_professor_self(professor_id, current_user)
-2190:     return get_attendance_session_roster(db, professor_id, session_id)
-2191:
-2192:
-2193: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/slot-roster")
-2194: def professor_attendance_slot_roster(
-2195:     professor_id: str,
-2196:     course_code: str,
-2197:     projection_key: str = Query(...),
-2198:     current_user: User = Depends(require_authenticated_user),
-2199:     db: Session = Depends(get_db),
-2200: ) -> dict[str, Any]:
-2201:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2202:     return get_attendance_slot_roster_preview(db, professor_id, course_code, projection_key)
-2203:
-2204:
-2205: @app.patch("/api/professors/{professor_id}/attendance/sessions/{session_id}/students/{student_id}")
-2206: def professor_update_attendance_record(
-2207:     professor_id: str,
-2208:     session_id: int,
-2209:     student_id: str,
-2210:     payload: AttendanceRecordUpdateRequest,
-2211:     current_user: User = Depends(require_authenticated_user),
-2212:     db: Session = Depends(get_db),
-2213: ) -> dict[str, Any]:
-2214:     require_professor_self(professor_id, current_user)
-2215:     result = update_attendance_session_record(
-2216:         db,
-2217:         professor_id,
-2218:         session_id,
-2219:         student_id,
-2220:         payload.status,
-2221:         payload.reason,
-2222:         payload.projection_key,
-2223:     )
-2224:     if result.get("changed", True):
-2225:         _release_db_connection(db)
-2226:         _publish_attendance_sync(
-2227:             result["course_code"],
-2228:             attendance_event_payload(
-2229:                 event_type="attendance.record.updated",
-2230:                 course_code=result["course_code"],
-2231:                 projection_keys=result.get("projection_keys", [result["projection_key"]]),
-2232:                 session_ids=[result["session_id"]],
-2233:                 version=result["version"],
-2234:                 changed_payload={
-2235:                     "student_id": result["student_id"],
-2236:                     "new_status": result["new_status"],
-2237:                     "projection_keys": result.get("projection_keys", []),
-2238:                 },
-2239:             ),
-2240:         )
-2241:     return result
-2242:
-2243:
-2244: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/students/{student_id}/history")
-2245: def professor_attendance_student_history(
-2246:     professor_id: str,
-2247:     course_code: str,
-2248:     student_id: str,
-2249:     current_user: User = Depends(require_authenticated_user),
-2250:     db: Session = Depends(get_db),
-2251: ) -> dict[str, Any]:
-2252:     require_professor_course_ownership(professor_id, course_code, current_user, db)
-2253:     return list_attendance_history(db, professor_id, course_code, student_id)
-2254:
-2255:
-2256: @app.get("/api/students/{student_id}/courses/{course_code}/attendance/active-sessions")
-2257: def student_active_attendance_sessions(
-2258:     student_id: str,
-2259:     course_code: str,
-2260:     current_user: User = Depends(require_authenticated_user),
-2261:     db: Session = Depends(get_db),
-2262: ) -> dict[str, Any]:
-2263:     require_student_course_access(student_id, course_code, current_user, db)
-2264:     expired_events = expire_stale_attendance_sessions(db, course_code)
-2265:     _release_db_connection(db)
-2266:     _publish_expired_attendance_events_sync(expired_events)
-2267:     return list_student_active_attendance_sessions(db, presence_client, student_id, course_code)
-2268:
-2269:
-2270: @app.get("/api/students/{student_id}/courses/{course_code}/attendance/semester-matrix")
-2271: def student_attendance_semester_matrix(
-2272:     student_id: str,
-2273:     course_code: str,
-2274:     current_user: User = Depends(require_authenticated_user),
-2275:     db: Session = Depends(get_db),
-2276: ) -> dict[str, Any]:
-2277:     require_student_course_access(student_id, course_code, current_user, db)
-2278:     expired_events = expire_stale_attendance_sessions(db, course_code)
-2279:     _release_db_connection(db)
-2280:     _publish_expired_attendance_events_sync(expired_events)
-2281:     return build_student_attendance_semester_matrix(db, student_id, course_code)
-2282:
-2283:
-2284: @app.post("/api/students/{student_id}/attendance/sessions/{session_id}/check-in")
-2285: def student_attendance_check_in_endpoint(
-2286:     student_id: str,
-2287:     session_id: int,
-2288:     current_user: User = Depends(require_authenticated_user),
-2289:     db: Session = Depends(get_db),
-2290: ) -> dict[str, Any]:
-2291:     require_student_self(student_id, current_user)
-2292:     result = student_attendance_check_in(db, presence_client, student_id, session_id)
-2293:     _release_db_connection(db)
-2294:     if result.get("changed_count", 0) > 0:
-2295:         _publish_attendance_sync(
-2296:             result["course_code"],
-2297:             attendance_event_payload(
-2298:                 event_type="attendance.student.checked_in",
-2299:                 course_code=result["course_code"],
-2300:                 projection_keys=result.get("projection_keys", [result["projection_key"]]),
-2301:                 session_ids=[result["session_id"]],
-2302:                 version=result["version"],
-2303:                 changed_payload={
-2304:                     "student_id": result["student_id"],
-2305:                     "status": result["status"],
-2306:                     "idempotent": result["idempotent"],
-2307:                     "changed_count": result.get("changed_count"),
-2308:                     "already_present_count": result.get("already_present_count"),
-2309:                     "rejected_count": result.get("rejected_count"),
-2310:                     "projection_keys": result.get("projection_keys", []),
-2311:                 },
-2312:             ),
-2313:         )
-2314:     return result
-2315:
-2316:
-2317: @app.websocket("/ws/attendance")
-2318: async def attendance_websocket(
-2319:     websocket: WebSocket,
-2320:     token: str | None = Query(default=None),
-2321:     courseCode: str = Query(...),
-2322:     view: str = Query(default="professor"),
-2323: ) -> None:
-2324:     await websocket.accept()
-2325:     try:
-2326:         login_id, user_role, expired_events, bootstrap_data = await anyio.to_thread.run_sync(
-2327:             lambda: _build_attendance_websocket_bootstrap(
-2328:                 token=token,
-2329:                 raw_access_cookie=websocket.cookies.get(settings.access_cookie_name),
-2330:                 course_code=courseCode,
-2331:                 view=view,
-2332:             )
-2333:         )
-2334:         attendance_broker.register(
-2335:             courseCode,
+2030: @app.post(
+2031:     "/api/attendance/eligibility",
+2032:     response_model=AttendanceEligibilityResponse,
+2033: )
+2034: def attendance_eligibility(
+2035:     payload: AttendanceEligibilityRequest,
+2036:     current_user: User = Depends(require_authenticated_user),
+2037:     db: Session = Depends(get_db),
+2038: ) -> AttendanceEligibilityResponse:
+2039:     require_student_self(payload.student_id, current_user)
+2040:     result = check_attendance_eligibility(
+2041:         db=db,
+2042:         presence_client=presence_client,
+2043:         student_id=payload.student_id,
+2044:         course_id=payload.course_code,
+2045:         classroom_id=None,
+2046:         purpose="attendance",
+2047:     )
+2048:     return AttendanceEligibilityResponse(**result)
+2049:
+2050:
+2051: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/timeline")
+2052: def professor_attendance_timeline(
+2053:     professor_id: str,
+2054:     course_code: str,
+2055:     current_user: User = Depends(require_authenticated_user),
+2056:     db: Session = Depends(get_db),
+2057: ) -> dict[str, Any]:
+2058:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2059:     expired_events = expire_stale_attendance_sessions(db, course_code)
+2060:     _release_db_connection(db)
+2061:     _publish_expired_attendance_events_sync(expired_events)
+2062:     return build_attendance_timeline(db, professor_id, course_code)
+2063:
+2064:
+2065: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/report")
+2066: def professor_attendance_report(
+2067:     professor_id: str,
+2068:     course_code: str,
+2069:     current_user: User = Depends(require_authenticated_user),
+2070:     db: Session = Depends(get_db),
+2071: ) -> dict[str, Any]:
+2072:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2073:     expired_events = expire_stale_attendance_sessions(db, course_code)
+2074:     _release_db_connection(db)
+2075:     _publish_expired_attendance_events_sync(expired_events)
+2076:     return build_attendance_report(db, professor_id, course_code)
+2077:
+2078:
+2079: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/student-stats")
+2080: def professor_attendance_student_stats(
+2081:     professor_id: str,
+2082:     course_code: str,
+2083:     current_user: User = Depends(require_authenticated_user),
+2084:     db: Session = Depends(get_db),
+2085: ) -> dict[str, Any]:
+2086:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2087:     expired_events = expire_stale_attendance_sessions(db, course_code)
+2088:     _release_db_connection(db)
+2089:     _publish_expired_attendance_events_sync(expired_events)
+2090:     return build_professor_student_attendance_stats(db, professor_id, course_code)
+2091:
+2092:
+2093: @app.post("/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports", response_model=ReportExportRead, status_code=status.HTTP_201_CREATED)
+2094: def create_professor_attendance_report_export(
+2095:     professor_id: str,
+2096:     course_code: str,
+2097:     payload: AttendanceReportExportCreate | None = None,
+2098:     current_user: User = Depends(require_authenticated_user),
+2099:     db: Session = Depends(get_db),
+2100: ) -> ReportExportRead:
+2101:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2102:     export_type = payload.export_type if payload is not None else "attendance_summary_csv"
+2103:     return ReportExportRead(**create_attendance_csv_export(db, professor_id=professor_id, course_code=course_code, export_type=export_type))
+2104:
+2105:
+2106: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports", response_model=list[ReportExportRead])
+2107: def list_professor_attendance_report_exports(
+2108:     professor_id: str,
+2109:     course_code: str,
+2110:     current_user: User = Depends(require_authenticated_user),
+2111:     db: Session = Depends(get_db),
+2112: ) -> list[ReportExportRead]:
+2113:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2114:     return [ReportExportRead(**item) for item in list_attendance_csv_exports(db, professor_id=professor_id, course_code=course_code)]
+2115:
+2116:
+2117: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports/{export_id}/download")
+2118: def download_professor_attendance_report_export(
+2119:     professor_id: str,
+2120:     course_code: str,
+2121:     export_id: int,
+2122:     range_header: str | None = Header(default=None, alias="Range"),
+2123:     current_user: User = Depends(require_authenticated_user),
+2124:     db: Session = Depends(get_db),
+2125: ) -> StreamingResponse:
+2126:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2127:     return _stream_storage_download(get_report_export_download(db, professor_id=professor_id, course_code=course_code, export_id=export_id), range_header)
+2128:
+2129:
+2130: @app.post("/api/professors/{professor_id}/courses/{course_code}/attendance/sessions/batch")
+2131: def professor_open_attendance_sessions_batch(
+2132:     professor_id: str,
+2133:     course_code: str,
+2134:     payload: AttendanceSessionBatchRequest,
+2135:     current_user: User = Depends(require_authenticated_user),
+2136:     db: Session = Depends(get_db),
+2137: ) -> dict[str, Any]:
+2138:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2139:     result = open_attendance_sessions_batch(
+2140:         db,
+2141:         professor_id,
+2142:         course_code,
+2143:         projection_keys=payload.projection_keys,
+2144:         mode=payload.mode,
+2145:     )
+2146:     _release_db_connection(db)
+2147:     _publish_attendance_sync(
+2148:         course_code,
+2149:         attendance_event_payload(
+2150:             event_type="attendance.session.batch_applied",
+2151:             course_code=course_code,
+2152:             projection_keys=result["changed_projection_keys"],
+2153:             session_ids=result["changed_session_ids"],
+2154:             changed_payload={"results": result["results"], "mode": payload.mode},
+2155:         ),
+2156:     )
+2157:     return result
+2158:
+2159:
+2160: @app.post("/api/professors/{professor_id}/attendance/sessions/{session_id}/close")
+2161: def professor_close_attendance(
+2162:     professor_id: str,
+2163:     session_id: int,
+2164:     current_user: User = Depends(require_authenticated_user),
+2165:     db: Session = Depends(get_db),
+2166: ) -> dict[str, Any]:
+2167:     require_professor_self(professor_id, current_user)
+2168:     result = close_attendance_session(db, professor_id, session_id)
+2169:     if "course_code" in result:
+2170:         _release_db_connection(db)
+2171:         _publish_attendance_sync(
+2172:             result["course_code"],
+2173:             attendance_event_payload(
+2174:                 event_type="attendance.session.closed",
+2175:                 course_code=result["course_code"],
+2176:                 projection_keys=result.get("projection_keys", [result["projection_key"]]),
+2177:                 session_ids=[result["session_id"]],
+2178:                 version=result["version"],
+2179:             ),
+2180:         )
+2181:     return result
+2182:
+2183:
+2184: @app.get("/api/professors/{professor_id}/attendance/sessions/{session_id}/roster")
+2185: def professor_attendance_roster(
+2186:     professor_id: str,
+2187:     session_id: int,
+2188:     current_user: User = Depends(require_authenticated_user),
+2189:     db: Session = Depends(get_db),
+2190: ) -> dict[str, Any]:
+2191:     require_professor_self(professor_id, current_user)
+2192:     return get_attendance_session_roster(db, professor_id, session_id)
+2193:
+2194:
+2195: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/slot-roster")
+2196: def professor_attendance_slot_roster(
+2197:     professor_id: str,
+2198:     course_code: str,
+2199:     projection_key: str = Query(...),
+2200:     current_user: User = Depends(require_authenticated_user),
+2201:     db: Session = Depends(get_db),
+2202: ) -> dict[str, Any]:
+2203:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2204:     return get_attendance_slot_roster_preview(db, professor_id, course_code, projection_key)
+2205:
+2206:
+2207: @app.patch("/api/professors/{professor_id}/attendance/sessions/{session_id}/students/{student_id}")
+2208: def professor_update_attendance_record(
+2209:     professor_id: str,
+2210:     session_id: int,
+2211:     student_id: str,
+2212:     payload: AttendanceRecordUpdateRequest,
+2213:     current_user: User = Depends(require_authenticated_user),
+2214:     db: Session = Depends(get_db),
+2215: ) -> dict[str, Any]:
+2216:     require_professor_self(professor_id, current_user)
+2217:     result = update_attendance_session_record(
+2218:         db,
+2219:         professor_id,
+2220:         session_id,
+2221:         student_id,
+2222:         payload.status,
+2223:         payload.reason,
+2224:         payload.projection_key,
+2225:     )
+2226:     if result.get("changed", True):
+2227:         _release_db_connection(db)
+2228:         _publish_attendance_sync(
+2229:             result["course_code"],
+2230:             attendance_event_payload(
+2231:                 event_type="attendance.record.updated",
+2232:                 course_code=result["course_code"],
+2233:                 projection_keys=result.get("projection_keys", [result["projection_key"]]),
+2234:                 session_ids=[result["session_id"]],
+2235:                 version=result["version"],
+2236:                 changed_payload={
+2237:                     "student_id": result["student_id"],
+2238:                     "new_status": result["new_status"],
+2239:                     "projection_keys": result.get("projection_keys", []),
+2240:                 },
+2241:             ),
+2242:         )
+2243:     return result
+2244:
+2245:
+2246: @app.get("/api/professors/{professor_id}/courses/{course_code}/attendance/students/{student_id}/history")
+2247: def professor_attendance_student_history(
+2248:     professor_id: str,
+2249:     course_code: str,
+2250:     student_id: str,
+2251:     current_user: User = Depends(require_authenticated_user),
+2252:     db: Session = Depends(get_db),
+2253: ) -> dict[str, Any]:
+2254:     require_professor_course_ownership(professor_id, course_code, current_user, db)
+2255:     return list_attendance_history(db, professor_id, course_code, student_id)
+2256:
+2257:
+2258: @app.get("/api/students/{student_id}/courses/{course_code}/attendance/active-sessions")
+2259: def student_active_attendance_sessions(
+2260:     student_id: str,
+2261:     course_code: str,
+2262:     current_user: User = Depends(require_authenticated_user),
+2263:     db: Session = Depends(get_db),
+2264: ) -> dict[str, Any]:
+2265:     require_student_course_access(student_id, course_code, current_user, db)
+2266:     expired_events = expire_stale_attendance_sessions(db, course_code)
+2267:     _release_db_connection(db)
+2268:     _publish_expired_attendance_events_sync(expired_events)
+2269:     return list_student_active_attendance_sessions(db, presence_client, student_id, course_code)
+2270:
+2271:
+2272: @app.get("/api/students/{student_id}/courses/{course_code}/attendance/semester-matrix")
+2273: def student_attendance_semester_matrix(
+2274:     student_id: str,
+2275:     course_code: str,
+2276:     current_user: User = Depends(require_authenticated_user),
+2277:     db: Session = Depends(get_db),
+2278: ) -> dict[str, Any]:
+2279:     require_student_course_access(student_id, course_code, current_user, db)
+2280:     expired_events = expire_stale_attendance_sessions(db, course_code)
+2281:     _release_db_connection(db)
+2282:     _publish_expired_attendance_events_sync(expired_events)
+2283:     return build_student_attendance_semester_matrix(db, student_id, course_code)
+2284:
+2285:
+2286: @app.post("/api/students/{student_id}/attendance/sessions/{session_id}/check-in")
+2287: def student_attendance_check_in_endpoint(
+2288:     student_id: str,
+2289:     session_id: int,
+2290:     current_user: User = Depends(require_authenticated_user),
+2291:     db: Session = Depends(get_db),
+2292: ) -> dict[str, Any]:
+2293:     require_student_self(student_id, current_user)
+2294:     result = student_attendance_check_in(db, presence_client, student_id, session_id)
+2295:     _release_db_connection(db)
+2296:     if result.get("changed_count", 0) > 0:
+2297:         _publish_attendance_sync(
+2298:             result["course_code"],
+2299:             attendance_event_payload(
+2300:                 event_type="attendance.student.checked_in",
+2301:                 course_code=result["course_code"],
+2302:                 projection_keys=result.get("projection_keys", [result["projection_key"]]),
+2303:                 session_ids=[result["session_id"]],
+2304:                 version=result["version"],
+2305:                 changed_payload={
+2306:                     "student_id": result["student_id"],
+2307:                     "status": result["status"],
+2308:                     "idempotent": result["idempotent"],
+2309:                     "changed_count": result.get("changed_count"),
+2310:                     "already_present_count": result.get("already_present_count"),
+2311:                     "rejected_count": result.get("rejected_count"),
+2312:                     "projection_keys": result.get("projection_keys", []),
+2313:                 },
+2314:             ),
+2315:         )
+2316:     return result
+2317:
+2318:
+2319: @app.websocket("/ws/attendance")
+2320: async def attendance_websocket(
+2321:     websocket: WebSocket,
+2322:     token: str | None = Query(default=None),
+2323:     courseCode: str = Query(...),
+2324:     view: str = Query(default="professor"),
+2325: ) -> None:
+2326:     await websocket.accept()
+2327:     try:
+2328:         login_id, user_role, expired_events, bootstrap_data = await anyio.to_thread.run_sync(
+2329:             lambda: _build_attendance_websocket_bootstrap(
+2330:                 token=token,
+2331:                 raw_access_cookie=websocket.cookies.get(settings.access_cookie_name),
+2332:                 course_code=courseCode,
+2333:                 view=view,
+2334:             )
+2335:         )
+2336:         attendance_broker.register(
+2337:             courseCode,
+2338:             websocket,
+2339:             {"login_id": login_id, "role": user_role, "view": view, "course_code": courseCode},
+2340:         )
+2341:         await websocket.send_json(
+2342:             attendance_event_payload(
+2343:                 event_type="attendance.bootstrap",
+2344:                 course_code=courseCode,
+2345:                 changed_payload={"view": view, "data": bootstrap_data},
+2346:             )
+2347:         )
+2348:         for event in expired_events:
+2349:             await attendance_broker.publish(
+2350:                 courseCode,
+2351:                 attendance_event_payload(
+2352:                     event_type=f"attendance.{event['event_type']}",
+2353:                     course_code=courseCode,
+2354:                     projection_keys=event["projection_keys"],
+2355:                     changed_payload=event,
+2356:                     session_ids=[event["session_id"]],
+2357:                     version=event["version"],
+2358:                 ),
+2359:             )
+2360:         while True:
+2361:             await websocket.receive_text()
+2362:     except HTTPException:
+2363:         await websocket.close(code=1008)
+2364:     except WebSocketDisconnect:
+2365:         pass
+2366:     finally:
+2367:         attendance_broker.disconnect(courseCode, websocket)
 ```
 
 #### G.10 Backend attendance bundle open/check-in core
