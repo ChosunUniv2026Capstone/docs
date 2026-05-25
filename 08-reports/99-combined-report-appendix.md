@@ -123,7 +123,7 @@ owners:
 | E-ATT-01 | 출석 workflow | 로컬 MVP 완료 | Fig. 17-20, 40-47 redbox | `Backend/app/attendance.py`; `Backend/app/main.py:2030-2367`; WebSocket `/ws/attendance` | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs`, `report_exports` | `Backend/tests/test_attendance_realtime.py:226`, `:369`, `:405`, `:498`, `:593`, `:1030`; weekly merged PRs Backend #48/#49 (`f874e8a`, `36e8524`) | 장기 교실 현장 검증은 후속 과제 |
 | E-EXAM-01 | 객관식 시험 workflow | 로컬 MVP 완료 | Fig. 21-25, 36-39 redbox | `Backend/app/main.py:1469-1710`; `Front/tests/e2e/exam-workflow.spec.ts` | `exams`, `exam_questions`, `exam_question_options`, `exam_submissions`, `exam_submission_answers` | `Backend/tests/test_exam_contract_alignment.py:147`, `:208`, `:261`, `:294`; `Front/tests/e2e/exam-workflow.spec.ts:244` | 서술형/파일형 시험과 대규모 부정행위 대응은 후속 과제 |
 | E-PRES-01 | PresenceService eligibility / collector / demo overlay | 로컬 MVP 완료 | Fig. 18, 49-55 redbox; Fig. 56 N/A | `PresenceService/app/main.py:45`, `:64`, `:88`, `:100-125`; `Service/openwrt/presence-collector.sh`; Backend registry endpoints `Backend/app/main.py:1990-2027` | `classroom_networks`, `access_points`, `access_point_interfaces`, `registered_devices`, `presence_eligibility_logs` | `PresenceService/tests/test_service.py:136`, `:153`, `:203`, `:296`, `:347`, `:652`; `test_registry.py:29` | dummy overlay는 실 OpenWrt 장기 검증을 대체하지 않음 |
-| E-DB-01 | DB schema / seed / ERD | 로컬 MVP 완료 | ERD-1~ERD-8 raw/redbox SVG | `DB/postgres/init/*.sql`, `DB/postgres/migrations/*.sql` | 전체 PostgreSQL schema 및 seed | `DB/postgres/tests/object_storage_triggers.sql`; Backend/Presence/Service tests가 schema 계약을 간접 검증 | ERD SVG는 보고서용 산출물이며 실제 운영 migration 로그는 후속 운영 검증에서 보강 |
+| E-DB-01 | DB schema / seed / ERD | 로컬 MVP 완료 | ERD-1 portrait overview + ERD-2~ERD-8 ERD SVG | `DB/postgres/init/*.sql`, `DB/postgres/migrations/*.sql` | 전체 PostgreSQL schema 및 seed | `DB/postgres/tests/object_storage_triggers.sql`; Backend/Presence/Service tests가 schema 계약을 간접 검증 | ERD SVG는 보고서용 산출물이며 실제 운영 migration 로그는 후속 운영 검증에서 보강 |
 | E-SVC-01 | Service runtime / CI-CD | 부분 완료 | Service runtime은 diagram/manifest 중심; UI 화면 아님 | `Service/compose.yml`, `compose.local.yml`, `compose.image.yml`, `nginx/local.conf`, `Service/manifests/releases/v0.4.1.yml`, `v0.4.2.yml`, workflows `ci.yml`, `deploy-demo.yml` | DB 직접 테이블 없음; `report_exports` 등 ops metadata는 ERD-8 | `Service/tests/test_release_manifest_contract.py:27`, `:45`; `test_workspace_release_readiness.py:81`, `:98`; weekly merged PRs Service #26/#27/#28/#29 (`e89dcdb`, `c36a432`, `7b934a3`, `290820f`) | workflow run / demo server provenance 없이는 상용 배포로 쓰지 않음 |
 | E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/04-architecture/assignment-workflow-api.md`; `docs/08-reports/99-combined-report.md`; `docs/08-reports/99-combined-report-appendix.md` | N/A | docs #36/#37/#38 merged evidence와 `9c33d29`~`a675519` report asset/rendering follow-up; `git -C docs diff --check`, markdown/link sanity | 보고서 렌더링/asset 보정은 main 반영 완료이며 기능 구현 성과와 분리 |
 
@@ -572,14 +572,11 @@ owners:
 
 ## ERD-1 — Full Smart Class PostgreSQL ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg`
-- 강조 대상: LMS + presence/attendance + assessment domains
-- 포함 테이블/노드: users, courses, course_enrollments, course_schedules, classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, refresh_sessions, attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, presence_eligibility_logs, exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, assignments, assignment_submissions, learning_items, learning_progress, course_qna_threads, course_qna_posts, report_exports, object_deletion_jobs
+- 구성: 세로 1쪽 전체 overview
+- 강조 대상: LMS + presence/attendance + assessment + assignment + object-storage domains
+- 포함 범위: 전체 34개 schema table과 54개 FK link
 
-![ERD-1 raw](../08-reports/assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
-
-![ERD-1 redbox](../08-reports/assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg)
+![ERD-1 portrait overview](../08-reports/assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
 
 ## ERD-2 — User / auth / registered-device ERD
 

@@ -1,10 +1,186 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1124" height="802" viewBox="0 0 1124 802">
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1500" viewBox="0 0 1240 1500">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
-  <text x="42" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">ERD-1. Full Smart Class PostgreSQL ERD</text>
-  <line x1="288" y1="130" x2="316" y2="130" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="130" x2="576" y2="130" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="130" x2="836" y2="130" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="288" y1="218" x2="316" y2="218" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="218" x2="576" y2="218" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="218" x2="836" y2="218" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="288" y1="306" x2="316" y2="306" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="306" x2="576" y2="306" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="306" x2="836" y2="306" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="288" y1="394" x2="316" y2="394" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="394" x2="576" y2="394" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="394" x2="836" y2="394" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="288" y1="482" x2="316" y2="482" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="482" x2="576" y2="482" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="482" x2="836" y2="482" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="288" y1="570" x2="316" y2="570" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="570" x2="576" y2="570" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="570" x2="836" y2="570" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="288" y1="658" x2="316" y2="658" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="548" y1="658" x2="576" y2="658" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/><line x1="808" y1="658" x2="836" y2="658" stroke="#777" stroke-width="2" stroke-dasharray="6 4"/>
-  <rect x="42" y="96" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="56" y="131" font-family="Arial, sans-serif" font-size="18" fill="#111827">users</text><rect x="302" y="96" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="316" y="131" font-family="Arial, sans-serif" font-size="18" fill="#111827">courses</text><rect x="562" y="96" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="576" y="131" font-family="Arial, sans-serif" font-size="18" fill="#111827">course_enrollments</text><rect x="822" y="96" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="836" y="131" font-family="Arial, sans-serif" font-size="18" fill="#111827">course_schedules</text><rect x="42" y="184" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="56" y="219" font-family="Arial, sans-serif" font-size="18" fill="#111827">classrooms</text><rect x="302" y="184" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="316" y="219" font-family="Arial, sans-serif" font-size="18" fill="#111827">classroom_networks</text><rect x="562" y="184" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="576" y="219" font-family="Arial, sans-serif" font-size="18" fill="#111827">access_points</text><rect x="822" y="184" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="836" y="219" font-family="Arial, sans-serif" font-size="18" fill="#111827">access_point_interfaces</text><rect x="42" y="272" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="56" y="307" font-family="Arial, sans-serif" font-size="18" fill="#111827">registered_devices</text><rect x="302" y="272" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="316" y="307" font-family="Arial, sans-serif" font-size="18" fill="#111827">refresh_sessions</text><rect x="562" y="272" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="576" y="307" font-family="Arial, sans-serif" font-size="18" fill="#111827">attendance_sessions</text><rect x="822" y="272" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="836" y="307" font-family="Arial, sans-serif" font-size="18" fill="#111827">attendance_session_slots</text><rect x="42" y="360" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="56" y="395" font-family="Arial, sans-serif" font-size="18" fill="#111827">attendance_records</text><rect x="302" y="360" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="316" y="395" font-family="Arial, sans-serif" font-size="18" fill="#111827">attendance_status_audit_logs</text><rect x="562" y="360" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="576" y="395" font-family="Arial, sans-serif" font-size="18" fill="#111827">presence_eligibility_logs</text><rect x="822" y="360" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="836" y="395" font-family="Arial, sans-serif" font-size="18" fill="#111827">exams</text><rect x="42" y="448" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="56" y="483" font-family="Arial, sans-serif" font-size="18" fill="#111827">exam_questions</text><rect x="302" y="448" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="316" y="483" font-family="Arial, sans-serif" font-size="18" fill="#111827">exam_question_options</text><rect x="562" y="448" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="576" y="483" font-family="Arial, sans-serif" font-size="18" fill="#111827">exam_submissions</text><rect x="822" y="448" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="836" y="483" font-family="Arial, sans-serif" font-size="18" fill="#111827">exam_submission_answers</text><rect x="42" y="536" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="56" y="571" font-family="Arial, sans-serif" font-size="18" fill="#111827">assignments</text><rect x="302" y="536" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="316" y="571" font-family="Arial, sans-serif" font-size="18" fill="#111827">assignment_submissions</text><rect x="562" y="536" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="576" y="571" font-family="Arial, sans-serif" font-size="18" fill="#111827">learning_items</text><rect x="822" y="536" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="836" y="571" font-family="Arial, sans-serif" font-size="18" fill="#111827">learning_progress</text><rect x="42" y="624" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="56" y="659" font-family="Arial, sans-serif" font-size="18" fill="#111827">course_qna_threads</text><rect x="302" y="624" width="232" height="56" rx="10" fill="#f7fff0" stroke="#334155" stroke-width="2"/><text x="316" y="659" font-family="Arial, sans-serif" font-size="18" fill="#111827">course_qna_posts</text><rect x="562" y="624" width="232" height="56" rx="10" fill="#fff6ee" stroke="#334155" stroke-width="2"/><text x="576" y="659" font-family="Arial, sans-serif" font-size="18" fill="#111827">report_exports</text><rect x="822" y="624" width="232" height="56" rx="10" fill="#eef6ff" stroke="#334155" stroke-width="2"/><text x="836" y="659" font-family="Arial, sans-serif" font-size="18" fill="#111827">object_deletion_jobs</text>
-  <text x="42" y="768" font-family="Arial, sans-serif" font-size="16" fill="#475569">Source: DB/postgres/init/*.sql, DB/postgres/migrations/*.sql, docs/04-architecture/data-model-overview.md</text>
-  <rect x="24" y="72" width="1076" height="676" fill="none" stroke="#e60000" stroke-width="8" rx="18"/>
-  <rect x="36" y="720" width="620" height="36" fill="#fff" stroke="#e60000" stroke-width="3"/>
-  <text x="48" y="744" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#e60000">Redbox: LMS + presence/attendance + assessment domains</text>
+  <text x="42" y="50" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#111827">ERD-1. Full Smart Class PostgreSQL ERD</text>
+  <text x="42" y="82" font-family="Arial, sans-serif" font-size="17" fill="#475569">One-page portrait overview from DB/postgres/init SQL schema. FK direction: parent table -> child table.</text>
+  <text x="1198" y="82" font-family="Arial, sans-serif" font-size="16" text-anchor="end" fill="#475569">34 tables / 54 FK links</text>
+  <rect x="29" y="118" width="386" height="1230" rx="16" fill="#eef6ff" stroke="#2563eb" stroke-width="1.6" opacity="0.52"/>
+<text x="222" y="145" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">User / Course / LMS</text>
+<rect x="427" y="118" width="386" height="1230" rx="16" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.6" opacity="0.52"/>
+<text x="620" y="145" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Presence / Attendance / Exam</text>
+<rect x="825" y="118" width="386" height="1230" rx="16" fill="#fff7ed" stroke="#ea580c" stroke-width="1.6" opacity="0.52"/>
+<text x="1018" y="145" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Assignment / Learning / Ops</text>
+  <g id="relationships"><path d="M 402 183 C 420 183, 420 426, 402 426" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 420 426, 420 507, 402 507" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 420 183, 420 507, 402 507" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 420 426, 420 588, 402 588" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 345 C 420 345, 420 588, 402 588" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 420 426, 420 669, 402 669" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 420 183, 420 669, 402 669" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 345 C 420 345, 420 831, 402 831" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 183, 440 183" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 264, 440 264" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 421 426, 421 264, 440 264" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 345 C 421 345, 421 264, 440 264" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 420 183, 420 264, 402 264" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 421 426, 421 345, 440 345" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 345 C 421 345, 421 345, 440 345" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 345, 440 345" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 345 C 832 345, 832 426, 800 426" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 345 C 421 345, 421 426, 440 426" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 345 C 832 345, 832 507, 800 507" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 507, 440 507" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 507, 440 507" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 345 C 832 345, 832 588, 800 588" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 588, 440 588" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 588, 440 588" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 912 C 420 912, 420 993, 402 993" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 831 C 420 831, 420 993, 402 993" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 421 426, 421 669, 440 669" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 669 C 832 669, 832 750, 800 750" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 750 C 832 750, 832 831, 800 831" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 669 C 832 669, 832 993, 800 993" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 421 183, 421 993, 440 993" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 669 C 832 669, 832 1074, 800 1074" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 993 C 832 993, 832 1074, 800 1074" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 750 C 832 750, 832 1074, 800 1074" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 831 C 832 831, 832 1074, 800 1074" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 620 426, 620 183, 838 183" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 1198 183 C 1208 183, 1208 264, 1198 264" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 264, 838 264" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 1198 264 C 1208 264, 1208 345, 1198 345" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 620 426, 620 426, 838 426" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 426, 838 426" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 1198 426 C 1208 426, 1208 507, 1198 507" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 669 C 420 669, 420 750, 402 750" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 750 C 832 750, 832 912, 800 912" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 800 1074 C 832 1074, 832 1155, 800 1155" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 620 426, 620 831, 838 831" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 831, 838 831" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 426 C 620 426, 620 669, 838 669" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 669, 838 669" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 1198 669 C 1208 669, 1208 750, 1198 750" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 750, 838 750" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 1198 426 C 1208 426, 1208 588, 1198 588" stroke="#94a3b8" stroke-width="1.15" opacity="0.48" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 588, 838 588" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/>
+<path d="M 402 183 C 620 183, 620 264, 838 264" stroke="#475569" stroke-width="1.8" opacity="0.72" fill="none" marker-end="url(#arrow)"/></g>
+  <g id="tables"><rect x="42" y="154" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="190" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">users</text>
+<text x="387" y="201" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">9 cols</text>
+<rect x="42" y="235" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="271" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">refresh_sessions</text>
+<text x="387" y="282" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">10 cols</text>
+<rect x="42" y="316" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="352" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">classrooms</text>
+<text x="387" y="363" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">7 cols</text>
+<rect x="42" y="397" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="433" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">courses</text>
+<text x="387" y="444" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">6 cols</text>
+<rect x="42" y="478" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="514" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">course_enrollments</text>
+<text x="387" y="525" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">5 cols</text>
+<rect x="42" y="559" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="595" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">course_schedules</text>
+<text x="387" y="606" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">7 cols</text>
+<rect x="42" y="640" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="676" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">notices</text>
+<text x="387" y="687" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">6 cols</text>
+<rect x="42" y="721" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="757" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">notice_attachments</text>
+<text x="387" y="768" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="42" y="802" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="838" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">classroom_networks</text>
+<text x="387" y="849" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">8 cols</text>
+<rect x="42" y="883" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="919" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">access_points</text>
+<text x="387" y="930" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">12 cols</text>
+<rect x="42" y="964" width="360" height="58" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+<text x="222" y="991" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">access_point</text>
+<text x="222" y="1012" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">interfaces</text>
+<text x="387" y="1011" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">7 cols</text>
+<rect x="440" y="154" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="190" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">registered_devices</text>
+<text x="785" y="201" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">7 cols</text>
+<rect x="440" y="235" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="262" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">presence_eligibility</text>
+<text x="620" y="283" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">logs</text>
+<text x="785" y="282" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">12 cols</text>
+<rect x="440" y="316" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="352" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attendance_sessions</text>
+<text x="785" y="363" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">16 cols</text>
+<rect x="440" y="397" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="424" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attendance_session</text>
+<text x="620" y="445" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">slots</text>
+<text x="785" y="444" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">9 cols</text>
+<rect x="440" y="478" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="514" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attendance_records</text>
+<text x="785" y="525" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">10 cols</text>
+<rect x="440" y="559" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="586" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attendance_status</text>
+<text x="620" y="607" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">audit_logs</text>
+<text x="785" y="606" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">12 cols</text>
+<rect x="440" y="640" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="676" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">exams</text>
+<text x="785" y="687" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">17 cols</text>
+<rect x="440" y="721" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="757" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">exam_questions</text>
+<text x="785" y="768" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="440" y="802" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="838" font-family="Arial, sans-serif" font-size="15" font-weight="600" text-anchor="middle" fill="#111827">exam_question_options</text>
+<text x="785" y="849" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">6 cols</text>
+<rect x="440" y="883" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="910" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">exam_question</text>
+<text x="620" y="931" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attachments</text>
+<text x="785" y="930" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">12 cols</text>
+<rect x="440" y="964" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="1000" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">exam_submissions</text>
+<text x="785" y="1011" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">12 cols</text>
+<rect x="440" y="1045" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="1072" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">exam_submission</text>
+<text x="620" y="1093" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">answers</text>
+<text x="785" y="1092" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="440" y="1126" width="360" height="58" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.8"/>
+<text x="620" y="1153" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">exam_answer</text>
+<text x="620" y="1174" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attachments</text>
+<text x="785" y="1173" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="838" y="154" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="190" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">assignments</text>
+<text x="1183" y="201" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">9 cols</text>
+<rect x="838" y="235" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="271" font-family="Arial, sans-serif" font-size="15" font-weight="600" text-anchor="middle" fill="#111827">assignment_submissions</text>
+<text x="1183" y="282" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="838" y="316" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="343" font-family="Arial, sans-serif" font-size="15" font-weight="600" text-anchor="middle" fill="#111827">assignment_submission</text>
+<text x="1018" y="364" font-family="Arial, sans-serif" font-size="15" font-weight="600" text-anchor="middle" fill="#111827">attachments</text>
+<text x="1183" y="363" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="838" y="397" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="433" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">learning_items</text>
+<text x="1183" y="444" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="838" y="478" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="505" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">learning_item</text>
+<text x="1018" y="526" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">attachments</text>
+<text x="1183" y="525" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">11 cols</text>
+<rect x="838" y="559" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="595" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">learning_progress</text>
+<text x="1183" y="606" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">8 cols</text>
+<rect x="838" y="640" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="676" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">course_qna_threads</text>
+<text x="1183" y="687" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">8 cols</text>
+<rect x="838" y="721" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="757" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">course_qna_posts</text>
+<text x="1183" y="768" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">6 cols</text>
+<rect x="838" y="802" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="838" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">report_exports</text>
+<text x="1183" y="849" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">16 cols</text>
+<rect x="838" y="883" width="360" height="58" rx="8" fill="#ffffff" stroke="#ea580c" stroke-width="1.8"/>
+<text x="1018" y="919" font-family="Arial, sans-serif" font-size="17" font-weight="600" text-anchor="middle" fill="#111827">object_deletion_jobs</text>
+<text x="1183" y="930" font-family="Arial, sans-serif" font-size="11" text-anchor="end" fill="#64748b">12 cols</text></g>
+  <rect x="42" y="1372" width="1156" height="82" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="62" y="1402" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0f172a">Reading note</text>
+  <text x="62" y="1427" font-family="Arial, sans-serif" font-size="14" fill="#334155">This overview keeps all schema tables on one portrait page. Detailed columns for the major tables are provided separately as Mermaid ERD PNGs.</text>
+  <text x="62" y="1449" font-family="Arial, sans-serif" font-size="14" fill="#334155">Attachment and export tables share the object-storage metadata pattern; object_deletion_jobs records durable cleanup work after metadata changes.</text>
 </svg>
