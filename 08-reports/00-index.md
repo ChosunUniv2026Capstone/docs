@@ -56,6 +56,7 @@ source:
 
 - [[/08-reports/00-index.md]]: 보고서 영역 목차와 작성 원칙
 - [[/08-reports/01-report-template.md]]: 최종보고서 기본 양식
+- [[/08-reports/hwp-report-generation-playbook.md]]: HWP 최종보고서 생성 절차와 검증 기준
 - [[/08-reports/99-combined-report.md]]: 본문/부록 통합본
 - [[/03-conventions/conv-final-report-writing.md]]: 최종보고서 작성 규약 current truth
 
