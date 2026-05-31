@@ -2,9 +2,11 @@
 title: Smart Class 최종보고서 부록
 type: final-report-appendix
 status: final-appendix
-updated: 2026-05-22
+updated: 2026-06-01
 owners:
   - team
+source:
+  - ../../output/full-report-2026-06-01/source/SmartClass_Appendix_Revised.md
 ---
 
 # Smart Class 최종보고서 부록
@@ -68,7 +70,7 @@ owners:
 
 다섯 번째로 Service와 release PR들이 기능 조합을 demo 단위로 고정했다. Backend #47/Front #41/Service #26/#27은 출석 CSV export가 포함된 Backend v0.6.0, Front v0.6.0, Service v0.4.1 조합을 고정했다. 이어 Backend #51/Front #47/Service #28/#29는 과제 첨부 삭제와 닫힌 Q&A guard가 포함된 Backend v0.7.0, Front v0.6.1, Service v0.4.2 조합을 고정했다. 두 release line 모두 DB reset이 필요 없는 UI/API-only 변경으로 기록되어, demo 환경에서 재현할 수 있는 버전 조합이 명확해졌다.
 
-마지막으로 docs #36, #37, #38에서 교수 출석 CSV export scope, 과제 제출 API contract, 최종보고서 두 파일 산출물 구조가 main에 반영되었다. 특히 docs #38은 보고서 본문과 부록만 열어도 화면·ERD·API·코드·DB 근거가 보이도록 최종보고서를 self-contained 구조로 재작성했다. 본 업데이트는 직전 작성 이후 추가로 merge된 assignment/Q&A/release PR까지 포함해, 이번 주 진행사항이 PR 번호 나열이 아니라 “무엇을 고쳤고 사용 흐름이 어떻게 달라졌는지”로 읽히도록 다시 정리한 것이다.
+마지막으로 docs #36, #37, #38이 교수 출석 CSV export scope, 과제 제출 API contract, 최종보고서 두 파일 산출물 구조를 main에 고정했다. 특히 docs #38은 보고서 본문과 부록만 열어도 화면·ERD·API·코드·DB 근거가 보이도록 최종보고서를 self-contained 구조로 재작성했다. 본 업데이트는 직전 작성 이후 추가로 merge된 assignment/Q&A/release PR까지 포함해, 이번 주 진행사항이 PR 번호 나열이 아니라 “무엇을 고쳤고 사용 흐름이 어떻게 달라졌는지”로 읽히도록 다시 정리한 것이다.
 
 ### 4.2 기능/문제 중심 상세 내용
 
@@ -117,13 +119,13 @@ owners:
 
 | Evidence ID | 기능 영역 | 완료도 | 화면 근거 | API / 코드 근거 | DB 근거 | 테스트 / 실행 근거 | 한계 / 후속 과제 |
 |---|---|---|---|---|---|---|---|
-| E-AUTH-01 | 인증 / 세션 | 로컬 MVP 완료 | Fig. 1-6 redbox: 로그인, 실패, 권한거부, 역할별 대시보드 | `Backend/app/main.py:920` login, `:961` refresh, `:1054` bootstrap, `:1070` logout; `Front/src/api.ts`; `Front/src/router.ts` | `DB/postgres/init/010_seed.sql` seed users, `refresh_sessions` | `Backend/tests/test_presence_admin_and_auth.py:218`, `:590`, `:683`; `Front/tests/e2e/auth-routing.spec.ts:584` | 운영 SSO/학사 인증 연동은 후속 과제 |
-| E-UI-01 | 역할별 Front UI | 로컬 MVP 완료 | Fig. 4-55 redbox(역할별 UI 전체; Fig. 56은 N/A) | `Front/src/router.ts`, `Front/src/App.tsx`, `Front/src/api.ts`; weekly merged PR Front #46 (`0c555e0`) | 역할/수강/강의 seed tables | `Front/tests/e2e/auth-routing.spec.ts:584`, `selected-lms-subset.spec.ts:55`, `exam-workflow.spec.ts:244`; PR #46 manual/docker-build evidence | Fig. 56 OpenWrt router registration/token 화면은 N/A로 API/DB/Service 근거 대체 |
-| E-LMS-01 | 강의 / 공지 / 과제 / Q&A / selected LMS read model | 로컬 MVP 완료 | Fig. 8-16, 26-35 redbox; 과제/Q&A UI 변경은 Fig. 12-16/35 계열 화면과 weekly PR evidence로 추적 | `Backend/app/main.py:1102-1456`, `:1785-1843`; `Backend/app/assignments.py`; `Backend/app/lms_selected.py`; `Front/src/App.tsx`; `Front/src/api.ts` | `courses`, `course_enrollments`, `notices`, `learning_items`, `assignments`, `assignment_submissions`, `assignment_submission_attachments`, `course_qna_threads`, `course_qna_posts`, `learning_progress` | `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`; `Backend/tests/test_assignment_contract.py`; `Front/tests/e2e/assignment-workflow.spec.ts`; `Front/tests/e2e/selected-lms-subset.spec.ts`; weekly merged PRs docs #37, Backend #50, Front #46 (`90e62db`, `95465c1`, `0c555e0`) | selected-LMS 추가 화면 캡처 완료; 운영 데이터 다양화는 후속 과제 |
-| E-ATT-01 | 출석 workflow | 로컬 MVP 완료 | Fig. 17-20, 40-47 redbox | `Backend/app/attendance.py`; `Backend/app/main.py:2030-2367`; WebSocket `/ws/attendance` | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs`, `report_exports` | `Backend/tests/test_attendance_realtime.py:226`, `:369`, `:405`, `:498`, `:593`, `:1030`; weekly merged PRs Backend #48/#49 (`f874e8a`, `36e8524`) | 장기 교실 현장 검증은 후속 과제 |
-| E-EXAM-01 | 객관식 시험 workflow | 로컬 MVP 완료 | Fig. 21-25, 36-39 redbox | `Backend/app/main.py:1469-1710`; `Front/tests/e2e/exam-workflow.spec.ts` | `exams`, `exam_questions`, `exam_question_options`, `exam_submissions`, `exam_submission_answers` | `Backend/tests/test_exam_contract_alignment.py:147`, `:208`, `:261`, `:294`; `Front/tests/e2e/exam-workflow.spec.ts:244` | 서술형/파일형 시험과 대규모 부정행위 대응은 후속 과제 |
-| E-PRES-01 | PresenceService eligibility / collector / demo overlay | 로컬 MVP 완료 | Fig. 18, 49-55 redbox; Fig. 56 N/A | `PresenceService/app/main.py:45`, `:64`, `:88`, `:100-125`; `Service/openwrt/presence-collector.sh`; Backend registry endpoints `Backend/app/main.py:1990-2027` | `classroom_networks`, `access_points`, `access_point_interfaces`, `registered_devices`, `presence_eligibility_logs` | `PresenceService/tests/test_service.py:136`, `:153`, `:203`, `:296`, `:347`, `:652`; `test_registry.py:29` | dummy overlay는 실 OpenWrt 장기 검증을 대체하지 않음 |
-| E-DB-01 | DB schema / seed / ERD | 로컬 MVP 완료 | ERD-1~ERD-8 raw/redbox SVG | `DB/postgres/init/*.sql`, `DB/postgres/migrations/*.sql` | 전체 PostgreSQL schema 및 seed | `DB/postgres/tests/object_storage_triggers.sql`; Backend/Presence/Service tests가 schema 계약을 간접 검증 | ERD SVG는 보고서용 산출물이며 실제 운영 migration 로그는 후속 운영 검증에서 보강 |
+| E-AUTH-01 | 인증 / 세션 | 로컬 MVP 완료 | Fig. 1-6 주요 영역: 로그인, 실패, 권한거부, 역할별 대시보드 | `Backend/app/main.py:920` login, `:961` refresh, `:1054` bootstrap, `:1070` logout; `Front/src/api.ts`; `Front/src/router.ts` | `DB/postgres/init/010_seed.sql` seed users, `refresh_sessions` | `Backend/tests/test_presence_admin_and_auth.py:218`, `:590`, `:683`; `Front/tests/e2e/auth-routing.spec.ts:584` | 운영 SSO/학사 인증 연동은 후속 과제 |
+| E-UI-01 | 역할별 Front UI | 로컬 MVP 완료 | Fig. 4-55 주요 영역(역할별 UI 전체; Fig. 56은 N/A) | `Front/src/router.ts`, `Front/src/App.tsx`, `Front/src/api.ts`; weekly merged PR Front #46 (`0c555e0`) | 역할/수강/강의 seed tables | `Front/tests/e2e/auth-routing.spec.ts:584`, `selected-lms-subset.spec.ts:55`, `exam-workflow.spec.ts:244`; PR #46 manual/docker-build evidence | Fig. 56 OpenWrt router registration/token 화면은 N/A로 API/DB/Service 근거 대체 |
+| E-LMS-01 | 강의 / 공지 / 과제 / Q&A / selected LMS read model | 로컬 MVP 완료 | Fig. 8-16, 26-35 주요 영역; 과제/Q&A UI 변경은 Fig. 12-16/35 계열 화면과 weekly PR evidence로 추적 | `Backend/app/main.py:1102-1456`, `:1785-1843`; `Backend/app/assignments.py`; `Backend/app/lms_selected.py`; `Front/src/App.tsx`; `Front/src/api.ts` | `courses`, `course_enrollments`, `notices`, `learning_items`, `assignments`, `assignment_submissions`, `assignment_submission_attachments`, `course_qna_threads`, `course_qna_posts`, `learning_progress` | `Backend/tests/test_lms_selected_subset.py:123`, `:172`, `:200`; `Backend/tests/test_assignment_contract.py`; `Front/tests/e2e/assignment-workflow.spec.ts`; `Front/tests/e2e/selected-lms-subset.spec.ts`; weekly merged PRs docs #37, Backend #50, Front #46 (`90e62db`, `95465c1`, `0c555e0`) | selected-LMS 추가 화면 캡처 완료; 운영 데이터 다양화는 후속 과제 |
+| E-ATT-01 | 출석 workflow | 로컬 MVP 완료 | Fig. 17-20, 40-47 주요 영역 | `Backend/app/attendance.py`; `Backend/app/main.py:2030-2367`; WebSocket `/ws/attendance` | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs`, `report_exports` | `Backend/tests/test_attendance_realtime.py:226`, `:369`, `:405`, `:498`, `:593`, `:1030`; weekly merged PRs Backend #48/#49 (`f874e8a`, `36e8524`) | 장기 교실 현장 검증은 후속 과제 |
+| E-EXAM-01 | 객관식 시험 workflow | 로컬 MVP 완료 | Fig. 21-25, 36-39 주요 영역 | `Backend/app/main.py:1469-1710`; `Front/tests/e2e/exam-workflow.spec.ts` | `exams`, `exam_questions`, `exam_question_options`, `exam_submissions`, `exam_submission_answers` | `Backend/tests/test_exam_contract_alignment.py:147`, `:208`, `:261`, `:294`; `Front/tests/e2e/exam-workflow.spec.ts:244` | 서술형/파일형 시험과 대규모 부정행위 대응은 후속 과제 |
+| E-PRES-01 | PresenceService eligibility / collector / demo overlay | 로컬 MVP 완료 | Fig. 18, 49-55 주요 영역; Fig. 56 N/A | `PresenceService/app/main.py:45`, `:64`, `:88`, `:100-125`; `Service/openwrt/presence-collector.sh`; Backend registry endpoints `Backend/app/main.py:1990-2027` | `classroom_networks`, `access_points`, `access_point_interfaces`, `registered_devices`, `presence_eligibility_logs` | `PresenceService/tests/test_service.py:136`, `:153`, `:203`, `:296`, `:347`, `:652`; `test_registry.py:29` | dummy overlay는 실 OpenWrt 장기 검증을 대체하지 않음 |
+| E-DB-01 | DB schema / seed / ERD | 로컬 MVP 완료 | ERD-1 portrait overview + ERD-2~ERD-8 ERD SVG | `DB/postgres/init/*.sql`, `DB/postgres/migrations/*.sql` | 전체 PostgreSQL schema 및 seed | `DB/postgres/tests/object_storage_triggers.sql`; Backend/Presence/Service tests가 schema 계약을 간접 검증 | ERD SVG는 보고서용 산출물이며 실제 운영 migration 로그는 후속 운영 검증에서 보강 |
 | E-SVC-01 | Service runtime / CI-CD | 부분 완료 | Service runtime은 diagram/manifest 중심; UI 화면 아님 | `Service/compose.yml`, `compose.local.yml`, `compose.image.yml`, `nginx/local.conf`, `Service/manifests/releases/v0.4.1.yml`, `v0.4.2.yml`, workflows `ci.yml`, `deploy-demo.yml` | DB 직접 테이블 없음; `report_exports` 등 ops metadata는 ERD-8 | `Service/tests/test_release_manifest_contract.py:27`, `:45`; `test_workspace_release_readiness.py:81`, `:98`; weekly merged PRs Service #26/#27/#28/#29 (`e89dcdb`, `c36a432`, `7b934a3`, `290820f`) | workflow run / demo server provenance 없이는 상용 배포로 쓰지 않음 |
 | E-DOC-01 | docs / report | 2파일 산출물 작성 완료 | 보고서/부록/증거 원장 갱신 | `docs/04-architecture/assignment-workflow-api.md`; `docs/08-reports/99-combined-report.md`; `docs/08-reports/99-combined-report-appendix.md` | N/A | docs #36/#37/#38 merged evidence와 `9c33d29`~`a675519` report asset/rendering follow-up; `git -C docs diff --check`, markdown/link sanity | 보고서 렌더링/asset 보정은 main 반영 완료이며 기능 구현 성과와 분리 |
 
@@ -144,425 +146,269 @@ owners:
 | 교수 출석 운영 | 교수 로그인 → 강의 상세 → `출석` 탭 클릭 → timeline에서 차시 선택 → 출석 열기 modal에서 일반/스마트/휴강 선택 → timer/roster 이동 → 학생 상태 radio와 사유 입력 후 저장 → 이력 확인 | bundle session, timer, roster, slot exception, 저장 결과, immutable audit history가 표시된다. | Fig. 40, 41, 42, 43, 44, 45, 46, 47 |
 | 서비스관리자 네트워크/재실성 운영 | 관리자 로그인 → dashboard → 사용자/강의실/네트워크 탭 이동 → AP mapping/station/threshold 확인 → demo overlay control에서 값을 바꾼 뒤 적용/초기화 클릭 | 강의실/AP 매핑, observed station, demo overlay 적용/초기화 결과, real/demo snapshot 분리가 보인다. | Fig. 48, 49-55 |
 
-# D. 전체 화면 캡처 및 redbox 갤러리
+# D. 전체 화면 캡처 및 주요 영역 갤러리
 
-모든 그림은 원본 PNG와 redbox 주석 SVG를 함께 둔다. 보고서 본문에서 특정 기능을 설명할 때는 이 부록의 그림 번호를 그대로 사용한다.
+모든 그림은 원본 PNG와 주요 영역을 표시한 화면 캡처를 함께 둔다. 보고서 본문에서 특정 기능을 설명할 때는 이 부록의 그림 번호를 그대로 사용한다.
 
 ## Fig. 1 — login form and service title
 
-- 원본: `01-login.png`
-- redbox: `assets/screenshots/final/annotated/fig-1-01-login-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 1 redbox](../08-reports/assets/screenshots/final/annotated/fig-1-01-login-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-1-01-login-redbox.png" alt="Fig. 1 — 로그인 화면과 서비스 제목"><figcaption>Fig. 1 — 로그인 화면과 서비스 제목</figcaption></figure>
 
 ## Fig. 2 — inline login failure banner
 
-- 원본: `common-02-login-failure.png`
-- redbox: `assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 2 redbox](../08-reports/assets/screenshots/final/annotated/fig-2-common-02-login-failure-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-2-common-02-login-failure-redbox.png" alt="Fig. 2 — 로그인 실패 안내 배너"><figcaption>Fig. 2 — 로그인 실패 안내 배너</figcaption></figure>
 
 ## Fig. 3 — authorization denied message
 
-- 원본: `common-03-authorization-denied.png`
-- redbox: `assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 3 redbox](../08-reports/assets/screenshots/final/annotated/fig-3-common-03-authorization-denied-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-3-common-03-authorization-denied-redbox.png" alt="Fig. 3 — 권한 없는 경로 접근 안내"><figcaption>Fig. 3 — 권한 없는 경로 접근 안내</figcaption></figure>
 
 ## Fig. 4 — student course cards and account summary
 
-- 원본: `student-01-dashboard.png`
-- redbox: `assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 4 redbox](../08-reports/assets/screenshots/final/annotated/fig-4-student-01-dashboard-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-4-student-01-dashboard-redbox.png" alt="Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약"><figcaption>Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약</figcaption></figure>
 
 ## Fig. 5 — professor course cards
 
-- 원본: `professor-01-dashboard.png`
-- redbox: `assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 5 redbox](../08-reports/assets/screenshots/final/annotated/fig-5-professor-01-dashboard-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-5-professor-01-dashboard-redbox.png" alt="Fig. 5 — 교수 대시보드의 담당 강의 카드"><figcaption>Fig. 5 — 교수 대시보드의 담당 강의 카드</figcaption></figure>
 
 ## Fig. 6 / Fig. 48 — admin user table and role column
 
-- 원본: `admin-01-users.png`
-- redbox: `assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 6 / Fig. 48 redbox](../08-reports/assets/screenshots/final/annotated/fig-6-fig-48-admin-01-users-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-6-fig-48-admin-01-users-redbox.png" alt="Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼"><figcaption>Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼</figcaption></figure>
 
 ## Fig. 7 — registered device list and controls
 
-- 원본: `student-02-profile-devices.png`
-- redbox: `assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 7 redbox](../08-reports/assets/screenshots/final/annotated/fig-7-student-02-profile-devices-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-7-student-02-profile-devices-redbox.png" alt="Fig. 7 — 학생 등록 단말 목록과 관리 버튼"><figcaption>Fig. 7 — 학생 등록 단말 목록과 관리 버튼</figcaption></figure>
 
 ## Fig. 8 — course header and student tabs
 
-- 원본: `student-03-course-home.png`
-- redbox: `assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 8 redbox](../08-reports/assets/screenshots/final/annotated/fig-8-student-03-course-home-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-8-student-03-course-home-redbox.png" alt="Fig. 8 — 학생 강의 홈 헤더와 탭 구조"><figcaption>Fig. 8 — 학생 강의 홈 헤더와 탭 구조</figcaption></figure>
 
 ## Fig. 9 — learning item cards and download area
 
-- 원본: `student-04-learning-content.png`
-- redbox: `assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 9 redbox](../08-reports/assets/screenshots/final/annotated/fig-9-student-04-learning-content-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-9-student-04-learning-content-redbox.png" alt="Fig. 9 — 학습자료 카드와 다운로드 영역"><figcaption>Fig. 9 — 학습자료 카드와 다운로드 영역</figcaption></figure>
 
 ## Fig. 10 — notice list row and navigation
 
-- 원본: `student-05-notices.png`
-- redbox: `assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 10 redbox](../08-reports/assets/screenshots/final/annotated/fig-10-student-05-notices-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-10-student-05-notices-redbox.png" alt="Fig. 10 — 공지 목록 행과 상세 이동"><figcaption>Fig. 10 — 공지 목록 행과 상세 이동</figcaption></figure>
 
 ## Fig. 11 — notice title, body, and metadata
 
-- 원본: `student-06-notice-detail.png`
-- redbox: `assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 11 redbox](../08-reports/assets/screenshots/final/annotated/fig-11-student-06-notice-detail-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-11-student-06-notice-detail-redbox.png" alt="Fig. 11 — 공지 제목·본문·작성 메타데이터"><figcaption>Fig. 11 — 공지 제목·본문·작성 메타데이터</figcaption></figure>
 
 ## Fig. 12 — assignment card, status, and detail action
 
-- 원본: `student-14-assignment-list.png`
-- redbox: `assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 12 redbox](../08-reports/assets/screenshots/final/annotated/fig-12-student-14-assignment-list-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-12-student-14-assignment-list-redbox.png" alt="Fig. 12 — 과제 카드의 제출 상태와 상세 이동"><figcaption>Fig. 12 — 과제 카드의 제출 상태와 상세 이동</figcaption></figure>
 
 ## Fig. 13 — submission body, attachment area, and current feedback
 
-- 원본: `student-15-assignment-detail.png`
-- redbox: `assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 13 redbox](../08-reports/assets/screenshots/final/annotated/fig-13-student-15-assignment-detail-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-13-student-15-assignment-detail-redbox.png" alt="Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백"><figcaption>Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백</figcaption></figure>
 
 ## Fig. 14 — grade and feedback summary card
 
-- 원본: `student-16-grade-feedback.png`
-- redbox: `assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 14 redbox](../08-reports/assets/screenshots/final/annotated/fig-14-student-16-grade-feedback-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-14-student-16-grade-feedback-redbox.png" alt="Fig. 14 — 성적과 피드백 요약 카드"><figcaption>Fig. 14 — 성적과 피드백 요약 카드</figcaption></figure>
 
 ## Fig. 15 — learning progress input and save action
 
-- 원본: `student-17-learning-progress.png`
-- redbox: `assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 15 redbox](../08-reports/assets/screenshots/final/annotated/fig-15-student-17-learning-progress-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-15-student-17-learning-progress-redbox.png" alt="Fig. 15 — 학습 진도 입력과 저장 동작"><figcaption>Fig. 15 — 학습 진도 입력과 저장 동작</figcaption></figure>
 
 ## Fig. 16 — Q&A form and thread status
 
-- 원본: `student-18-qna.png`
-- redbox: `assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 16 redbox](../08-reports/assets/screenshots/final/annotated/fig-16-student-18-qna-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-16-student-18-qna-redbox.png" alt="Fig. 16 — Q&amp;A 작성 폼과 thread 상태"><figcaption>Fig. 16 — Q&amp;A 작성 폼과 thread 상태</figcaption></figure>
 
 ## Fig. 17 / Fig. 20 — attendance eligibility card and semester matrix
 
-- 원본: `student-07-attendance-before-check.png`
-- redbox: `assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 17 / Fig. 20 redbox](../08-reports/assets/screenshots/final/annotated/fig-17-fig-20-student-07-attendance-before-check-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-17-fig-20-student-07-attendance-before-check-redbox.png" alt="Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표"><figcaption>Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표</figcaption></figure>
 
 ## Fig. 18 — eligible summary and evidence card
 
-- 원본: `student-08-eligibility-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 18 redbox](../08-reports/assets/screenshots/final/annotated/fig-18-student-08-eligibility-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-18-student-08-eligibility-result-redbox.png" alt="Fig. 18 — 출석 가능 판정 결과와 근거 카드"><figcaption>Fig. 18 — 출석 가능 판정 결과와 근거 카드</figcaption></figure>
 
 ## Fig. 19 — bundle check-in result card
 
-- 원본: `student-09-check-in-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 19 redbox](../08-reports/assets/screenshots/final/annotated/fig-19-student-09-check-in-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-19-student-09-check-in-result-redbox.png" alt="Fig. 19 — 묶음 출석 체크인 결과 카드"><figcaption>Fig. 19 — 묶음 출석 체크인 결과 카드</figcaption></figure>
 
 ## Fig. 21 — exam list card status and policy
 
-- 원본: `student-10-exam-list.png`
-- redbox: `assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 21 redbox](../08-reports/assets/screenshots/final/annotated/fig-21-student-10-exam-list-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-21-student-10-exam-list-redbox.png" alt="Fig. 21 — 학생 시험 목록의 상태와 정책"><figcaption>Fig. 21 — 학생 시험 목록의 상태와 정책</figcaption></figure>
 
 ## Fig. 22 — question prompt, options, countdown
 
-- 원본: `student-11-exam-taking.png`
-- redbox: `assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 22 redbox](../08-reports/assets/screenshots/final/annotated/fig-22-student-11-exam-taking-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-22-student-11-exam-taking-redbox.png" alt="Fig. 22 — 시험 응시 화면의 문항·선택지·타이머"><figcaption>Fig. 22 — 시험 응시 화면의 문항·선택지·타이머</figcaption></figure>
 
 ## Fig. 23 — selected option and save state
 
-- 원본: `student-12-exam-answer-selected.png`
-- redbox: `assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 23 redbox](../08-reports/assets/screenshots/final/annotated/fig-23-student-12-exam-answer-selected-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-23-student-12-exam-answer-selected-redbox.png" alt="Fig. 23 — 선택한 답안과 저장 상태"><figcaption>Fig. 23 — 선택한 답안과 저장 상태</figcaption></figure>
 
 ## Fig. 24 — missing-answer warning or submit guard state
 
-- 원본: `student-19-exam-missing-answer-warning.png`
-- redbox: `assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 24 redbox](../08-reports/assets/screenshots/final/annotated/fig-24-student-19-exam-missing-answer-warning-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-24-student-19-exam-missing-answer-warning-redbox.png" alt="Fig. 24 — 미응답 문항 제출 방지 안내"><figcaption>Fig. 24 — 미응답 문항 제출 방지 안내</figcaption></figure>
 
 ## Fig. 25 — submission completion status
 
-- 원본: `student-13-exam-submit-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 25 redbox](../08-reports/assets/screenshots/final/annotated/fig-25-student-13-exam-submit-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-25-student-13-exam-submit-result-redbox.png" alt="Fig. 25 — 시험 제출 완료 결과"><figcaption>Fig. 25 — 시험 제출 완료 결과</figcaption></figure>
 
 ## Fig. P2 — professor profile summary
 
-- 원본: `professor-02-profile.png`
-- redbox: `assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. P2 redbox](../08-reports/assets/screenshots/final/annotated/fig-p2-professor-02-profile-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-p2-professor-02-profile-redbox.png" alt="Fig. P2 — 교수 프로필 요약"><figcaption>Fig. P2 — 교수 프로필 요약</figcaption></figure>
 
 ## Fig. 26 — professor course header and action tabs
 
-- 원본: `professor-03-course-home.png`
-- redbox: `assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 26 redbox](../08-reports/assets/screenshots/final/annotated/fig-26-professor-03-course-home-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-26-professor-03-course-home-redbox.png" alt="Fig. 26 — 교수 강의 홈과 운영 탭"><figcaption>Fig. 26 — 교수 강의 홈과 운영 탭</figcaption></figure>
 
 ## Fig. 27 — material upload/create controls
 
-- 원본: `professor-04-learning-content-manage.png`
-- redbox: `assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 27 redbox](../08-reports/assets/screenshots/final/annotated/fig-27-professor-04-learning-content-manage-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-27-professor-04-learning-content-manage-redbox.png" alt="Fig. 27 — 교수 학습자료 업로드·생성 controls"><figcaption>Fig. 27 — 교수 학습자료 업로드·생성 controls</figcaption></figure>
 
 ## Fig. 28 — professor notice list
 
-- 원본: `professor-05-notices.png`
-- redbox: `assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 28 redbox](../08-reports/assets/screenshots/final/annotated/fig-28-professor-05-notices-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-28-professor-05-notices-redbox.png" alt="Fig. 28 — 교수 공지 목록"><figcaption>Fig. 28 — 교수 공지 목록</figcaption></figure>
 
 ## Fig. 29 — notice form and submit action
 
-- 원본: `professor-06-course-manage-notice-form.png`
-- redbox: `assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 29 redbox](../08-reports/assets/screenshots/final/annotated/fig-29-professor-06-course-manage-notice-form-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-29-professor-06-course-manage-notice-form-redbox.png" alt="Fig. 29 — 교수 공지 작성 폼과 저장 동작"><figcaption>Fig. 29 — 교수 공지 작성 폼과 저장 동작</figcaption></figure>
 
 ## Fig. 30 — assignment creation/list management area
 
-- 원본: `professor-17-assignment-create.png`
-- redbox: `assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 30 redbox](../08-reports/assets/screenshots/final/annotated/fig-30-professor-17-assignment-create-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-30-professor-17-assignment-create-redbox.png" alt="Fig. 30 — 과제 생성과 과제 목록 관리 영역"><figcaption>Fig. 30 — 과제 생성과 과제 목록 관리 영역</figcaption></figure>
 
 ## Fig. 31 — submission roster and selected student detail
 
-- 원본: `professor-18-submission-review.png`
-- redbox: `assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 31 redbox](../08-reports/assets/screenshots/final/annotated/fig-31-professor-18-submission-review-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-31-professor-18-submission-review-redbox.png" alt="Fig. 31 — 제출자 목록과 선택 학생 제출 상세"><figcaption>Fig. 31 — 제출자 목록과 선택 학생 제출 상세</figcaption></figure>
 
 ## Fig. 32 — score/status/feedback grading controls
 
-- 원본: `professor-19-assignment-grading.png`
-- redbox: `assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 32 redbox](../08-reports/assets/screenshots/final/annotated/fig-32-professor-19-assignment-grading-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-32-professor-19-assignment-grading-redbox.png" alt="Fig. 32 — 점수·상태·피드백 채점 controls"><figcaption>Fig. 32 — 점수·상태·피드백 채점 controls</figcaption></figure>
 
 ## Fig. 33 — student grade rows and average percent
 
-- 원본: `professor-20-grade-overview.png`
-- redbox: `assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 33 redbox](../08-reports/assets/screenshots/final/annotated/fig-33-professor-20-grade-overview-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-33-professor-20-grade-overview-redbox.png" alt="Fig. 33 — 학생별 성적 행과 평균 비율"><figcaption>Fig. 33 — 학생별 성적 행과 평균 비율</figcaption></figure>
 
 ## Fig. 34 — student-by-material learning progress table
 
-- 원본: `professor-21-learning-progress.png`
-- redbox: `assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 34 redbox](../08-reports/assets/screenshots/final/annotated/fig-34-professor-21-learning-progress-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-34-professor-21-learning-progress-redbox.png" alt="Fig. 34 — 학습자료별 학생 진도 표"><figcaption>Fig. 34 — 학습자료별 학생 진도 표</figcaption></figure>
 
 ## Fig. 35 — answer textarea, close checkbox, and save action
 
-- 원본: `professor-22-qna-answer.png`
-- redbox: `assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 35 redbox](../08-reports/assets/screenshots/final/annotated/fig-35-professor-22-qna-answer-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-35-professor-22-qna-answer-redbox.png" alt="Fig. 35 — Q&amp;A 답변 입력, 종료 여부, 저장 동작"><figcaption>Fig. 35 — Q&amp;A 답변 입력, 종료 여부, 저장 동작</figcaption></figure>
 
 ## Fig. 36 — exam draft/list management card
 
-- 원본: `professor-07-exam-manage.png`
-- redbox: `assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 36 redbox](../08-reports/assets/screenshots/final/annotated/fig-36-professor-07-exam-manage-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-36-professor-07-exam-manage-redbox.png" alt="Fig. 36 — 시험 초안과 목록 관리 카드"><figcaption>Fig. 36 — 시험 초안과 목록 관리 카드</figcaption></figure>
 
 ## Fig. 37 — exam policy and question list
 
-- 원본: `professor-08-exam-detail.png`
-- redbox: `assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 37 redbox](../08-reports/assets/screenshots/final/annotated/fig-37-professor-08-exam-detail-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-37-professor-08-exam-detail-redbox.png" alt="Fig. 37 — 시험 정책과 문항 목록"><figcaption>Fig. 37 — 시험 정책과 문항 목록</figcaption></figure>
 
 ## Fig. 38 — exam publish status result
 
-- 원본: `professor-16-exam-publish-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 38 redbox](../08-reports/assets/screenshots/final/annotated/fig-38-professor-16-exam-publish-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-38-professor-16-exam-publish-result-redbox.png" alt="Fig. 38 — 시험 게시 후 상태 결과"><figcaption>Fig. 38 — 시험 게시 후 상태 결과</figcaption></figure>
 
 ## Fig. 39 — exam close result status
 
-- 원본: `professor-15-exam-close-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 39 redbox](../08-reports/assets/screenshots/final/annotated/fig-39-professor-15-exam-close-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-39-professor-15-exam-close-result-redbox.png" alt="Fig. 39 — 시험 종료 후 상태 결과"><figcaption>Fig. 39 — 시험 종료 후 상태 결과</figcaption></figure>
 
 ## Fig. 40 — weekly attendance timeline rows
 
-- 원본: `professor-09-attendance-timeline.png`
-- redbox: `assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 40 redbox](../08-reports/assets/screenshots/final/annotated/fig-40-professor-09-attendance-timeline-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-40-professor-09-attendance-timeline-redbox.png" alt="Fig. 40 — 주차별 출석 timeline"><figcaption>Fig. 40 — 주차별 출석 timeline</figcaption></figure>
 
 ## Fig. 41 — attendance start modal mode options
 
-- 원본: `professor-23-attendance-start-modal.png`
-- redbox: `assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 41 redbox](../08-reports/assets/screenshots/final/annotated/fig-41-professor-23-attendance-start-modal-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-41-professor-23-attendance-start-modal-redbox.png" alt="Fig. 41 — 출석 시작 modal의 운영 모드 선택"><figcaption>Fig. 41 — 출석 시작 modal의 운영 모드 선택</figcaption></figure>
 
 ## Fig. 42 — smart attendance timer and close button
 
-- 원본: `professor-11-attendance-timer.png`
-- redbox: `assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 42 redbox](../08-reports/assets/screenshots/final/annotated/fig-42-professor-11-attendance-timer-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-42-professor-11-attendance-timer-redbox.png" alt="Fig. 42 — 스마트 출석 timer와 종료 버튼"><figcaption>Fig. 42 — 스마트 출석 timer와 종료 버튼</figcaption></figure>
 
 ## Fig. 43 — student status table and reason inputs
 
-- 원본: `professor-12-attendance-roster.png`
-- redbox: `assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 43 redbox](../08-reports/assets/screenshots/final/annotated/fig-43-professor-12-attendance-roster-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-43-professor-12-attendance-roster-redbox.png" alt="Fig. 43 — 학생 출석 상태 표와 사유 입력"><figcaption>Fig. 43 — 학생 출석 상태 표와 사유 입력</figcaption></figure>
 
 ## Fig. 44 — slot-specific roster controls
 
-- 원본: `professor-13-attendance-slot-roster.png`
-- redbox: `assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 44 redbox](../08-reports/assets/screenshots/final/annotated/fig-44-professor-13-attendance-slot-roster-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-44-professor-13-attendance-slot-roster-redbox.png" alt="Fig. 44 — 차시별 출석 roster controls"><figcaption>Fig. 44 — 차시별 출석 roster controls</figcaption></figure>
 
 ## Fig. 45 — save success and updated status row
 
-- 원본: `professor-14-attendance-edit-save-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 45 redbox](../08-reports/assets/screenshots/final/annotated/fig-45-professor-14-attendance-edit-save-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-45-professor-14-attendance-edit-save-result-redbox.png" alt="Fig. 45 — 출석 저장 성공과 갱신된 상태 행"><figcaption>Fig. 45 — 출석 저장 성공과 갱신된 상태 행</figcaption></figure>
 
 ## Fig. 46 — student stats table and CSV buttons
 
-- 원본: `professor-10-attendance-student-stats.png`
-- redbox: `assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 46 redbox](../08-reports/assets/screenshots/final/annotated/fig-46-professor-10-attendance-student-stats-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-46-professor-10-attendance-student-stats-redbox.png" alt="Fig. 46 — 학생별 출석 통계 표와 CSV 버튼"><figcaption>Fig. 46 — 학생별 출석 통계 표와 CSV 버튼</figcaption></figure>
 
 ## Fig. 47 — immutable attendance audit history list
 
-- 원본: `professor-24-attendance-history.png`
-- redbox: `assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 47 redbox](../08-reports/assets/screenshots/final/annotated/fig-47-professor-24-attendance-history-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-47-professor-24-attendance-history-redbox.png" alt="Fig. 47 — 변경 불가능한 출석 감사 이력"><figcaption>Fig. 47 — 변경 불가능한 출석 감사 이력</figcaption></figure>
 
 ## Fig. 49 / Fig. 50 / Fig. 51 — classroom/AP mapping, station list, threshold controls
 
-- 원본: `admin-02-classrooms-networks.png`
-- redbox: `assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 49 / Fig. 50 / Fig. 51 redbox](../08-reports/assets/screenshots/final/annotated/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.png" alt="Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리"><figcaption>Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리</figcaption></figure>
 
 ## Fig. 52 — demo source label and overlay controls
 
-- 원본: `admin-03-presence-demo-control.png`
-- redbox: `assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 52 redbox](../08-reports/assets/screenshots/final/annotated/fig-52-admin-03-presence-demo-control-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-52-admin-03-presence-demo-control-redbox.png" alt="Fig. 52 — 재실성 demo source와 overlay controls"><figcaption>Fig. 52 — 재실성 demo source와 overlay controls</figcaption></figure>
 
 ## Fig. 53 — applied overlay station state
 
-- 원본: `admin-04-presence-demo-applied.png`
-- redbox: `assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 53 redbox](../08-reports/assets/screenshots/final/annotated/fig-53-admin-04-presence-demo-applied-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-53-admin-04-presence-demo-applied-redbox.png" alt="Fig. 53 — 적용된 demo overlay 단말 상태"><figcaption>Fig. 53 — 적용된 demo overlay 단말 상태</figcaption></figure>
 
 ## Fig. 54 — reset result and restored baseline
 
-- 원본: `admin-05-presence-demo-reset-result.png`
-- redbox: `assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 54 redbox](../08-reports/assets/screenshots/final/annotated/fig-54-admin-05-presence-demo-reset-result-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-54-admin-05-presence-demo-reset-result-redbox.png" alt="Fig. 54 — demo 초기화 결과와 기준 상태 복원"><figcaption>Fig. 54 — demo 초기화 결과와 기준 상태 복원</figcaption></figure>
 
 ## Fig. 55 — real/demo snapshot separation labels
 
-- 원본: `admin-06-real-vs-demo-snapshots.png`
-- redbox: `assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg`
-- 상태: redbox SVG 생성 완료
 
-![Fig. 55 redbox](../08-reports/assets/screenshots/final/annotated/fig-55-admin-06-real-vs-demo-snapshots-redbox.svg)
+<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-55-admin-06-real-vs-demo-snapshots-redbox.png" alt="Fig. 55 — real snapshot과 demo snapshot 구분"><figcaption>Fig. 55 — real snapshot과 demo snapshot 구분</figcaption></figure>
 
 ## Fig. 56 — OpenWrt router registration/token N/A
 
@@ -572,91 +418,74 @@ owners:
 
 ## ERD-1 — Full Smart Class PostgreSQL ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg`
-- 강조 대상: LMS + presence/attendance + assessment domains
-- 포함 테이블/노드: users, courses, course_enrollments, course_schedules, classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, refresh_sessions, attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, presence_eligibility_logs, exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, assignments, assignment_submissions, learning_items, learning_progress, course_qna_threads, course_qna_posts, report_exports, object_deletion_jobs
+- 구성: 세로 1쪽 전체 overview
+- 강조 대상: LMS + presence/attendance + assessment + assignment + object-storage domains
+- 포함 범위: 전체 34개 schema table과 54개 FK link
 
-![ERD-1 raw](../08-reports/assets/diagrams/final/raw/erd-1-full-smart-class-erd.svg)
-
-![ERD-1 redbox](../08-reports/assets/diagrams/final/annotated/erd-1-full-smart-class-erd-redbox.svg)
+<figure class="figure diagram full-erd"><img src="assets/diagrams/final/html-redbox/erd-1-full-smart-class-erd-redbox.png" alt="ERD-1 portrait overview"><figcaption>ERD-1 portrait overview</figcaption></figure>
 
 ## ERD-2 — User / auth / registered-device ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-2-user-auth-device.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg`
 - 강조 대상: users.id relationships to sessions/devices
 - 포함 테이블/노드: users, refresh_sessions, registered_devices
 
-![ERD-2 raw](../08-reports/assets/diagrams/final/raw/erd-2-user-auth-device.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-2-user-auth-device-redbox.png" alt="ERD-2"><figcaption>ERD-2</figcaption></figure>
 
-![ERD-2 redbox](../08-reports/assets/diagrams/final/annotated/erd-2-user-auth-device-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-2-user-auth-device-redbox.png" alt="ERD-2"><figcaption>ERD-2</figcaption></figure>
 
 ## ERD-3 — Course / enrollment / notice / material ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg`
 - 강조 대상: course ownership/enrollment and attachment relations
 - 포함 테이블/노드: courses, course_enrollments, course_schedules, notices, learning_items, learning_item_attachments, notice_attachments
 
-![ERD-3 raw](../08-reports/assets/diagrams/final/raw/erd-3-course-enrollment-notice-material.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-3-course-enrollment-notice-material-redbox.png" alt="ERD-3"><figcaption>ERD-3</figcaption></figure>
 
-![ERD-3 redbox](../08-reports/assets/diagrams/final/annotated/erd-3-course-enrollment-notice-material-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-3-course-enrollment-notice-material-redbox.png" alt="ERD-3"><figcaption>ERD-3</figcaption></figure>
 
 ## ERD-4 — Device / classroom / AP / presence ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg`
 - 강조 대상: classroom network mapping and AP registry evidence
 - 포함 테이블/노드: classrooms, classroom_networks, access_points, access_point_interfaces, registered_devices, presence_eligibility_logs
 
-![ERD-4 raw](../08-reports/assets/diagrams/final/raw/erd-4-device-classroom-ap-presence.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-4-device-classroom-ap-presence-redbox.png" alt="ERD-4"><figcaption>ERD-4</figcaption></figure>
 
-![ERD-4 redbox](../08-reports/assets/diagrams/final/annotated/erd-4-device-classroom-ap-presence-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-4-device-classroom-ap-presence-redbox.png" alt="ERD-4"><figcaption>ERD-4</figcaption></figure>
 
 ## ERD-5 — Attendance session / record / audit ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg`
 - 강조 대상: bundle parent, slot fan-out, record/audit history
 - 포함 테이블/노드: attendance_sessions, attendance_session_slots, attendance_records, attendance_status_audit_logs, users, courses, classrooms
 
-![ERD-5 raw](../08-reports/assets/diagrams/final/raw/erd-5-attendance-session-record-audit.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-5-attendance-session-record-audit-redbox.png" alt="ERD-5"><figcaption>ERD-5</figcaption></figure>
 
-![ERD-5 redbox](../08-reports/assets/diagrams/final/annotated/erd-5-attendance-session-record-audit-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-5-attendance-session-record-audit-redbox.png" alt="ERD-5"><figcaption>ERD-5</figcaption></figure>
 
 ## ERD-6 — Exam / question / submission / answer ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg`
 - 강조 대상: exam-question-option and submission-answer consistency
 - 포함 테이블/노드: exams, exam_questions, exam_question_options, exam_submissions, exam_submission_answers, exam_question_attachments, exam_answer_attachments
 
-![ERD-6 raw](../08-reports/assets/diagrams/final/raw/erd-6-exam-question-submission-answer.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-6-exam-question-submission-answer-redbox.png" alt="ERD-6"><figcaption>ERD-6</figcaption></figure>
 
-![ERD-6 redbox](../08-reports/assets/diagrams/final/annotated/erd-6-exam-question-submission-answer-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-6-exam-question-submission-answer-redbox.png" alt="ERD-6"><figcaption>ERD-6</figcaption></figure>
 
 ## ERD-7 — Selected LMS / assignment / Q&A / progress ERD
 
-- raw SVG: `assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg`
 - 강조 대상: grading fields, Q&A threads/posts, progress ownership
 - 포함 테이블/노드: assignments, assignment_submissions, assignment_submission_attachments, course_qna_threads, course_qna_posts, learning_progress, learning_items, users, courses
 
-![ERD-7 raw](../08-reports/assets/diagrams/final/raw/erd-7-selected-lms-assignment-qna-progress.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-7-selected-lms-assignment-qna-progress-redbox.png" alt="ERD-7"><figcaption>ERD-7</figcaption></figure>
 
-![ERD-7 redbox](../08-reports/assets/diagrams/final/annotated/erd-7-selected-lms-assignment-qna-progress-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-7-selected-lms-assignment-qna-progress-redbox.png" alt="ERD-7"><figcaption>ERD-7</figcaption></figure>
 
 ## ERD-8 — Service / ops metadata ERD and N/A boundary
 
-- raw SVG: `assets/diagrams/final/raw/erd-8-service-ops-metadata.svg`
-- redbox SVG: `assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg`
 - 강조 대상: report exports, object deletion outbox, Service runtime N/A boundary
 - 포함 테이블/노드: report_exports, object_deletion_jobs, learning_item_attachments, notice_attachments, assignment_submission_attachments, Service runtime: N/A PostgreSQL entity
 
-![ERD-8 raw](../08-reports/assets/diagrams/final/raw/erd-8-service-ops-metadata.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-8-service-ops-metadata-redbox.png" alt="ERD-8"><figcaption>ERD-8</figcaption></figure>
 
-![ERD-8 redbox](../08-reports/assets/diagrams/final/annotated/erd-8-service-ops-metadata-redbox.svg)
+<figure class="figure diagram"><img src="assets/diagrams/final/html-redbox/erd-8-service-ops-metadata-redbox.png" alt="ERD-8"><figcaption>ERD-8</figcaption></figure>
 
 # F. API request/response 예시
 
@@ -4732,7 +4561,7 @@ two-file report/appendix alignment audit
 ## I.2 현재 산출물 수량
 
 - Screenshot PNG: 52
-- Screenshot redbox SVG: 52
+- 화면 근거 이미지: 52
 - ERD SVG: 16
 - ERD set: ERD-1 full + ERD-2~ERD-8 partial/N/A boundary
 

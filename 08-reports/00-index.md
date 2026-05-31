@@ -2,7 +2,7 @@
 title: 캡스톤 보고서 목차
 type: report
 status: draft
-updated: 2026-05-22
+updated: 2026-06-01
 owners:
   - team
 related:
@@ -39,8 +39,12 @@ source:
 - 최종보고서는 교수님 기준의 서론 / 관련 연구·기술 / 시스템 설계 / 구현 / 실험 및 결과 / 결론 / 참고문헌 구조를 유지한다.
 - 최종보고서의 1순위 논리축은 **구현 완성도 중심**이다.
 - 구현 완성도는 단순 기능 나열이 아니라 **기능별 종합 증거 매트릭스**로 입증한다.
-- 목차는 작성 시점에 따라 변경할 수 있으나, 교수님 기준과 구현 완성도 중심 방향은 유지한다.
-- 목차 바로 뒤에는 `이번 주 진행사항 및 전체 완성도 자체평가`를 둔다.
+- 본문 구성은 작성 시점에 따라 변경할 수 있으나, 교수님 기준과 구현 완성도 중심 방향은 유지한다.
+- 보고서 산출물에는 차례/목차 페이지를 넣지 않는다. 작성 완료 후 사용자가 한글에서 직접 차례를 입력하거나 생성해야 한다고 안내한다.
+- 최종 문서 산출물은 HWP만 생성한다. HWPX는 생성하지 않는다.
+- redbox 이미지는 실제 서비스 DOM 삽입 또는 HTML overlay harness로 다시 캡처한 PNG를 사용한다.
+- 제출 전 redbox 위치/라벨 overflow QA와 한국어 stop-slop QA를 실행한다.
+- 표지와 초록 / 요약 바로 뒤, 본문 앞에는 `이번 주 진행사항 및 전체 완성도 자체평가`를 둔다.
 - 이번 주 진행사항은 KST 기준 직전 월요일 09:00부터 보고서 작성 현재 시각까지의 변경사항을 대상으로 한다.
 - 변경사항과 현재 상태는 모든 레포의 `main` 브랜치를 기준으로 작성한다.
 - 섹션별 파일은 편집 단위이고, `99-combined-report.md` 는 본문과 부록 내용을 한 파일에 모은 제출/검토용 통합본이다.
@@ -95,6 +99,8 @@ source:
 - [[/08-reports/90-appendix/02-screenshot-checklist.md]]
 - [[/08-reports/90-appendix/03-api-endpoint-inventory.md]]
 - [[/08-reports/90-appendix/04-diagram-inventory.md]]
+- [[/08-reports/90-appendix/06-redbox-quality-gate.md]]
+- [[/08-reports/90-appendix/07-korean-stop-slop-rules.md]]
 
 # 명명 규칙
 
