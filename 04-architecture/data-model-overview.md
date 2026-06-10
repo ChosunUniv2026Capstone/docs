@@ -2,7 +2,7 @@
 title: 데이터 모델 개요
 type: architecture
 status: active
-updated: 2026-05-16
+updated: 2026-06-11
 owners:
   - db-owner
 related:
@@ -12,6 +12,7 @@ related:
   - [[/02-decisions/adr-0005-presence-snapshot-cache.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
   - [[/02-decisions/adr-0012-garage-backed-object-storage.md]]
   - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/04-architecture/object-storage-architecture.md]]
@@ -22,11 +23,13 @@ source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
   - [[/02-decisions/adr-0012-garage-backed-object-storage.md]]
   - [[/02-decisions/adr-0013-openwrt-local-collector-push.md]]
   - [[/04-architecture/object-storage-architecture.md]]
   - 2026-05-09 DB/postgres/init/014_assignment_schema.sql
   - 2026-05-10 DB/postgres/init/015_object_storage_schema.sql
+  - 2026-06-10 continuous attendance deep-interview / ralplan
 ---
 
 # 핵심 엔티티
@@ -58,8 +61,13 @@ source:
   - refresh token rotation / replay detection / logout revocation 을 위한 인증 세션 영속 저장소
 - `attendance_sessions`
   - 교수가 선택한 여러 projected slot 을 묶어 여는 bundle parent 출석 세션
+  - 스마트 출석 세부 정책을 구분하는 `attendance_policy`
 - `attendance_session_slots`
   - bundle parent session 이 포함하는 ordered projected slot membership
+- `attendance_monitoring_leases`
+  - `continuous_presence_v1` active session 을 하나의 Backend instance 만 tick 하도록 조정하는 DB lease
+- `attendance_monitoring_states`
+  - `continuous_presence_v1` student/slot 별 재실 evidence 적산, 이탈 시간, unknown grace, candidate status
 - `attendance_records`
   - 학생별 / slot별 현재 출석 상태
 - `attendance_status_audit_logs`
@@ -111,8 +119,11 @@ source:
 - 하나의 `attendance_session` 은 bundle parent 1개를 의미한다.
 - 하나의 active projected slot 은 동시에 하나의 bundle parent 에만 속할 수 있다.
 - 하나의 `attendance_session` 은 여러 `attendance_session_slots` membership row 를 가질 수 있다.
+- 하나의 `continuous_presence_v1` active `attendance_session` 은 하나의 유효한 `attendance_monitoring_leases` row 로 worker ownership 을 조정할 수 있다.
+- 하나의 `attendance_monitoring_state` 는 `(attendance_session_id, projection_key, student_user_id)` 기준으로 유일해야 한다.
+- 하나의 `attendance_monitoring_state` 는 같은 key 의 `attendance_record` 최종 상태를 산출하는 중간 accumulator 이며, PresenceService raw snapshot 을 영속 사본으로 보관하지 않는다.
 - 하나의 `attendance_record` 는 `(attendance_session_id, projection_key, student_user_id)` 기준으로 유일해야 한다.
-- `attendance_status_audit_logs` 는 self check-in 과 professor manual update 둘 다 기록해야 한다.
+- `attendance_status_audit_logs` 는 `smart_window_v1` self check-in, `continuous_presence_v1` 자동 monitoring transition, professor manual update 를 기록해야 한다.
 - `attendance_status_audit_logs` 는 append-only 여야 하며 삭제 / 덮어쓰기를 허용하면 안 된다.
 - 하나의 `course`는 여러 `exams`를 가질 수 있다.
 - 하나의 `exam`은 여러 `exam_questions`를 가진다.
@@ -151,11 +162,17 @@ source:
 - projected slot 은 schedule window 를 `starts_at` 기준으로 30분 단위 full segment 로 나눈 결과만 허용한다.
 - `attendance_sessions.projection_key` 는 bundle anchor slot identity 로 유지해야 한다.
 - `attendance_sessions` 는 `mode(manual|smart|canceled)` 와 `status(active|closed|expired|canceled)` 를 가져야 한다.
+- `attendance_sessions.attendance_policy` 는 `manual_v1|smart_window_v1|continuous_presence_v1` 중 하나여야 한다.
+  - 기존 `manual` session 은 `manual_v1` 로 해석한다.
+  - 기존 10분 버튼형 smart session 은 `smart_window_v1` 로 해석한다.
+  - 신규 자동 재실 적산 smart session 은 `continuous_presence_v1` 로 저장한다.
 - `mode='canceled'` 는 교수의 휴강 시작 의도를 나타내고, 이 경우 session `status` 도 즉시 `canceled` 로 기록되어야 한다.
 - `attendance_sessions` 는 `opened_by_user_id`, `opened_at`, `closed_at`, `expires_at`, `latest_version` 을 가져야 한다.
+- `continuous_presence_v1` session 의 `expires_at` 은 선택된 마지막 projected slot 종료 시각과 같아야 한다.
 - `attendance_session_slots` 는 `(attendance_session_id, projection_key, slot_order)` 를 가지며 membership 순서를 보존해야 한다.
 - `attendance_session_slots.projection_key` 는 bundle 이 포함한 실제 slot 집합의 source of truth 여야 한다.
 - student self check-in 은 첫 성공 시 audit row 를 남기고, 동일 open session 에 대한 성공 재시도는 no-op / no-extra-audit 이어야 한다.
+- `continuous_presence_v1` 에서 student self check-in 은 record/audit 을 만들지 않는 inert 경로여야 한다.
 - bundle overwrite / bundle check-in write 는 slot fan-out 으로 저장해야 한다.
 - `attendance_records.final_status` 는 `present|absent|late|official|sick` 만 허용한다.
 - `attendance_records` 는 `projection_key` 를 가져야 한다.
@@ -165,6 +182,33 @@ source:
 - bundle overwrite 는 실제 값이 달라진 slot 에만 changed-only audit row 를 남겨야 한다.
 - realtime replay 를 위해 `attendance_sessions.latest_version` 과 audit / event ordering 규칙이 일치해야 한다.
 - 리포트와 집계는 bundle metadata 가 아니라 slot별 `attendance_records` 최종 상태를 기준으로 계산해야 한다.
+
+# Continuous attendance monitoring 모델 규칙
+
+- `attendance_monitoring_leases` 는 최소한 아래 컬럼을 가져야 한다.
+  - `attendance_session_id`: active continuous session FK 또는 unique key
+  - `lease_owner`: worker instance 식별자
+  - `lease_until`: lease 만료 시각
+  - `heartbeat_at`: 마지막 갱신 시각
+  - `created_at`, `updated_at`
+- lease 획득은 `lease_until < now()` 또는 같은 `lease_owner` 갱신일 때만 성공해야 한다.
+- `attendance_monitoring_states` 는 최소한 아래 컬럼을 가져야 한다.
+  - `attendance_session_id`, `projection_key`, `student_user_id`
+  - `slot_start_at`, `slot_end_at`
+  - `last_accounted_until`
+  - `away_seconds`
+  - `unknown_seconds_consumed`
+  - `current_presence_state`: `outside_time|present|away|unknown`
+  - `last_presence_reason`
+  - `status_candidate`: `present|late|absent`
+  - `finalized_at`
+  - `created_at`, `updated_at`
+- `away_seconds` 에는 slot 시작 이후 최초 재실 evidence 전 시간도 포함한다.
+- unknown grace 는 student/slot 별 최대 60초까지 소비하며, 이후 `AP_OFFLINE` / `PRESENCE_SERVICE_UNAVAILABLE` / registry timeout 시간은 away 로 누적한다.
+- 자동 candidate 전이 기준은 `away_seconds < 600 => present`, `600 <= away_seconds < 900 => late`, `away_seconds >= 900 => absent` 이다.
+- 자동 candidate 가 `late` 또는 `absent` 로 내려갈 때 audit reason 은 각각 `강의실 이탈로 인한 지각`, `강의실 이탈로 인한 결석` 이다.
+- `attendance_monitoring_states` 는 finalization 후에도 교수 roster 의 이탈 시간 표시와 audit 근거 확인을 위해 보존한다.
+- seed/reset 데이터에는 언제든 e2e 를 실행할 수 있도록 24시간 7일 전체 시간표를 차지하는 테스트 과목과 해당 course schedule 이 포함되어야 한다.
 
 # Presence refinement 모델 규칙
 

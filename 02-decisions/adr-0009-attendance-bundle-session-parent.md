@@ -2,7 +2,7 @@
 title: ADR-0009 출석은 bundle parent session + slot fan-out persistence 로 운영한다
 type: decision
 status: accepted
-updated: 2026-04-08
+updated: 2026-06-11
 date: 2026-04-08
 deciders:
   - team
@@ -13,11 +13,13 @@ related:
   - [[/01-requirements/req-professor-features.md]]
   - [[/01-requirements/req-student-features.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/data-model-overview.md]]
 source:
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0007-demo-presence-overlay-and-attendance-session-flow.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
 ---
 
 # Context
@@ -38,9 +40,10 @@ source:
   - 공통 mode/status/timer/close/expire/reopen authority 는 parent session 이 소유한다.
 - 선택된 slot 집합은 별도 membership (`attendance_session_slots`) 으로 저장한다.
 - 교수/학생 API 와 route 는 parent `session_id` 기준으로 bundle 을 다룬다.
-- smart bundle 은 차시 수와 무관하게 shared 10분 타이머 1개만 사용한다.
-- 학생은 bundle 카드 1개와 check-in 버튼 1개만 본다.
-- 학생 bundle check-in 과 교수 bundle overwrite 는 내부적으로 slot fan-out write 로 저장한다.
+- `smart_window_v1` smart bundle 은 차시 수와 무관하게 shared 10분 타이머 1개만 사용한다.
+- `smart_window_v1` 에서 학생은 bundle 카드 1개와 check-in 버튼 1개만 본다.
+- `continuous_presence_v1` 의 timer/check-in/UI 예외는 ADR-0014 를 따른다. 이 경우 bundle parent 와 slot membership 원칙은 유지하되 학생 버튼은 최종 상태를 만들지 않는다.
+- 학생 bundle check-in(`smart_window_v1`) 과 교수 bundle overwrite 는 내부적으로 slot fan-out write 로 저장한다.
 - `attendance_records` 와 `attendance_status_audit_logs` 는 slot identity(`projection_key`) 를 포함한 per-slot persistence 를 유지한다.
 - bundle overwrite / bundle check-in 은 실제 값이 바뀐 slot 에만 changed-only audit row 를 남긴다.
 - bundle roster 기본값은 anchor slot record 를 기준으로 하며, anchor slot 기록이 없으면 `absent` 를 기본값으로 사용한다.

@@ -2,7 +2,7 @@
 title: ADR-0013 OpenWrt local collector push 방식 채택
 type: decision
 status: accepted
-updated: 2026-05-16
+updated: 2026-06-11
 date: 2026-05-16
 deciders:
   - team
@@ -15,6 +15,7 @@ related:
   - [[/04-architecture/network-topology.md]]
   - [[/04-architecture/presence-eligibility-api.md]]
   - [[/04-architecture/data-model-overview.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
 source:
   - 2026-05-16 OpenWrt local collector push deep-interview / ralplan
 ---
@@ -52,8 +53,9 @@ OpenWrt 장비에는 lightweight local collector 를 두고, collector 가 로�
 
 # API / UI behavior
 
-- Backend check-in API 는 AP offline 으로 인한 거부를 transport success 로 반환하되, 출석 기록을 생성하지 않고 slot 결과를 `rejected` + reason `AP_OFFLINE` 으로 표시한다.
-- Front 는 Backend 가 반환한 `can_check_in=false` 및 reason `AP_OFFLINE` 을 사용해 스마트 출석 버튼을 비활성화하고 AP 연결 끊김 안내를 표시한다.
+- `smart_window_v1` Backend check-in API 는 AP offline 으로 인한 거부를 transport success 로 반환하되, 출석 기록을 생성하지 않고 slot 결과를 `rejected` + reason `AP_OFFLINE` 으로 표시한다.
+- `smart_window_v1` Front 는 Backend 가 반환한 `can_check_in=false` 및 reason `AP_OFFLINE` 을 사용해 스마트 출석 버튼을 비활성화하고 AP 연결 끊김 안내를 표시한다.
+- `continuous_presence_v1` 에서 AP offline 은 버튼 거부가 아니라 Backend monitoring worker 의 60초 unknown grace 후 fail-closed away 누적 근거가 된다.
 - Front 는 AP 상태를 직접 추론하지 않는다.
 
 # Consequences
