@@ -2,19 +2,30 @@
 title: 구현 로드맵 상태
 type: status
 status: active
-updated: 2026-05-16
+updated: 2026-06-11
 owners:
   - team
 related:
   - [[/05-work-items/epic-full-lms-delivery-plan.md]]
   - [[/05-work-items/task-phase-2-academic-read-model.md]]
+  - [[/05-work-items/task-attendance-continuous-auto-judgment.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/exam-workflow-api.md]]
   - [[/04-architecture/exam-mvp-contract.md]]
 source:
   - [[/06-meetings/raw/2026-03-30-presence-logic-clarification.md]]
   - current code/test audit, 2026-04-25
+  - 2026-06-10 continuous attendance deep-interview / ralplan
 ---
+
+# 2026-06-11 continuous smart attendance checkpoint
+
+[[/05-work-items/task-attendance-continuous-auto-judgment.md]] 가 활성 구현 과제다.
+
+- docs-first current truth 는 `attendance_policy='continuous_presence_v1'` 로 신규 스마트출석 정책을 추가하고 기존 버튼형 10분 window 는 `smart_window_v1` 로 보존한다.
+- 구현 순서는 DB/Backend monitoring accumulator, Front status panel, 통합 QA/e2e 순서다.
+- QA seed/reset 에는 24시간 7일 전체 시간표를 차지하는 테스트 과목을 포함해 임의 시각 e2e 를 가능하게 한다.
+- PR/merge/version/docker/server 반영은 전체 e2e 완료 후 repo 별 evidence 와 외부 운영 권한 확인을 거쳐 진행한다.
 
 
 # 2026-05-14 current issue-resolution checkpoint

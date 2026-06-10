@@ -2,7 +2,7 @@
 title: 교수 기능 요구사항
 type: requirement
 status: active
-updated: 2026-05-21
+updated: 2026-06-11
 owners:
   - frontend-team
   - backend-team
@@ -10,6 +10,7 @@ related:
   - [[/01-requirements/req-student-features.md]]
   - [[/01-requirements/req-attendance-presence.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
   - [[/04-architecture/service-map.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
   - [[/04-architecture/exam-mvp-contract.md]]
@@ -18,6 +19,7 @@ source:
   - [[/06-meetings/raw/2026-03-25-kickoff-work-items.md]]
   - [[/06-meetings/raw/2026-04-07-capstone-demo-planning.md]]
   - [[/02-decisions/adr-0009-attendance-bundle-session-parent.md]]
+  - [[/02-decisions/adr-0014-continuous-attendance-monitoring.md]]
   - [[/04-architecture/attendance-workflow-architecture.md]]
 ---
 
@@ -61,19 +63,22 @@ source:
 - 교수는 같은 projected slot 에 중복된 active 출석 세션을 만들 수 없어야 한다.
 - 교수는 같은 주차 안의 여러 차시를 동시에 선택해 같은 운영 모드(일반출석 / 스마트출석 / 휴강)를 적용할 수 있어야 한다.
 - 여러 차시를 동시에 시작한 경우에도 내부적으로는 bundle session 1개만 생성되어야 한다.
-- smart bundle 은 선택 차시 수와 무관하게 공유 10분 타이머 1개만 사용해야 한다.
+- `smart_window_v1` smart bundle 은 선택 차시 수와 무관하게 공유 10분 타이머 1개만 사용해야 한다.
+- `continuous_presence_v1` smart bundle 은 선택된 마지막 차시 종료 시점까지 active 상태를 유지하고, 차시별 자동 재실 모니터링을 수행해야 한다.
 - 교수의 close / expire / cancel / reopen 동작은 bundle 전체에 한 번에 적용되어야 한다.
 - bundle roster 는 선택된 slot 목록을 요약해서 보여주고 학생 상태 변경은 기본적으로 bundle 대상 차시 전체에 fan-out 적용해야 한다.
 - bundle roster 의 기본값은 anchor slot 기록을 따르고, anchor slot 기록이 없으면 `absent` 를 기본값으로 사용해야 한다.
 - 일반출석은 session open 직후 미수정 학생을 `absent` 로 집계해야 한다.
-- 스마트출석은 active 동안 미체크 학생을 `pending` 으로 보고, close / expire 시점에만 `absent` 로 확정해야 한다.
+- `smart_window_v1` 스마트출석은 active 동안 미체크 학생을 `pending` 으로 보고, close / expire 시점에만 `absent` 로 확정해야 한다.
+- `continuous_presence_v1` 스마트출석은 학생별/slot별 누적 이탈 시간을 기준으로 10분 이상 `late`, 15분 이상 `absent` 를 자동 판정해야 한다.
 - 교수는 상태를 `출석`, `결석`, `지각`, `공결`, `병가` 로 수정할 수 있어야 한다.
 - 교수의 상태 변경 사유는 `공결(official)` 처리 시에만 필수이다. `출석/지각/결석/병가` 저장은 사유 없이 가능해야 하며, Backend 는 non-official reason 을 저장하지 않는다.
 - 교수의 수동 수정은 audit history 로 남아야 한다.
-- 교수는 학생 self check-in 이후에도 최신 판단으로 최종 상태를 덮어쓸 수 있어야 하며, 이전 이력은 남아야 한다.
+- 교수는 학생 self check-in(`smart_window_v1`) 또는 자동 monitoring transition(`continuous_presence_v1`) 이후에도 최신 판단으로 최종 상태를 덮어쓸 수 있어야 하며, 이전 이력은 남아야 한다.
 - bundle overwrite 는 실제 값이 달라진 차시에만 changed-only audit 를 남겨야 한다.
 - bundle 화면은 bulk overwrite 도구이며, 개별 차시 예외 수정은 기존 per-slot route 에서 처리할 수 있어야 한다.
 - 교수는 스마트출석 시작/종료/만료와 roster, 집계, 리포트 대시보드 상태를 실시간으로 볼 수 있어야 한다.
+- 교수는 `continuous_presence_v1` slot roster 에서 학생별 누적 이탈 시간을 분 단위로 볼 수 있어야 한다.
 
 # 수용 기준
 
@@ -87,6 +92,7 @@ source:
 - 교수는 학생별 상태 변경 이력을 시간순으로 확인할 수 있어야 한다.
 - 교수는 휴강 처리된 차시와 재오픈된 차시의 이력을 모두 추적할 수 있어야 한다.
 - 교수가 multi-slot smart session 을 닫거나 만료시키면 timer / roster / report surface 가 모두 같은 bundle 상태로 즉시 수렴해야 한다.
+- `continuous_presence_v1` 에서 slot별 이탈 10분/15분 threshold 와 교수 roster away minutes 가 Backend state 와 일치해야 한다.
 - 교수는 bundle 화면과 별개로 projection-key 기준 예외 수정 경로를 계속 사용할 수 있어야 한다.
 - 교수 출석 운영 대시보드에는 현재 선택 과목의 학기 전체를 기준으로 학생별 출석/지각/결석/공결 누계 표가 출석 차시 목록 하단에 기본으로 보여야 한다.
 - 교수 출석 운영 대시보드는 담당 과목 기준의 출석 현황을 CSV 로 즉시 다운로드할 수 있어야 한다.
