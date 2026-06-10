@@ -38,6 +38,9 @@ source:
 
 - Backend lifespan worker 는 기본 10초 cadence 로 active continuous session 을 tick 한다.
 - 다중 Backend instance 를 고려해 session 단위 DB lease 를 사용한다.
+- lease owner 는 instance 별로 유일해야 하며, lease TTL 은 최악 tick 처리 시간보다 길게 운영해야 한다.
+  shared/static owner id 로 여러 replica 를 실행하면 안 된다.
+- worker 는 PresenceService 호출 전 lease heartbeat 를 갱신하고, 소유권을 잃으면 해당 session tick 을 중단한다.
 - worker 는 selected slot 의 전체 수강생을 slot 시작 시점부터 모니터링한다.
 - slot 시작 후 최초 출석 전 시간도 이탈 시간에 포함한다.
 - WebSocket 은 표시와 전달 채널이며 출석 evidence 가 아니다.

@@ -79,6 +79,9 @@ source:
 - Backend 는 `continuous_presence_v1` session 의 최종 attendance authority 와 이탈 누적 accumulator 를 소유한다.
 - Backend lifespan worker 는 기본 10초 cadence 로 active `continuous_presence_v1` session 을 tick 한다.
 - 여러 Backend instance 가 동시에 실행될 수 있으므로 tick runner 는 DB lease(`attendance_monitoring_leases`)를 획득한 instance 만 해당 session 을 처리해야 한다.
+- monitoring worker instance id 는 replica 별로 유일해야 하며, lease TTL 은 최악 tick 처리 시간보다 길게 설정한다.
+  배포 설정에서 shared/static owner id 를 강제하면 lease 안전성이 깨진다.
+- worker 는 긴 tick 중에도 PresenceService 외부 호출 직전에 lease heartbeat 를 갱신하고, 소유권을 잃으면 해당 tick 처리를 중단한다.
 - 각 student/slot pair 는 monitoring state(`attendance_monitoring_states`)를 가진다.
   - `last_accounted_until`: 마지막으로 시간이 반영된 server timestamp
   - `away_seconds`: slot 시작 이후 누적 이탈 시간
