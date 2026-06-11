@@ -152,3 +152,4 @@ source:
 - 교수가 `공결(official)` 로 수동 수정하면서 사유를 비워 두면 `ATTENDANCE_REASON_REQUIRED` 로 거부되어야 한다. `출석/지각/결석/병가` 수동 수정은 사유 없이 저장 가능해야 한다.
 - bundle 화면과 별도로 projection-key 기반 예외 수정 경로가 유지되어야 한다.
 - 24시간 7일 테스트 과목으로 임의 시각에 `continuous_presence_v1` session 을 열고 slot별 자동 판정 / 이탈 시간 표시 / 학생 상태 패널을 e2e 검증할 수 있어야 한다.
+- 24시간 7일 테스트 과목은 seed/reset 기준 전체 학생을 active enrollment 로 포함해 어떤 학생 계정으로도 즉시 재실/출석 e2e 를 수행할 수 있어야 한다.

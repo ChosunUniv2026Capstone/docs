@@ -209,6 +209,7 @@ source:
 - 자동 candidate 가 `late` 또는 `absent` 로 내려갈 때 audit reason 은 각각 `강의실 이탈로 인한 지각`, `강의실 이탈로 인한 결석` 이다.
 - `attendance_monitoring_states` 는 finalization 후에도 교수 roster 의 이탈 시간 표시와 audit 근거 확인을 위해 보존한다.
 - seed/reset 데이터에는 언제든 e2e 를 실행할 수 있도록 24시간 7일 전체 시간표를 차지하는 테스트 과목과 해당 course schedule 이 포함되어야 한다.
+- 해당 24시간 7일 테스트 과목은 seed/reset 시점의 전체 학생을 active enrollment 로 포함해야 한다.
 
 # Presence refinement 모델 규칙
 
