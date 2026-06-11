@@ -26,7 +26,7 @@ source:
 - `attendance_sessions.attendance_policy` 추가와 기존 row backfill
 - `attendance_monitoring_leases` 추가
 - `attendance_monitoring_states` 추가
-- 24시간 7일 전체 시간표를 차지하는 테스트 과목 seed/reset 추가
+- 24시간 7일 전체 시간표를 차지하고 전체 학생을 active enrollment 로 포함하는 테스트 과목 seed/reset 추가
 
 ## 2. Backend
 
@@ -64,4 +64,4 @@ source:
 - 강의실 이탈 자동 하향 audit reason 이 문서화된 한국어 사유로 저장된다.
 - AP / Presence 장애는 60초 grace 이후 fail-closed away 로 반영된다.
 - 학생은 버튼 없이 상태 패널을 보고, 교수는 학생별 이탈 시간을 분 단위로 본다.
-- 24시간 7일 테스트 과목으로 언제든 e2e 를 재실행할 수 있다.
+- 24시간 7일 테스트 과목으로 어떤 학생 계정이든 언제든 e2e 를 재실행할 수 있다.
