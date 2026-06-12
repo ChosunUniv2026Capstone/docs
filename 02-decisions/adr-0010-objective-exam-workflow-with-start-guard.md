@@ -29,7 +29,7 @@ The exam domain also reuses the same eligibility guard family as attendance.
 - The current local authoring UI focuses on objective questions first.
 - Students can start an attempt only after pressing the explicit start action.
 - Professors can edit exams only while the exam is in `draft`.
-- The local exam policy checks only whether the student has at least one active registered device at exam start time.
+- The local exam policy checks both active registered-device ownership and course-classroom PresenceService eligibility at exam start time.
 - The system does not require a second presence check during answer save or submit.
 - Student submit uses stored answers and computes the attempt score at finalization time for objective questions.
 - Professor exam detail can expose latest-attempt status per enrolled student for operational monitoring.

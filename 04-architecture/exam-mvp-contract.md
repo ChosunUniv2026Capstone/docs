@@ -54,10 +54,10 @@ source:
 - 강의 수강 여부
 - 시험 상태와 시간 창
 - 최대 응시 횟수
-- 시험 응시 시작 시점에는 학생 계정에 active registered device 가 최소 1개 있어야 한다.
-- 로컬 시험 정책은 현재 수업 시간 또는 강의실 네트워크 관측을 시험 시작의 필수 조건으로 요구하지 않는다.
+- 시험 응시 시작 시점에는 학생 계정에 active registered device 가 최소 1개 있어야 하며, course classroom 기준 PresenceService eligibility 를 통과해야 한다.
+- 로컬 시험 정책은 현재 수업 시간 여부를 시험 시작의 필수 조건으로 요구하지 않는다. 강의실 재실 evidence 는 설정된 presence source 를 따르며, `demo` evidence 는 collector evidence 와 같은 판정 지위를 가진다.
 - 응시가 시작된 뒤 같은 submission 을 이어서 저장하거나 제출할 때는 재실성 재검사를 기본 요구로 두지 않는다.
-- 등록 단말 검증 실패 시 stable error code 는 `PRESENCE_INELIGIBLE` 를 사용한다.
+- 등록 단말 또는 PresenceService eligibility 실패 시 stable error code 는 `PRESENCE_INELIGIBLE` 를 사용한다.
 - 시작 시각 이후 새 응시를 허용하지 않는 시험은 `EXAM_LATE_ENTRY_NOT_ALLOWED` 로 거부한다.
 
 # 상태 모델
@@ -91,7 +91,7 @@ source:
 
 - 강의 소속 시험 마스터
 - 주요 필드: `course_id`, `title`, `description`, `exam_type`, `status`, `starts_at`, `ends_at`, `duration_minutes`, `requires_presence`, `late_entry_allowed`, `auto_submit_enabled`, `shuffle_questions`, `shuffle_options`, `max_attempts`
-- `requires_presence` 필드는 shared schema compatibility 를 위해 유지하지만, 현재 로컬 구현에서는 시험 생성/수정 시 항상 `true` 로 고정한다.
+- `requires_presence` 필드는 shared schema compatibility 를 위해 유지하며, 시험 생성 기본값은 `true` 이지만 생성/수정 시 명시된 `false` 값을 보존한다.
 
 ## `exam_questions`
 
@@ -134,6 +134,7 @@ source:
 ## `POST /api/students/{student_id}/courses/{course_code}/exams/{exam_id}/start`
 
 - 새 응시를 시작한다.
+- `requires_presence=true` 인 시험은 `purpose=exam` 으로 PresenceService eligibility 를 확인한 뒤 응시를 생성한다.
 - 성공 시 `submission_id`, `attempt_no`, `started_at`, `expires_at`, `status` 를 반환한다.
 - 이미 진행 중인 응시가 있으면 기존 `in_progress` submission 을 재사용하는 것을 첫 MVP 기본 정책으로 한다.
 
