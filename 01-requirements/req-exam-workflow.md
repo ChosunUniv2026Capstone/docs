@@ -82,9 +82,9 @@ The local implementation must stay aligned with the shared course-scoped exam sc
 - Questions should be revealed only after the student presses the start button and the attempt is created.
 - If `shuffle questions` is enabled, the student sees a per-attempt deterministic shuffled question order.
 - Objective question choice order remains fixed.
-- If `requires_presence=true`, the student start action must confirm that the student has at least one active registered device before the first attempt is created.
+- If `requires_presence=true`, the student start action must confirm that the student has at least one active registered device and passes PresenceService eligibility for the course classroom before the first attempt is created.
 - If `requires_presence=false`, the student start action must not block solely because the student has no active registered device.
-- The current local exam policy does not require the current class window or classroom network observation for exam start.
+- The current local exam policy does not require a currently open class window for exam start; it uses the course classroom mapping and the configured presence source, where `demo` evidence has the same eligibility status as collector evidence.
 - After the start button is pressed, the student UI switches to a dedicated exam-taking page.
 - The dedicated exam-taking page hides the normal LMS navigation and keeps the student inside the exam flow.
 - The local student exam-taking page shows one question at a time, previous/next controls, a remaining-time indicator, and direct question-number navigation.
@@ -106,7 +106,7 @@ The local implementation must stay aligned with the shared course-scoped exam sc
 - A student can have multiple attempts only up to `max_attempts`.
 - Submission expiry is derived from `duration_minutes` and stored in each submission row, capped at the earlier of the configured duration or the official exam end time.
 - API routes remain course-scoped for both student and professor flows.
-- Exam start reuses the registered-device ownership data from the attendance domain, but does not require the current class-window presence check.
+- Exam start reuses the registered-device ownership data and PresenceService course-classroom eligibility path from the attendance domain, but does not require a currently open class window.
 - Deleting an exam removes linked questions, attempts, and answers together in the local DB.
 
 # Out of Scope

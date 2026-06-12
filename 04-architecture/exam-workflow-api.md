@@ -91,9 +91,9 @@ source:
   - `submissions`
 - Student detail returns an empty `questions` list before an attempt starts.
 - The start endpoint creates the student attempt and only then reveals the question list.
-- When `requires_presence=true`, the start endpoint verifies that the student has at least one active registered device before creating the first attempt.
+- When `requires_presence=true`, the start endpoint verifies that the student has at least one active registered device and passes `purpose=exam` PresenceService eligibility before creating the first attempt.
 - When `requires_presence=false`, the start endpoint skips the registered-device/presence guard for that exam.
-- The exam start check does not require current class-window resolution or classroom network observation.
+- The exam start check does not require a currently open class window; it uses the course classroom mapping and the configured presence source, where `demo` evidence is eligible on the same terms as collector evidence.
 - If `late_entry_allowed` is false, the start endpoint rejects the first attempt after the official start time.
 - If `late_entry_allowed` is true, the start endpoint still caps the created attempt deadline at the official exam end time.
 - The frontend navigates to a dedicated student exam-taking route after the start call succeeds.

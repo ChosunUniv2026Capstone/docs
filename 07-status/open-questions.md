@@ -39,5 +39,5 @@ source:
 ## 해결되었거나 재분류된 질문
 
 - 시험 접근 제어에 재실성 조건을 어디까지 적용할 것인가?
-  - 재분류: 로컬 exam MVP 계약에서는 `requires_presence` 필드를 schema compatibility 로 유지하고, 시험 start guard / 상태 / submission 정책은 [[/04-architecture/exam-workflow-api.md]] 와 [[/04-architecture/exam-mvp-contract.md]] 를 따른다.
-  - 운영 환경에서 시험에 실제 재실성 조건을 얼마나 강하게 적용할지는 별도 정책 질문으로 남길 수 있지만, 로컬 구현 계약의 막힘 질문은 아니다.
+  - 해결: `requires_presence=true` 시험 start guard 는 active registered device 와 `purpose=exam` PresenceService eligibility 를 함께 요구한다.
+  - 운영/demo 환경 모두 설정된 presence source 를 따르며, `demo` evidence 는 collector evidence 와 같은 eligibility 지위를 가진다.
