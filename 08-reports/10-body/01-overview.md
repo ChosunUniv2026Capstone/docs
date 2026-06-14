@@ -2,7 +2,7 @@
 title: 보고서 개요
 type: report-section
 status: draft
-updated: 2026-05-03
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -35,12 +35,12 @@ source:
 
 # 현재 작성 기준
 
-이 초안은 2026-04-12 기준 로컬 워크스페이스와 `docs` source of truth 를 바탕으로 작성했다.
-구현 완료 항목과 설계/계획 항목은 문서 안에서 구분한다.
+이 문서는 2026-06-15 제출 기준으로 실제 코드와 `docs` source of truth 를 다시 대조해 작성했다.
+구현 완료 항목과 운영 단계에서 더 보강해야 할 항목은 문서 안에서 구분한다.
 
-- 구현/검증된 축: 로그인, 역할별 강의 조회, 공지 조회/작성, 학생 단말 관리, 재실성 eligibility, 출석 세션 설계/일부 구현, 시험 MVP 계약/일부 구현, Docker 기반 로컬 실행
-- 설계/계획 축: 과제, 성적, 질문/문의, 운영용 배포 고도화, 타 학교 도입 패키징
-- 2026-05-03 갱신 축: Service runtime repo, GHCR 공개 이미지 pull 검증, Release Please 기반 component 릴리스, Service manifest 기반 image mode 실행 구조
+- 구현/검증된 축: 로그인, 역할별 강의 조회, 공지 조회/작성, 학생 단말 관리, 재실성 eligibility, 출석 세션, 출석 리포트/CSV, 시험 MVP, 과제 제출/채점, 강의자료, 성적, Q&A, 학습 진도, Docker 기반 로컬 실행
+- 일부 구현/운영 보강 축: OpenWrt collector 장기 안정화, router registration/token 전용 UI, demo deploy workflow/server provenance, 운영 모니터링, 타 학교 도입 패키징
+- 2026-06-15 갱신 축: collector push ingest, Backend AP registry/token API, selected LMS API/UI/DB, object storage/report export, continuous attendance monitoring schema, Service manifest 기반 image/demo mode 실행 구조
 
 # 서비스 구성 요약
 

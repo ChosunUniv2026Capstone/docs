@@ -2,7 +2,7 @@
 title: Database 설계
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-06-15
 owners:
   - db-owner
 related:
@@ -12,6 +12,10 @@ source:
   - [[/04-architecture/data-model-overview.md]]
   - DB/postgres/init/001_schema.sql
   - DB/postgres/init/013_exam_schema.sql
+  - DB/postgres/init/014_assignment_schema.sql
+  - DB/postgres/init/015_object_storage_schema.sql
+  - DB/postgres/init/016_selected_lms_subset.sql
+  - DB/postgres/init/018_continuous_attendance_monitoring.sql
 ---
 
 # 13. Database 설계
@@ -34,6 +38,14 @@ Redis snapshot 은 영속 DB 가 아니라 PresenceService 의 성능 최적화 
 | 출석 | `attendance_sessions`, `attendance_session_slots`, `attendance_records`, `attendance_status_audit_logs` | bundle session, slot membership, 학생별 상태, 감사 로그 |
 | 시험 | `exams`, `exam_questions`, `exam_question_options`, `exam_submissions`, `exam_submission_answers` | 시험 마스터, 문항, 선택지, 응시, 답안 |
 | 공지 | `notices` | 강의 공지 |
+| 과제 | `assignments`, `assignment_submissions`, `assignment_submission_attachments` | 과제 마스터, 학생 제출, 제출 첨부 |
+| 학습자료 | `learning_items`, `learning_item_attachments`, `learning_progress` | 강의자료/영상, 인증 다운로드, 학습 진도 |
+| Q&A/성적 | `course_qna_threads`, `course_qna_posts`, `assignment_grade_overrides` | 강의별 질문/답변, 과제 점수/피드백 |
+| Object storage | `notice_attachments`, `exam_question_attachments`, `exam_answer_attachments`, `report_exports`, `object_deletion_jobs` | 첨부 파일, 출석 CSV export, 삭제 예약 job |
+| AP registry | `access_points`, `access_point_interfaces` | OpenWrt collector 대상 AP, interface, token 상태 |
+| 지속 출석 | `attendance_monitoring_leases`, `attendance_monitoring_states` | continuous attendance monitoring lease/state |
+
+초기 schema 는 `001_schema.sql` 이 담당하지만, 최종 코드 기준 데이터 모델은 `014_assignment_schema.sql`, `015_object_storage_schema.sql`, `016_selected_lms_subset.sql`, `018_continuous_attendance_monitoring.sql`까지 함께 보아야 한다. 이 파일들이 과제, 첨부/다운로드, selected LMS, 출석 CSV export, 지속 출석 모니터링을 실제 테이블로 확장한다.
 
 # 13.3 ERD
 
@@ -348,3 +360,5 @@ erDiagram
 - refresh session 은 replay detection 과 logout revocation 을 지원해야 한다.
 - exam answer 는 같은 exam 에 속한 submission/question/option 만 참조해야 한다.
 - 출석 audit 은 덮어쓰지 않고 누적한다.
+- object storage 파일은 도메인 테이블의 메타데이터와 삭제 outbox 로 추적한다.
+- collector token 은 원문을 저장하지 않고 hash/version/revoked 시점으로 관리한다.

@@ -834,7 +834,9 @@ Authorization: Bearer <student-access-token>
 
 ```http
 POST /collector/aps/b101-ap-1/snapshot
-X-Collector-Token: <collector-token>
+Authorization: Bearer <collector-token>
+X-Collector-Nonce: 20260615-b101-001
+X-Collector-Timestamp: 2026-06-15T09:00:00Z
 Content-Type: application/json
 
 {

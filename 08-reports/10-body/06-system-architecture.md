@@ -2,7 +2,7 @@
 title: 전체 시스템 설계
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -113,7 +113,7 @@ flowchart TD
 | 영역 | 현재 상태 | 계획 |
 |---|---|---|
 | 로그인/세션 | JWT access + refresh cookie 기반 구현 | 운영 환경 secret/만료 정책 강화 |
-| LMS 기본 조회 | 강의/공지/서비스관리자 조회 구현 | 과제/성적/질문 확장 |
-| 출석 | eligibility + attendance session API/모델 구현 | 실 장비 수집, 운영 정책 강화 |
-| 시험 | 객관식/진위형 MVP 계약/구현 | 수동 채점, 성적 공개, 문제 유형 확장 |
-| 인프라 | Docker Compose + Nginx | CI/CD, staging/prod 분리 |
+| LMS 기본 기능 | 강의/공지/자료/과제/성적/Q&A 구현 | 학사시스템 연동과 운영 정책 강화 |
+| 출석 | eligibility + attendance session + CSV/학기 매트릭스 구현 | 실 장비 장기 수집, 운영 정책 강화 |
+| 시험 | 객관식/진위형 MVP 계약/구현 | 수동 채점, 문제 유형 확장 |
+| 인프라 | Docker Compose + Nginx + image/demo mode | staging/prod 분리와 운영 관측 체계 보강 |

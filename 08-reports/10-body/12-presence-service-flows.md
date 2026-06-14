@@ -2,7 +2,7 @@
 title: PresenceService API 및 흐름
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-06-15
 owners:
   - presence-team
 related:
@@ -28,6 +28,8 @@ Backend 는 이 근거를 수강 정보, 시간표, 출석 세션 상태와 결�
 |---|---|---|
 | GET | `/health` | 서비스 상태 확인 |
 | GET | `/snapshots/classrooms/{classroom_id}` | 강의실 snapshot 조회 |
+| GET | `/collector/aps/health` | collector registry/cache 상태 확인 |
+| POST | `/collector/aps/{collector_ap_id}/snapshot` | OpenWrt collector snapshot push ingest |
 | POST | `/eligibility/check` | 등록 단말/강의실 네트워크 기준 eligibility 검사 |
 | GET | `/admin/dummy/classrooms/{classroom_id}/snapshot` | 서비스관리자 데모 snapshot 조회 |
 | POST | `/admin/dummy/classrooms/{classroom_id}/overlay` | 더미 overlay 적용 |
@@ -40,7 +42,7 @@ flowchart TD
   A[Backend eligibility 요청] --> B[요청 필드 검증]
   B --> C[Redis snapshot 확인]
   C -->|cache hit| D[effective snapshot 사용]
-  C -->|cache miss| E[baseline/OpenWrt snapshot 생성 또는 수집]
+  C -->|cache miss| E[collector snapshot 또는 baseline/demo source 사용]
   E --> F[Redis 저장]
   F --> D
   D --> G[등록 단말 MAC 목록 순회]
@@ -58,7 +60,7 @@ sequenceDiagram
   participant B as Backend
   participant P as PresenceService
   participant R as Redis
-  participant O as OpenWrt 또는 Dummy Source
+  participant O as OpenWrt collector 또는 Demo Source
 
   B->>P: POST /eligibility/check
   P->>R: snapshot key 조회
@@ -66,8 +68,8 @@ sequenceDiagram
     R-->>P: cached snapshot
   else cache miss
     P->>R: refresh lock 획득
-    P->>O: station snapshot 수집/생성
-    O-->>P: AP + station list
+    P->>O: collector snapshot 조회 또는 demo source 생성
+    O-->>P: AP/interface + station list
     P->>R: snapshot 저장
     P->>R: refresh lock 해제
   end
@@ -102,17 +104,23 @@ sequenceDiagram
 | `CLASSROOM_NOT_MAPPED` | 강의실 네트워크 매핑 없음 |
 | `SNAPSHOT_UNAVAILABLE` | snapshot 생성/조회 실패 |
 | `SNAPSHOT_STALE` | snapshot 이 허용 시간보다 오래됨 |
+| `AP_OFFLINE` | 강의실에 매핑된 online AP 가 없음 |
 | `DEVICE_NOT_REGISTERED` | 학생 등록 단말 없음 |
 | `DEVICE_NOT_PRESENT` | 등록 단말이 관측되지 않음 |
 | `NETWORK_NOT_ELIGIBLE` | 관측은 되었지만 AP/신호/상태 조건 불충족 |
+| `PRESENCE_SERVICE_UNAVAILABLE` | Backend 관점에서 PresenceService 호출 또는 계약 검증 실패 |
+| `COLLECTOR_REGISTRY_UNAVAILABLE` | Backend registry 동기화가 실패해 collector mapping 을 신뢰할 수 없음 |
 
-# 12.7 향후 실 장비 수집 계획
+# 12.7 OpenWrt collector push 흐름
 
-현재 main 기준 PresenceService 는 dummy snapshot 과 overlay 중심 구조를 가진다.
-향후 실 OpenWrt 연동에서는 다음 방향을 적용한다.
+현재 main 기준 PresenceService 는 dummy overlay 뿐 아니라 OpenWrt collector push ingest 를 구현한다.
+collector 는 AP registry 에 등록된 `collector_ap_id` 로 snapshot 을 보낸다.
+PresenceService 는 Backend 의 `/api/internal/presence/ap-registry` 를 `X-Internal-Token` 으로 조회해 AP/interface/classroom mapping 을 확인하고, collector token hash 와 nonce/timestamp 를 검증한다.
 
-- root SSH 는 bootstrap 또는 실험 단계로 제한한다.
-- steady-state 는 OpenWrt collector 가 PresenceService 로 push 하는 구조를 우선 검토한다.
+- collector snapshot 은 `Authorization: Bearer <token>`, `X-Collector-Nonce`, `X-Collector-Timestamp` 를 사용한다.
+- `collector_ap_id` 와 payload 의 AP id 가 다르면 `COLLECTOR_AP_ID_MISMATCH` 로 거부한다.
+- registry 에 없는 interface 는 수용하지 않으며, 수용 가능한 interface 가 없으면 `COLLECTOR_INTERFACE_NOT_MAPPED` 로 거부한다.
+- replay nonce 와 timestamp window 를 사용해 오래된 snapshot 이 판정 근거로 쓰이지 않도록 한다.
 - Backend 는 PresenceService API 를 계속 호출하고 Redis 를 직접 읽지 않는다.
-- router credential 은 환경변수 고정보다 Backend/DB 기반 동기화가 적합하다.
 - stale snapshot 은 grace window 이후 fail-closed 로 처리한다.
+- demo overlay 는 시연 입력을 위한 별도 source 로 유지해 실제 collector snapshot 과 섞이지 않게 한다.

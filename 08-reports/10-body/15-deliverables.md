@@ -2,7 +2,7 @@
 title: 산출물
 type: report-section
 status: draft
-updated: 2026-05-03
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -22,10 +22,10 @@ source:
 | 요구사항 문서 | 학생/교수/서비스관리자, 출석, 단말, 시험 요구사항 | 작성됨 |
 | ADR | 서비스 경계, OpenWrt, 출석 판정, Redis cache, attendance bundle 등 결정 기록 | 작성됨 |
 | 아키텍처 문서 | 서비스 맵, 로컬 토폴로지, 데이터 모델, 출석/시험 API 계약 | 작성됨 |
-| Front 프로토타입 | 로그인, 역할별 화면, 공지/단말/출석/시험 일부 UI | 구현/확장 중 |
-| Backend API | 인증, 강의, 공지, 단말, 서비스관리자, 출석, 시험 API | 구현/확장 중 |
-| PresenceService | snapshot cache, dummy overlay, eligibility | 구현/실 장비 확장 계획 |
-| DB 스키마/seed | 사용자/강의/단말/출석/시험 schema 및 seed | 구현됨 |
+| Front 프로토타입 | 로그인, 역할별 화면, 공지/단말/출석/시험/과제/Q&A/관리자 UI | 구현됨 |
+| Backend API | 인증, 강의, 공지, 단말, 서비스관리자, 출석, 시험, 과제, selected LMS, AP registry API | 구현됨 |
+| PresenceService | snapshot cache, collector ingest, dummy overlay, eligibility, registry cache | 구현/운영 보강 |
+| DB 스키마/seed | 사용자/강의/단말/출석/시험/과제/object storage/selected LMS schema 및 seed | 구현됨 |
 | Docker 환경 | Nginx, Front, Backend, PresenceService, PostgreSQL, Redis | 구현됨 |
 | Service runtime | local source mode, GHCR image mode, release manifest, demo deploy script | 구현/검증 진행 |
 | 릴리스 이미지 | Backend/Front/PresenceService/DB GHCR public image publish 및 anonymous pull proof | 구현됨 |

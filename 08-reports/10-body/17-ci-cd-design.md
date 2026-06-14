@@ -2,7 +2,7 @@
 title: CI/CD 설계
 type: report-section
 status: draft
-updated: 2026-05-03
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -23,8 +23,8 @@ source:
 # 17.1 현재 상태
 
 현재 프로젝트는 `Service` repository 를 기준으로 local source mode, GHCR image mode, demo deployment mode 를 분리한다.
-CI/CD 는 초기 계획 단계에서 벗어나 component image publish, Release Please 설정, Service release manifest 검증까지 구현되었다.
-다만 실제 Release Please-created release run 과 demo-production 환경의 배포 workflow/server provenance 는 최종 증거로 추가 수집해야 한다.
+CI/CD 는 초기 계획 단계에서 벗어나 component image publish, Release Please 설정, Service release manifest 검증, self-hosted runner 기반 demo deploy workflow 까지 구현되었다.
+다만 운영 배포 완료로 주장하지는 않는다. 실제 운영 provenance, 장기 healthcheck, secret rotation 절차는 후속 운영 검증 범위다.
 
 # 17.2 목표 CI 파이프라인
 
@@ -65,9 +65,17 @@ flowchart LR
 3. Service release manifest 로 Backend/Front/PresenceService/DB image ref 와 digest 고정
 4. image mode 에서 local build context 없이 공개 GHCR 이미지로 실행
 5. demo deploy script 에서 manifest render, DB reset guard, healthcheck 수행
+6. self-hosted runner 또는 SSH 기반 demo workflow 에서 원격 host 로 manifest 와 env 를 전달
 
 2026-05-03 기준 Backend `v0.2.0`, Front `v0.2.1`, PresenceService `v0.2.0`, DB `v0.2.0` public image 는 로그인 없는 `docker manifest inspect` 가 통과했다.
 기존 Service `v0.1.0` manifest 의 digest 포함 image ref 도 anonymous manifest inspect 가 통과했다.
+Service 의 현재 실행 모드는 다음처럼 분리한다.
+
+| 모드 | 구성 파일/스크립트 | 목적 |
+|---|---|---|
+| local source mode | `compose.yml`, `compose.local.yml`, `scripts/up-local.sh` | sibling repo source 를 build context 로 사용해 로컬 통합 실행 |
+| GHCR image mode | `compose.yml`, `compose.image.yml`, `scripts/up-image.sh` | release/image ref 로 로컬 build 없이 실행 |
+| demo deployment mode | `compose.demo.yml`, `scripts/deploy-demo.sh`, `.github/workflows/deploy-demo.yml` | manifest pinning, DB reset guard, health summary 를 포함한 시연 배포 |
 
 # 17.5 보안 고려사항
 
