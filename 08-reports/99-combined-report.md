@@ -25,7 +25,7 @@ source:
 
 사용자는 캘린더에서 마감일이 있는 날짜를 확인하고, 선택한 날짜의 과제 제목·과목·상태를 함께 확인한다. 이 변경은 Front #48과 docs #47이 `main`에 병합된 범위만 반영했다.
 
-<figure class="screenshot"><img src="assets/screenshots/final/html-redbox/live-student-dashboard-calendar-2026-06-01.png" alt="학생 대시보드 과제 마감 캘린더" /><figcaption>학생 대시보드에 추가된 과제 마감 캘린더</figcaption></figure>
+<figure class="screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/live-student-dashboard-calendar-2026-06-01.png" alt="학생 대시보드 과제 마감 캘린더" /><figcaption>학생 대시보드에 추가된 과제 마감 캘린더</figcaption></figure>
 
 ## 1.2 교수 대시보드 캘린더 및 부분 실패 처리 보강
 
@@ -33,7 +33,7 @@ source:
 
 또한 일부 강의의 과제 API 조회가 실패해도 전체 캘린더가 비어 보이지 않도록 보강했다. 성공한 강의의 일정은 유지하고 실패한 강의만 경고로 분리해, 부분 장애가 전체 대시보드 사용성을 막지 않도록 수정했다. 이 보강은 Front #49와 E2E 테스트에 반영되어 있다.
 
-<figure class="screenshot"><img src="assets/screenshots/final/html-redbox/live-professor-dashboard-calendar-2026-06-01.png" alt="교수 대시보드 과제 마감 캘린더" /><figcaption>교수 대시보드에서 확인한 과제 마감 캘린더</figcaption></figure>
+<figure class="screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/live-professor-dashboard-calendar-2026-06-01.png" alt="교수 대시보드 과제 마감 캘린더" /><figcaption>교수 대시보드에서 확인한 과제 마감 캘린더</figcaption></figure>
 
 ## 1.3 로그인 화면 개선 범위 정리
 
@@ -41,7 +41,7 @@ source:
 
 운영 화면 기준으로 로그인 폼과 안내 영역이 함께 렌더링되는 것을 확인했고, 해당 변경은 Front #50에 병합된 범위만 보고서에 반영했다.
 
-<figure class="screenshot"><img src="assets/screenshots/final/html-redbox/live-login-2026-06-01.png" alt="로그인 화면 개선 범위" /><figcaption>로그인 화면 전용 범위로 정리된 인증 UI</figcaption></figure>
+<figure class="screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/live-login-2026-06-01.png" alt="로그인 화면 개선 범위" /><figcaption>로그인 화면 전용 범위로 정리된 인증 UI</figcaption></figure>
 
 ## 1.4 배포 이미지 및 서비스 manifest 고정
 
@@ -49,7 +49,7 @@ Front `0.6.2` 배포 이미지를 `sha-393166e` 태그와 digest로 빌드했고
 
 서비스 health 응답은 `{"status":"ok"}`로 확인되었다. HWP 본문에는 긴 digest 전체 대신 변경의 의미만 요약하고, manifest·release 근거는 검증 산출물에 남겼다.
 
-<figure class="screenshot"><img src="assets/screenshots/final/html-redbox/live-health-2026-06-01.png" alt="서비스 health 응답" /><figcaption>운영 서버 health endpoint 응답</figcaption></figure>
+<figure class="screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/live-health-2026-06-01.png" alt="서비스 health 응답" /><figcaption>운영 서버 health endpoint 응답</figcaption></figure>
 
 ## 1.5 관리자 재실 시연 제어 확인
 
@@ -57,7 +57,7 @@ Front `0.6.2` 배포 이미지를 `sha-393166e` 태그와 digest로 빌드했고
 
 이 캡처는 전체 보고서의 기존 관리자 기능 설명을 유지하면서, 최신 배포 이미지에서도 시연 흐름이 깨지지 않았다는 운영 증거로 사용한다.
 
-<figure class="screenshot"><img src="assets/screenshots/final/html-redbox/live-admin-presence-demo-2026-06-01.png" alt="관리자 재실 시연 제어" /><figcaption>운영 서버에서 확인한 관리자 재실 시연 제어 화면</figcaption></figure>
+<figure class="screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/live-admin-presence-demo-2026-06-01.png" alt="관리자 재실 시연 제어" /><figcaption>운영 서버에서 확인한 관리자 재실 시연 제어 화면</figcaption></figure>
 
 ## 1.6 검증 결과 및 남은 확인사항
 
@@ -231,7 +231,7 @@ DB는 사용자·강의·강의실·네트워크·출석·시험·과제·Q&A·�
 
 ### 4.4.1 ERD-1 세로 1쪽 전체 overview
 
-<figure class="figure diagram full-erd"><img src="assets/diagrams/final/html-redbox/erd-1-full-smart-class-erd-redbox.png" alt="ERD-1 portrait full ERD"><figcaption>ERD-1 portrait full ERD</figcaption></figure>
+<figure class="figure diagram full-erd"><img src="/08-reports/assets/diagrams/final/html-redbox/erd-1-full-smart-class-erd-redbox.png" alt="ERD-1 portrait full ERD"><figcaption>ERD-1 portrait full ERD</figcaption></figure>
 
 ### 4.4.2 전체 테이블 목록과 역할
 
@@ -490,262 +490,262 @@ smart-class/
 #### Fig. 1 — 로그인 화면과 서비스 제목
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-1-01-login-redbox.png" alt="Fig. 1 — 로그인 화면과 서비스 제목"><figcaption>Fig. 1 — 로그인 화면과 서비스 제목</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-1-01-login-redbox.png" alt="Fig. 1 — 로그인 화면과 서비스 제목"><figcaption>Fig. 1 — 로그인 화면과 서비스 제목</figcaption></figure>
 
 #### Fig. 2 — 로그인 실패 안내 배너
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-2-common-02-login-failure-redbox.png" alt="Fig. 2 — 로그인 실패 안내 배너"><figcaption>Fig. 2 — 로그인 실패 안내 배너</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-2-common-02-login-failure-redbox.png" alt="Fig. 2 — 로그인 실패 안내 배너"><figcaption>Fig. 2 — 로그인 실패 안내 배너</figcaption></figure>
 
 #### Fig. 3 — 권한 없는 경로 접근 안내
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-3-common-03-authorization-denied-redbox.png" alt="Fig. 3 — 권한 없는 경로 접근 안내"><figcaption>Fig. 3 — 권한 없는 경로 접근 안내</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-3-common-03-authorization-denied-redbox.png" alt="Fig. 3 — 권한 없는 경로 접근 안내"><figcaption>Fig. 3 — 권한 없는 경로 접근 안내</figcaption></figure>
 
 #### Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-4-student-01-dashboard-redbox.png" alt="Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약"><figcaption>Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-4-student-01-dashboard-redbox.png" alt="Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약"><figcaption>Fig. 4 — 학생 대시보드의 강의 카드와 계정 요약</figcaption></figure>
 
 #### Fig. 5 — 교수 대시보드의 담당 강의 카드
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-5-professor-01-dashboard-redbox.png" alt="Fig. 5 — 교수 대시보드의 담당 강의 카드"><figcaption>Fig. 5 — 교수 대시보드의 담당 강의 카드</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-5-professor-01-dashboard-redbox.png" alt="Fig. 5 — 교수 대시보드의 담당 강의 카드"><figcaption>Fig. 5 — 교수 대시보드의 담당 강의 카드</figcaption></figure>
 
 #### Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-6-fig-48-admin-01-users-redbox.png" alt="Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼"><figcaption>Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-6-fig-48-admin-01-users-redbox.png" alt="Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼"><figcaption>Fig. 6 / Fig. 48 — 관리자 사용자 목록과 역할 컬럼</figcaption></figure>
 
 #### Fig. 7 — 학생 등록 단말 목록과 관리 버튼
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-7-student-02-profile-devices-redbox.png" alt="Fig. 7 — 학생 등록 단말 목록과 관리 버튼"><figcaption>Fig. 7 — 학생 등록 단말 목록과 관리 버튼</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-7-student-02-profile-devices-redbox.png" alt="Fig. 7 — 학생 등록 단말 목록과 관리 버튼"><figcaption>Fig. 7 — 학생 등록 단말 목록과 관리 버튼</figcaption></figure>
 
 #### Fig. 8 — 학생 강의 홈 헤더와 탭 구조
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-8-student-03-course-home-redbox.png" alt="Fig. 8 — 학생 강의 홈 헤더와 탭 구조"><figcaption>Fig. 8 — 학생 강의 홈 헤더와 탭 구조</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-8-student-03-course-home-redbox.png" alt="Fig. 8 — 학생 강의 홈 헤더와 탭 구조"><figcaption>Fig. 8 — 학생 강의 홈 헤더와 탭 구조</figcaption></figure>
 
 #### Fig. 9 — 학습자료 카드와 다운로드 영역
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-9-student-04-learning-content-redbox.png" alt="Fig. 9 — 학습자료 카드와 다운로드 영역"><figcaption>Fig. 9 — 학습자료 카드와 다운로드 영역</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-9-student-04-learning-content-redbox.png" alt="Fig. 9 — 학습자료 카드와 다운로드 영역"><figcaption>Fig. 9 — 학습자료 카드와 다운로드 영역</figcaption></figure>
 
 #### Fig. 10 — 공지 목록 행과 상세 이동
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-10-student-05-notices-redbox.png" alt="Fig. 10 — 공지 목록 행과 상세 이동"><figcaption>Fig. 10 — 공지 목록 행과 상세 이동</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-10-student-05-notices-redbox.png" alt="Fig. 10 — 공지 목록 행과 상세 이동"><figcaption>Fig. 10 — 공지 목록 행과 상세 이동</figcaption></figure>
 
 #### Fig. 11 — 공지 제목·본문·작성 메타데이터
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-11-student-06-notice-detail-redbox.png" alt="Fig. 11 — 공지 제목·본문·작성 메타데이터"><figcaption>Fig. 11 — 공지 제목·본문·작성 메타데이터</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-11-student-06-notice-detail-redbox.png" alt="Fig. 11 — 공지 제목·본문·작성 메타데이터"><figcaption>Fig. 11 — 공지 제목·본문·작성 메타데이터</figcaption></figure>
 
 #### Fig. 12 — 과제 카드의 제출 상태와 상세 이동
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-12-student-14-assignment-list-redbox.png" alt="Fig. 12 — 과제 카드의 제출 상태와 상세 이동"><figcaption>Fig. 12 — 과제 카드의 제출 상태와 상세 이동</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-12-student-14-assignment-list-redbox.png" alt="Fig. 12 — 과제 카드의 제출 상태와 상세 이동"><figcaption>Fig. 12 — 과제 카드의 제출 상태와 상세 이동</figcaption></figure>
 
 #### Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-13-student-15-assignment-detail-redbox.png" alt="Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백"><figcaption>Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-13-student-15-assignment-detail-redbox.png" alt="Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백"><figcaption>Fig. 13 — 과제 제출 본문, 첨부 영역, 피드백</figcaption></figure>
 
 #### Fig. 14 — 성적과 피드백 요약 카드
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-14-student-16-grade-feedback-redbox.png" alt="Fig. 14 — 성적과 피드백 요약 카드"><figcaption>Fig. 14 — 성적과 피드백 요약 카드</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-14-student-16-grade-feedback-redbox.png" alt="Fig. 14 — 성적과 피드백 요약 카드"><figcaption>Fig. 14 — 성적과 피드백 요약 카드</figcaption></figure>
 
 #### Fig. 15 — 학습 진도 입력과 저장 동작
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-15-student-17-learning-progress-redbox.png" alt="Fig. 15 — 학습 진도 입력과 저장 동작"><figcaption>Fig. 15 — 학습 진도 입력과 저장 동작</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-15-student-17-learning-progress-redbox.png" alt="Fig. 15 — 학습 진도 입력과 저장 동작"><figcaption>Fig. 15 — 학습 진도 입력과 저장 동작</figcaption></figure>
 
 #### Fig. 16 — Q&A 작성 폼과 thread 상태
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-16-student-18-qna-redbox.png" alt="Fig. 16 — Q&amp;A 작성 폼과 thread 상태"><figcaption>Fig. 16 — Q&amp;A 작성 폼과 thread 상태</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-16-student-18-qna-redbox.png" alt="Fig. 16 — Q&amp;A 작성 폼과 thread 상태"><figcaption>Fig. 16 — Q&amp;A 작성 폼과 thread 상태</figcaption></figure>
 
 #### Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-17-fig-20-student-07-attendance-before-check-redbox.png" alt="Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표"><figcaption>Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-17-fig-20-student-07-attendance-before-check-redbox.png" alt="Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표"><figcaption>Fig. 17 / Fig. 20 — 출석 가능 여부 카드와 학기 출석표</figcaption></figure>
 
 #### Fig. 18 — 출석 가능 판정 결과와 근거 카드
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-18-student-08-eligibility-result-redbox.png" alt="Fig. 18 — 출석 가능 판정 결과와 근거 카드"><figcaption>Fig. 18 — 출석 가능 판정 결과와 근거 카드</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-18-student-08-eligibility-result-redbox.png" alt="Fig. 18 — 출석 가능 판정 결과와 근거 카드"><figcaption>Fig. 18 — 출석 가능 판정 결과와 근거 카드</figcaption></figure>
 
 #### Fig. 19 — 묶음 출석 체크인 결과 카드
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-19-student-09-check-in-result-redbox.png" alt="Fig. 19 — 묶음 출석 체크인 결과 카드"><figcaption>Fig. 19 — 묶음 출석 체크인 결과 카드</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-19-student-09-check-in-result-redbox.png" alt="Fig. 19 — 묶음 출석 체크인 결과 카드"><figcaption>Fig. 19 — 묶음 출석 체크인 결과 카드</figcaption></figure>
 
 #### Fig. 21 — 학생 시험 목록의 상태와 정책
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-21-student-10-exam-list-redbox.png" alt="Fig. 21 — 학생 시험 목록의 상태와 정책"><figcaption>Fig. 21 — 학생 시험 목록의 상태와 정책</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-21-student-10-exam-list-redbox.png" alt="Fig. 21 — 학생 시험 목록의 상태와 정책"><figcaption>Fig. 21 — 학생 시험 목록의 상태와 정책</figcaption></figure>
 
 #### Fig. 22 — 시험 응시 화면의 문항·선택지·타이머
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-22-student-11-exam-taking-redbox.png" alt="Fig. 22 — 시험 응시 화면의 문항·선택지·타이머"><figcaption>Fig. 22 — 시험 응시 화면의 문항·선택지·타이머</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-22-student-11-exam-taking-redbox.png" alt="Fig. 22 — 시험 응시 화면의 문항·선택지·타이머"><figcaption>Fig. 22 — 시험 응시 화면의 문항·선택지·타이머</figcaption></figure>
 
 #### Fig. 23 — 선택한 답안과 저장 상태
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-23-student-12-exam-answer-selected-redbox.png" alt="Fig. 23 — 선택한 답안과 저장 상태"><figcaption>Fig. 23 — 선택한 답안과 저장 상태</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-23-student-12-exam-answer-selected-redbox.png" alt="Fig. 23 — 선택한 답안과 저장 상태"><figcaption>Fig. 23 — 선택한 답안과 저장 상태</figcaption></figure>
 
 #### Fig. 24 — 미응답 문항 제출 방지 안내
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-24-student-19-exam-missing-answer-warning-redbox.png" alt="Fig. 24 — 미응답 문항 제출 방지 안내"><figcaption>Fig. 24 — 미응답 문항 제출 방지 안내</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-24-student-19-exam-missing-answer-warning-redbox.png" alt="Fig. 24 — 미응답 문항 제출 방지 안내"><figcaption>Fig. 24 — 미응답 문항 제출 방지 안내</figcaption></figure>
 
 #### Fig. 25 — 시험 제출 완료 결과
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-25-student-13-exam-submit-result-redbox.png" alt="Fig. 25 — 시험 제출 완료 결과"><figcaption>Fig. 25 — 시험 제출 완료 결과</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-25-student-13-exam-submit-result-redbox.png" alt="Fig. 25 — 시험 제출 완료 결과"><figcaption>Fig. 25 — 시험 제출 완료 결과</figcaption></figure>
 
 #### Fig. P2 — 교수 프로필 요약
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-p2-professor-02-profile-redbox.png" alt="Fig. P2 — 교수 프로필 요약"><figcaption>Fig. P2 — 교수 프로필 요약</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-p2-professor-02-profile-redbox.png" alt="Fig. P2 — 교수 프로필 요약"><figcaption>Fig. P2 — 교수 프로필 요약</figcaption></figure>
 
 #### Fig. 26 — 교수 강의 홈과 운영 탭
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-26-professor-03-course-home-redbox.png" alt="Fig. 26 — 교수 강의 홈과 운영 탭"><figcaption>Fig. 26 — 교수 강의 홈과 운영 탭</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-26-professor-03-course-home-redbox.png" alt="Fig. 26 — 교수 강의 홈과 운영 탭"><figcaption>Fig. 26 — 교수 강의 홈과 운영 탭</figcaption></figure>
 
 #### Fig. 27 — 교수 학습자료 업로드·생성 controls
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-27-professor-04-learning-content-manage-redbox.png" alt="Fig. 27 — 교수 학습자료 업로드·생성 controls"><figcaption>Fig. 27 — 교수 학습자료 업로드·생성 controls</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-27-professor-04-learning-content-manage-redbox.png" alt="Fig. 27 — 교수 학습자료 업로드·생성 controls"><figcaption>Fig. 27 — 교수 학습자료 업로드·생성 controls</figcaption></figure>
 
 #### Fig. 28 — 교수 공지 목록
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-28-professor-05-notices-redbox.png" alt="Fig. 28 — 교수 공지 목록"><figcaption>Fig. 28 — 교수 공지 목록</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-28-professor-05-notices-redbox.png" alt="Fig. 28 — 교수 공지 목록"><figcaption>Fig. 28 — 교수 공지 목록</figcaption></figure>
 
 #### Fig. 29 — 교수 공지 작성 폼과 저장 동작
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-29-professor-06-course-manage-notice-form-redbox.png" alt="Fig. 29 — 교수 공지 작성 폼과 저장 동작"><figcaption>Fig. 29 — 교수 공지 작성 폼과 저장 동작</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-29-professor-06-course-manage-notice-form-redbox.png" alt="Fig. 29 — 교수 공지 작성 폼과 저장 동작"><figcaption>Fig. 29 — 교수 공지 작성 폼과 저장 동작</figcaption></figure>
 
 #### Fig. 30 — 과제 생성과 과제 목록 관리 영역
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-30-professor-17-assignment-create-redbox.png" alt="Fig. 30 — 과제 생성과 과제 목록 관리 영역"><figcaption>Fig. 30 — 과제 생성과 과제 목록 관리 영역</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-30-professor-17-assignment-create-redbox.png" alt="Fig. 30 — 과제 생성과 과제 목록 관리 영역"><figcaption>Fig. 30 — 과제 생성과 과제 목록 관리 영역</figcaption></figure>
 
 #### Fig. 31 — 제출자 목록과 선택 학생 제출 상세
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-31-professor-18-submission-review-redbox.png" alt="Fig. 31 — 제출자 목록과 선택 학생 제출 상세"><figcaption>Fig. 31 — 제출자 목록과 선택 학생 제출 상세</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-31-professor-18-submission-review-redbox.png" alt="Fig. 31 — 제출자 목록과 선택 학생 제출 상세"><figcaption>Fig. 31 — 제출자 목록과 선택 학생 제출 상세</figcaption></figure>
 
 #### Fig. 32 — 점수·상태·피드백 채점 controls
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-32-professor-19-assignment-grading-redbox.png" alt="Fig. 32 — 점수·상태·피드백 채점 controls"><figcaption>Fig. 32 — 점수·상태·피드백 채점 controls</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-32-professor-19-assignment-grading-redbox.png" alt="Fig. 32 — 점수·상태·피드백 채점 controls"><figcaption>Fig. 32 — 점수·상태·피드백 채점 controls</figcaption></figure>
 
 #### Fig. 33 — 학생별 성적 행과 평균 비율
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-33-professor-20-grade-overview-redbox.png" alt="Fig. 33 — 학생별 성적 행과 평균 비율"><figcaption>Fig. 33 — 학생별 성적 행과 평균 비율</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-33-professor-20-grade-overview-redbox.png" alt="Fig. 33 — 학생별 성적 행과 평균 비율"><figcaption>Fig. 33 — 학생별 성적 행과 평균 비율</figcaption></figure>
 
 #### Fig. 34 — 학습자료별 학생 진도 표
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-34-professor-21-learning-progress-redbox.png" alt="Fig. 34 — 학습자료별 학생 진도 표"><figcaption>Fig. 34 — 학습자료별 학생 진도 표</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-34-professor-21-learning-progress-redbox.png" alt="Fig. 34 — 학습자료별 학생 진도 표"><figcaption>Fig. 34 — 학습자료별 학생 진도 표</figcaption></figure>
 
 #### Fig. 35 — Q&A 답변 입력, 종료 여부, 저장 동작
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-35-professor-22-qna-answer-redbox.png" alt="Fig. 35 — Q&amp;A 답변 입력, 종료 여부, 저장 동작"><figcaption>Fig. 35 — Q&amp;A 답변 입력, 종료 여부, 저장 동작</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-35-professor-22-qna-answer-redbox.png" alt="Fig. 35 — Q&amp;A 답변 입력, 종료 여부, 저장 동작"><figcaption>Fig. 35 — Q&amp;A 답변 입력, 종료 여부, 저장 동작</figcaption></figure>
 
 #### Fig. 36 — 시험 초안과 목록 관리 카드
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-36-professor-07-exam-manage-redbox.png" alt="Fig. 36 — 시험 초안과 목록 관리 카드"><figcaption>Fig. 36 — 시험 초안과 목록 관리 카드</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-36-professor-07-exam-manage-redbox.png" alt="Fig. 36 — 시험 초안과 목록 관리 카드"><figcaption>Fig. 36 — 시험 초안과 목록 관리 카드</figcaption></figure>
 
 #### Fig. 37 — 시험 정책과 문항 목록
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-37-professor-08-exam-detail-redbox.png" alt="Fig. 37 — 시험 정책과 문항 목록"><figcaption>Fig. 37 — 시험 정책과 문항 목록</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-37-professor-08-exam-detail-redbox.png" alt="Fig. 37 — 시험 정책과 문항 목록"><figcaption>Fig. 37 — 시험 정책과 문항 목록</figcaption></figure>
 
 #### Fig. 38 — 시험 게시 후 상태 결과
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-38-professor-16-exam-publish-result-redbox.png" alt="Fig. 38 — 시험 게시 후 상태 결과"><figcaption>Fig. 38 — 시험 게시 후 상태 결과</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-38-professor-16-exam-publish-result-redbox.png" alt="Fig. 38 — 시험 게시 후 상태 결과"><figcaption>Fig. 38 — 시험 게시 후 상태 결과</figcaption></figure>
 
 #### Fig. 39 — 시험 종료 후 상태 결과
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-39-professor-15-exam-close-result-redbox.png" alt="Fig. 39 — 시험 종료 후 상태 결과"><figcaption>Fig. 39 — 시험 종료 후 상태 결과</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-39-professor-15-exam-close-result-redbox.png" alt="Fig. 39 — 시험 종료 후 상태 결과"><figcaption>Fig. 39 — 시험 종료 후 상태 결과</figcaption></figure>
 
 #### Fig. 40 — 주차별 출석 timeline
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-40-professor-09-attendance-timeline-redbox.png" alt="Fig. 40 — 주차별 출석 timeline"><figcaption>Fig. 40 — 주차별 출석 timeline</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-40-professor-09-attendance-timeline-redbox.png" alt="Fig. 40 — 주차별 출석 timeline"><figcaption>Fig. 40 — 주차별 출석 timeline</figcaption></figure>
 
 #### Fig. 41 — 출석 시작 modal의 운영 모드 선택
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-41-professor-23-attendance-start-modal-redbox.png" alt="Fig. 41 — 출석 시작 modal의 운영 모드 선택"><figcaption>Fig. 41 — 출석 시작 modal의 운영 모드 선택</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-41-professor-23-attendance-start-modal-redbox.png" alt="Fig. 41 — 출석 시작 modal의 운영 모드 선택"><figcaption>Fig. 41 — 출석 시작 modal의 운영 모드 선택</figcaption></figure>
 
 #### Fig. 42 — 스마트 출석 timer와 종료 버튼
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-42-professor-11-attendance-timer-redbox.png" alt="Fig. 42 — 스마트 출석 timer와 종료 버튼"><figcaption>Fig. 42 — 스마트 출석 timer와 종료 버튼</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-42-professor-11-attendance-timer-redbox.png" alt="Fig. 42 — 스마트 출석 timer와 종료 버튼"><figcaption>Fig. 42 — 스마트 출석 timer와 종료 버튼</figcaption></figure>
 
 #### Fig. 43 — 학생 출석 상태 표와 사유 입력
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-43-professor-12-attendance-roster-redbox.png" alt="Fig. 43 — 학생 출석 상태 표와 사유 입력"><figcaption>Fig. 43 — 학생 출석 상태 표와 사유 입력</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-43-professor-12-attendance-roster-redbox.png" alt="Fig. 43 — 학생 출석 상태 표와 사유 입력"><figcaption>Fig. 43 — 학생 출석 상태 표와 사유 입력</figcaption></figure>
 
 #### Fig. 44 — 차시별 출석 roster controls
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-44-professor-13-attendance-slot-roster-redbox.png" alt="Fig. 44 — 차시별 출석 roster controls"><figcaption>Fig. 44 — 차시별 출석 roster controls</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-44-professor-13-attendance-slot-roster-redbox.png" alt="Fig. 44 — 차시별 출석 roster controls"><figcaption>Fig. 44 — 차시별 출석 roster controls</figcaption></figure>
 
 #### Fig. 45 — 출석 저장 성공과 갱신된 상태 행
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-45-professor-14-attendance-edit-save-result-redbox.png" alt="Fig. 45 — 출석 저장 성공과 갱신된 상태 행"><figcaption>Fig. 45 — 출석 저장 성공과 갱신된 상태 행</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-45-professor-14-attendance-edit-save-result-redbox.png" alt="Fig. 45 — 출석 저장 성공과 갱신된 상태 행"><figcaption>Fig. 45 — 출석 저장 성공과 갱신된 상태 행</figcaption></figure>
 
 #### Fig. 46 — 학생별 출석 통계 표와 CSV 버튼
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-46-professor-10-attendance-student-stats-redbox.png" alt="Fig. 46 — 학생별 출석 통계 표와 CSV 버튼"><figcaption>Fig. 46 — 학생별 출석 통계 표와 CSV 버튼</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-46-professor-10-attendance-student-stats-redbox.png" alt="Fig. 46 — 학생별 출석 통계 표와 CSV 버튼"><figcaption>Fig. 46 — 학생별 출석 통계 표와 CSV 버튼</figcaption></figure>
 
 #### Fig. 47 — 변경 불가능한 출석 감사 이력
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-47-professor-24-attendance-history-redbox.png" alt="Fig. 47 — 변경 불가능한 출석 감사 이력"><figcaption>Fig. 47 — 변경 불가능한 출석 감사 이력</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-47-professor-24-attendance-history-redbox.png" alt="Fig. 47 — 변경 불가능한 출석 감사 이력"><figcaption>Fig. 47 — 변경 불가능한 출석 감사 이력</figcaption></figure>
 
 #### Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.png" alt="Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리"><figcaption>Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-49-fig-50-fig-51-admin-02-classrooms-networks-redbox.png" alt="Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리"><figcaption>Fig. 49 / Fig. 50 / Fig. 51 — 강의실·AP 매핑, 관측 단말, 임계값 관리</figcaption></figure>
 
 #### Fig. 52 — 재실성 demo source와 overlay controls
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-52-admin-03-presence-demo-control-redbox.png" alt="Fig. 52 — 재실성 demo source와 overlay controls"><figcaption>Fig. 52 — 재실성 demo source와 overlay controls</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-52-admin-03-presence-demo-control-redbox.png" alt="Fig. 52 — 재실성 demo source와 overlay controls"><figcaption>Fig. 52 — 재실성 demo source와 overlay controls</figcaption></figure>
 
 #### Fig. 53 — 적용된 demo overlay 단말 상태
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-53-admin-04-presence-demo-applied-redbox.png" alt="Fig. 53 — 적용된 demo overlay 단말 상태"><figcaption>Fig. 53 — 적용된 demo overlay 단말 상태</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-53-admin-04-presence-demo-applied-redbox.png" alt="Fig. 53 — 적용된 demo overlay 단말 상태"><figcaption>Fig. 53 — 적용된 demo overlay 단말 상태</figcaption></figure>
 
 #### Fig. 54 — demo 초기화 결과와 기준 상태 복원
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-54-admin-05-presence-demo-reset-result-redbox.png" alt="Fig. 54 — demo 초기화 결과와 기준 상태 복원"><figcaption>Fig. 54 — demo 초기화 결과와 기준 상태 복원</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-54-admin-05-presence-demo-reset-result-redbox.png" alt="Fig. 54 — demo 초기화 결과와 기준 상태 복원"><figcaption>Fig. 54 — demo 초기화 결과와 기준 상태 복원</figcaption></figure>
 
 #### Fig. 55 — real snapshot과 demo snapshot 구분
 
 
-<figure class="figure screenshot"><img src="assets/screenshots/final/html-redbox/fig-55-admin-06-real-vs-demo-snapshots-redbox.png" alt="Fig. 55 — real snapshot과 demo snapshot 구분"><figcaption>Fig. 55 — real snapshot과 demo snapshot 구분</figcaption></figure>
+<figure class="figure screenshot"><img src="/08-reports/assets/screenshots/final/html-redbox/fig-55-admin-06-real-vs-demo-snapshots-redbox.png" alt="Fig. 55 — real snapshot과 demo snapshot 구분"><figcaption>Fig. 55 — real snapshot과 demo snapshot 구분</figcaption></figure>
 
 #### Fig. 56 — OpenWrt 라우터 등록 UI 미구현 범위
 
