@@ -272,136 +272,82 @@ DB는 사용자·강의·강의실·네트워크·출석·시험·과제·Q&A·�
 | `report_exports` | 운영/파일 | 보고서 export | 출석 CSV 등 생성 보고서 파일의 다운로드 메타데이터를 저장한다. | 16 | 2 |
 | `users` | 사용자/인증 | 사용자/권한 | 학생·교수·관리자 계정과 역할, 로그인 식별자, 비밀번호 해시를 저장한다. | 9 | 0 |
 
-### 4.4.3 주요 테이블 구조 Mermaid ERD
+### 4.4.3 주요 테이블 구조 요약
 
-아래 ERD는 실제 SQL schema에서 읽은 컬럼, PK/FK/UK 표기를 기준으로 생성했다. 관계선보다 컬럼 구조 확인이 중요한 표는 테이블별 PNG로 분리하여 글자가 작아지지 않도록 했다. 첨부파일·삭제 job처럼 반복 구조가 있는 보조 테이블은 전체 목록 표와 다음 절의 실제 컬럼 요약에서 역할을 확인한다.
+아래 항목은 실제 SQL schema에서 읽은 컬럼, PK/FK/UK 표기를 기준으로 주요 테이블의 역할을 요약한다. 관계선은 앞의 전체 ERD와 부록의 부분 ERD 이미지에서 확인하고, 컬럼 구조와 제약은 전체 목록 표와 다음 절의 실제 컬럼 요약에서 확인한다.
 
 
 #### users 테이블 구조
 
 학생·교수·관리자 계정과 역할, 로그인 식별자, 암호 해시를 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-users.png" alt="users 테이블 구조"><figcaption>users 테이블 구조</figcaption></figure>
-
-
 #### courses 테이블 구조
 
 강의 코드, 강의명, 담당 교수 사용자 FK를 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-courses.png" alt="courses 테이블 구조"><figcaption>courses 테이블 구조</figcaption></figure>
-
 
 #### course_enrollments 테이블 구조
 
 강의와 학생 사용자의 수강 관계와 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-course-enrollments.png" alt="course_enrollments 테이블 구조"><figcaption>course_enrollments 테이블 구조</figcaption></figure>
-
-
 #### classrooms 테이블 구조
 
 강의실 코드, 이름, 건물, 층 정보를 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-classrooms.png" alt="classrooms 테이블 구조"><figcaption>classrooms 테이블 구조</figcaption></figure>
-
 
 #### classroom_networks 테이블 구조
 
 강의실별 SSID/BSSID와 RSSI threshold 기준을 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-classroom-networks.png" alt="classroom_networks 테이블 구조"><figcaption>classroom_networks 테이블 구조</figcaption></figure>
-
-
 #### access_points 테이블 구조
 
 OpenWrt collector가 보고하는 AP registry 식별자와 라벨을 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-access-points.png" alt="access_points 테이블 구조"><figcaption>access_points 테이블 구조</figcaption></figure>
-
 
 #### registered_devices 테이블 구조
 
 사용자 등록 단말의 MAC hash, 표시 라벨, 활성 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-registered-devices.png" alt="registered_devices 테이블 구조"><figcaption>registered_devices 테이블 구조</figcaption></figure>
-
-
 #### presence_eligibility_logs 테이블 구조
 
 출석 가능성 판정 결과, RSSI/BSSID 근거, snapshot freshness를 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-presence-eligibility-logs.png" alt="presence_eligibility_logs 테이블 구조"><figcaption>presence_eligibility_logs 테이블 구조</figcaption></figure>
-
 
 #### attendance_sessions 테이블 구조
 
 교수가 연 출석 세션의 시간, course/classroom, bundle 정보를 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-attendance-sessions.png" alt="attendance_sessions 테이블 구조"><figcaption>attendance_sessions 테이블 구조</figcaption></figure>
-
-
 #### attendance_records 테이블 구조
 
 학생별 최종 출석 상태, 사유, 확정자, 확정 시각을 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-attendance-records.png" alt="attendance_records 테이블 구조"><figcaption>attendance_records 테이블 구조</figcaption></figure>
-
 
 #### attendance_status_audit_logs 테이블 구조
 
 출석 상태 변경 전후 값, 변경 주체, 사유, version을 남긴다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-attendance-status-audit-logs.png" alt="attendance_status_audit_logs 테이블 구조"><figcaption>attendance_status_audit_logs 테이블 구조</figcaption></figure>
-
-
 #### exams 테이블 구조
 
 시험 제목, 상태, 공개/응시 가능 시간, 제한 시간을 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-exams.png" alt="exams 테이블 구조"><figcaption>exams 테이블 구조</figcaption></figure>
-
 
 #### exam_questions 테이블 구조
 
 시험 문항, 배점, 순서, 정답 선택지 연결 기준을 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-exam-questions.png" alt="exam_questions 테이블 구조"><figcaption>exam_questions 테이블 구조</figcaption></figure>
-
-
 #### exam_submissions 테이블 구조
 
 학생별 시험 응시 attempt, 제출 시각, 점수, 상태를 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-exam-submissions.png" alt="exam_submissions 테이블 구조"><figcaption>exam_submissions 테이블 구조</figcaption></figure>
-
 
 #### assignments 테이블 구조
 
 과제 제목, 설명, 공개/마감 시각, 배점, 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-assignments.png" alt="assignments 테이블 구조"><figcaption>assignments 테이블 구조</figcaption></figure>
-
-
 #### assignment_submissions 테이블 구조
 
 학생별 과제 제출 본문, 제출 상태, 점수, 피드백을 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-assignment-submissions.png" alt="assignment_submissions 테이블 구조"><figcaption>assignment_submissions 테이블 구조</figcaption></figure>
-
 
 #### learning_items 테이블 구조
 
 학습자료 제목, 본문, 링크, 파일 첨부 기준을 저장한다.
 
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-learning-items.png" alt="learning_items 테이블 구조"><figcaption>learning_items 테이블 구조</figcaption></figure>
-
-
 #### course_qna_threads 테이블 구조
 
 강의별 Q&A thread, 작성자, 종료 여부를 저장한다.
-
-<figure class="figure mermaid-db"><img src="assets/mermaid/db-course-qna-threads.png" alt="course_qna_threads 테이블 구조"><figcaption>course_qna_threads 테이블 구조</figcaption></figure>
-
 
 ## 4.5 DB schema 핵심 근거
 
