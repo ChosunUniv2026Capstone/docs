@@ -2,7 +2,7 @@
 title: 검증 및 테스트
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -30,6 +30,9 @@ Backend 테스트는 다음 범위를 포함한다.
 - Presence admin/demo endpoint
 - attendance realtime/session flow
 - exam contract alignment
+- assignment submit/edit/grade API
+- learning item, Q&A, grade, report export, object storage domain API
+- AP registry/token API 와 PresenceService integration fallback
 
 예상 명령:
 
@@ -46,6 +49,9 @@ PresenceService 테스트는 다음 범위를 포함한다.
 - snapshot cache hit/miss
 - refresh lock
 - dummy overlay 적용/초기화
+- collector snapshot ingest
+- collector token, nonce, timestamp 검증
+- Backend AP registry fetch/cache
 - registered device matching
 - signal threshold 판정
 - eligibility reason code
@@ -75,6 +81,9 @@ npx playwright test
 - presence demo
 - attendance route
 - exam workflow
+- selected LMS subset
+- assignment submit/grade
+- admin presence demo controls
 
 # 18.5 DB 검증
 
@@ -85,6 +94,7 @@ DB 검증은 PostgreSQL container 에 init script 를 실제 적용해 확인한
 - schema 생성 성공
 - seed import 성공
 - 출석/시험 핵심 테이블 존재
+- 과제, object storage, selected LMS, report export, continuous attendance monitoring 테이블 존재
 - unique/foreign key 제약 동작
 - demo tuple seed 확인
 
@@ -120,4 +130,6 @@ DB 검증은 PostgreSQL container 에 init script 를 실제 적용해 확인한
 - DB ERD
 - 테스트 명령과 결과 요약
 - Docker compose health check 결과
+- Service local/image/demo mode 검증 결과
+- collector/registry 계약 검증 결과
 - 주요 한계와 미완성 항목

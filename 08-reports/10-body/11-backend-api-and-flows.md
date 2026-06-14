@@ -2,7 +2,7 @@
 title: Backend API 및 흐름
 type: report-section
 status: draft
-updated: 2026-04-12
+updated: 2026-06-15
 owners:
   - backend-team
 related:
@@ -14,6 +14,8 @@ source:
   - Backend/app/attendance.py
   - Backend/app/services.py
   - Backend/app/auth.py
+  - Backend/app/storage.py
+  - Backend/app/presence_client.py
 ---
 
 # 11. Backend API 및 흐름
@@ -28,15 +30,18 @@ PresenceService 는 재실성 근거를 제공하지만, 최종 허용 여부는
 
 | 그룹 | Endpoint 예시 | 설명 |
 |---|---|---|
-| Health | `GET /health` | 서비스 상태 확인 |
-| Auth | `/api/auth/login`, `/refresh`, `/bootstrap`, `/logout` | 로그인, 토큰 갱신, 세션 복구, 로그아웃 |
+| Health | `GET /health`, `GET /ready` | 서비스 상태와 의존성 준비 상태 확인 |
+| Auth | `/api/auth/login`, `/refresh`, `/bootstrap`, `/me`, `/logout` | 로그인, 토큰 갱신, 세션 복구, 사용자 확인, 로그아웃 |
 | Course | `/api/students/{id}/courses`, `/api/professors/{id}/courses` | 학생/교수 강의 목록 |
-| Notice | `/api/notices/{login_id}`, `/api/professors/{id}/notices` | 공지 조회/작성 |
+| Notice | `/api/notices/{login_id}`, `/api/professors/{id}/notices` | 공지 조회/작성, 첨부 다운로드 |
+| Learning/LMS | `/learning-items`, `/progress`, `/grades`, `/qna` | 강의자료, 진도, 성적, Q&A |
+| Assignment | `/assignments`, `/submissions`, `/grade`, `/attachments` | 과제 생성, 제출/수정, 첨부, 채점 |
 | Device | `/api/students/{id}/devices` | 학생 등록 단말 관리 |
 | Admin | `/api/admin/users`, `/classrooms`, `/classroom-networks` | 운영 데이터 조회/수정 |
+| AP registry | `/api/admin/access-points`, `/token`, `/api/internal/presence/ap-registry` | AP 목록, 토큰 발급/폐기, PresenceService registry 동기화 |
 | Presence admin | `/api/admin/presence/classrooms/{code}/snapshot`, `/dummy-controls` | 관리자 재실성 snapshot/demo 제어 |
 | Attendance eligibility | `POST /api/attendance/eligibility` | 출석/시험 eligibility 판정 |
-| Attendance session | `/attendance/timeline`, `/sessions/batch`, `/roster`, `/check-in` | 교수/학생 출석 세션 운영 |
+| Attendance session | `/attendance/timeline`, `/sessions/batch`, `/roster`, `/check-in`, `/report-exports`, `/semester-matrix` | 교수/학생 출석 세션 운영, CSV export, 학기 매트릭스 |
 | Exam | `/courses/{course_code}/exams` | 학생 시험 응시, 교수 시험 운영 |
 | Realtime | `WEBSOCKET /ws/attendance` | 출석 bootstrap/incremental event |
 
@@ -114,7 +119,24 @@ flowchart TD
 | POST | `/api/auth/login` | login_id, password | access token, user, refresh cookie | public |
 | POST | `/api/auth/refresh` | refresh cookie | new access token | refresh session |
 | GET | `/api/auth/bootstrap` | access 또는 refresh | user, route_access | authenticated |
+| GET | `/api/auth/me` | access token | user, route_access | authenticated |
 | POST | `/api/auth/logout` | refresh cookie | success | authenticated |
+
+## LMS/과제/자료/Q&A
+
+| Method | Path | 설명 |
+|---|---|---|
+| GET | `/api/students/{student_id}/courses/{course_code}/learning-items` | 학생 강의자료/영상 목록 |
+| POST | `/api/professors/{professor_id}/courses/{course_code}/learning-items` | 교수 강의자료 등록 |
+| DELETE | `/api/professors/{professor_id}/courses/{course_code}/learning-items/{item_id}` | 교수 강의자료 삭제 |
+| POST | `/api/students/{student_id}/courses/{course_code}/learning-items/{item_id}/progress` | 학생 학습 진도 갱신 |
+| GET | `/api/students/{student_id}/courses/{course_code}/assignments` | 학생 과제 목록 |
+| POST | `/api/students/{student_id}/courses/{course_code}/assignments/{assignment_id}/submit` | 과제 제출/수정 |
+| POST | `/api/professors/{professor_id}/courses/{course_code}/assignments` | 교수 과제 생성 |
+| POST | `/api/professors/{professor_id}/courses/{course_code}/assignments/{assignment_id}/submissions/{submission_id}/grade` | 과제 채점/피드백 |
+| GET | `/api/students/{student_id}/courses/{course_code}/grades` | 학생 성적/피드백 조회 |
+| GET/POST | `/api/students/{student_id}/courses/{course_code}/qna` | 학생 Q&A 조회/등록 |
+| GET/POST | `/api/professors/{professor_id}/courses/{course_code}/qna` | 교수 Q&A 조회/답변 |
 
 ## 출석
 
@@ -125,8 +147,21 @@ flowchart TD
 | POST | `/api/professors/{professor_id}/attendance/sessions/{session_id}/close` | 출석 세션 닫기 |
 | GET | `/api/professors/{professor_id}/attendance/sessions/{session_id}/roster` | roster 조회 |
 | PATCH | `/api/professors/{professor_id}/attendance/sessions/{session_id}/students/{student_id}` | 학생 출석 상태 수정 |
+| POST | `/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports` | 출석 CSV export 생성 |
+| GET | `/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports` | 출석 export 목록 |
+| GET | `/api/professors/{professor_id}/courses/{course_code}/attendance/report-exports/{export_id}/download` | 출석 export 파일 다운로드 |
 | GET | `/api/students/{student_id}/courses/{course_code}/attendance/active-sessions` | 학생 active 출석 세션 조회 |
+| GET | `/api/students/{student_id}/courses/{course_code}/attendance/semester-matrix` | 학생 학기 출석 매트릭스 |
 | POST | `/api/students/{student_id}/attendance/sessions/{session_id}/check-in` | 학생 self check-in |
+
+## 관리자/AP registry
+
+| Method | Path | 설명 |
+|---|---|---|
+| GET | `/api/admin/access-points` | collector 대상 AP와 interface registry 조회 |
+| POST | `/api/admin/access-points/{collector_ap_id}/token` | AP collector token 발급 |
+| DELETE | `/api/admin/access-points/{collector_ap_id}/token` | AP collector token 폐기 |
+| GET | `/api/internal/presence/ap-registry` | PresenceService 전용 AP registry 동기화 |
 
 ## 시험
 
@@ -148,3 +183,5 @@ flowchart TD
 - 교수 수동 수정은 사유를 요구하고 audit log 를 남긴다.
 - WebSocket 은 bootstrap 이후 incremental event 를 발행해 화면 간 상태를 맞춘다.
 - 시험 응시 시작은 exam 상태, 시간 창, attempt 제한, 등록 단말 조건을 함께 확인한다.
+- 과제, 강의자료, 공지, 시험 첨부, 출석 CSV export 는 storage adapter 뒤에 두고, Front 에 credential 이나 public URL 을 노출하지 않는다.
+- PresenceService registry 는 `X-Internal-Token` 으로 보호한 내부 API 로만 동기화한다.

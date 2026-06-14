@@ -281,126 +281,126 @@ DB는 사용자·강의·강의실·네트워크·출석·시험·과제·Q&A·�
 
 학생·교수·관리자 계정과 역할, 로그인 식별자, 암호 해시를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-users.png" alt="users 테이블 구조"><figcaption>users 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-users.png" alt="users 테이블 구조"><figcaption>users 테이블 구조</figcaption></figure>
 
 
 #### courses 테이블 구조
 
 강의 코드, 강의명, 담당 교수 사용자 FK를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-courses.png" alt="courses 테이블 구조"><figcaption>courses 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-courses.png" alt="courses 테이블 구조"><figcaption>courses 테이블 구조</figcaption></figure>
 
 
 #### course_enrollments 테이블 구조
 
 강의와 학생 사용자의 수강 관계와 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-course-enrollments.png" alt="course_enrollments 테이블 구조"><figcaption>course_enrollments 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-course-enrollments.png" alt="course_enrollments 테이블 구조"><figcaption>course_enrollments 테이블 구조</figcaption></figure>
 
 
 #### classrooms 테이블 구조
 
 강의실 코드, 이름, 건물, 층 정보를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-classrooms.png" alt="classrooms 테이블 구조"><figcaption>classrooms 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-classrooms.png" alt="classrooms 테이블 구조"><figcaption>classrooms 테이블 구조</figcaption></figure>
 
 
 #### classroom_networks 테이블 구조
 
 강의실별 SSID/BSSID와 RSSI threshold 기준을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-classroom-networks.png" alt="classroom_networks 테이블 구조"><figcaption>classroom_networks 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-classroom-networks.png" alt="classroom_networks 테이블 구조"><figcaption>classroom_networks 테이블 구조</figcaption></figure>
 
 
 #### access_points 테이블 구조
 
 OpenWrt collector가 보고하는 AP registry 식별자와 라벨을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-access-points.png" alt="access_points 테이블 구조"><figcaption>access_points 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-access-points.png" alt="access_points 테이블 구조"><figcaption>access_points 테이블 구조</figcaption></figure>
 
 
 #### registered_devices 테이블 구조
 
 사용자 등록 단말의 MAC hash, 표시 라벨, 활성 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-registered-devices.png" alt="registered_devices 테이블 구조"><figcaption>registered_devices 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-registered-devices.png" alt="registered_devices 테이블 구조"><figcaption>registered_devices 테이블 구조</figcaption></figure>
 
 
 #### presence_eligibility_logs 테이블 구조
 
 출석 가능성 판정 결과, RSSI/BSSID 근거, snapshot freshness를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-presence-eligibility-logs.png" alt="presence_eligibility_logs 테이블 구조"><figcaption>presence_eligibility_logs 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-presence-eligibility-logs.png" alt="presence_eligibility_logs 테이블 구조"><figcaption>presence_eligibility_logs 테이블 구조</figcaption></figure>
 
 
 #### attendance_sessions 테이블 구조
 
 교수가 연 출석 세션의 시간, course/classroom, bundle 정보를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-attendance-sessions.png" alt="attendance_sessions 테이블 구조"><figcaption>attendance_sessions 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-attendance-sessions.png" alt="attendance_sessions 테이블 구조"><figcaption>attendance_sessions 테이블 구조</figcaption></figure>
 
 
 #### attendance_records 테이블 구조
 
 학생별 최종 출석 상태, 사유, 확정자, 확정 시각을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-attendance-records.png" alt="attendance_records 테이블 구조"><figcaption>attendance_records 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-attendance-records.png" alt="attendance_records 테이블 구조"><figcaption>attendance_records 테이블 구조</figcaption></figure>
 
 
 #### attendance_status_audit_logs 테이블 구조
 
 출석 상태 변경 전후 값, 변경 주체, 사유, version을 남긴다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-attendance-status-audit-logs.png" alt="attendance_status_audit_logs 테이블 구조"><figcaption>attendance_status_audit_logs 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-attendance-status-audit-logs.png" alt="attendance_status_audit_logs 테이블 구조"><figcaption>attendance_status_audit_logs 테이블 구조</figcaption></figure>
 
 
 #### exams 테이블 구조
 
 시험 제목, 상태, 공개/응시 가능 시간, 제한 시간을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-exams.png" alt="exams 테이블 구조"><figcaption>exams 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-exams.png" alt="exams 테이블 구조"><figcaption>exams 테이블 구조</figcaption></figure>
 
 
 #### exam_questions 테이블 구조
 
 시험 문항, 배점, 순서, 정답 선택지 연결 기준을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-exam-questions.png" alt="exam_questions 테이블 구조"><figcaption>exam_questions 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-exam-questions.png" alt="exam_questions 테이블 구조"><figcaption>exam_questions 테이블 구조</figcaption></figure>
 
 
 #### exam_submissions 테이블 구조
 
 학생별 시험 응시 attempt, 제출 시각, 점수, 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-exam-submissions.png" alt="exam_submissions 테이블 구조"><figcaption>exam_submissions 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-exam-submissions.png" alt="exam_submissions 테이블 구조"><figcaption>exam_submissions 테이블 구조</figcaption></figure>
 
 
 #### assignments 테이블 구조
 
 과제 제목, 설명, 공개/마감 시각, 배점, 상태를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-assignments.png" alt="assignments 테이블 구조"><figcaption>assignments 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-assignments.png" alt="assignments 테이블 구조"><figcaption>assignments 테이블 구조</figcaption></figure>
 
 
 #### assignment_submissions 테이블 구조
 
 학생별 과제 제출 본문, 제출 상태, 점수, 피드백을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-assignment-submissions.png" alt="assignment_submissions 테이블 구조"><figcaption>assignment_submissions 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-assignment-submissions.png" alt="assignment_submissions 테이블 구조"><figcaption>assignment_submissions 테이블 구조</figcaption></figure>
 
 
 #### learning_items 테이블 구조
 
 학습자료 제목, 본문, 링크, 파일 첨부 기준을 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-learning-items.png" alt="learning_items 테이블 구조"><figcaption>learning_items 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-learning-items.png" alt="learning_items 테이블 구조"><figcaption>learning_items 테이블 구조</figcaption></figure>
 
 
 #### course_qna_threads 테이블 구조
 
 강의별 Q&A thread, 작성자, 종료 여부를 저장한다.
 
-<figure class="figure mermaid-db"><img src="file:///C:/Users/hwvwvw/Documents/Code-Storage/smart-class/output/revised-main-report/assets/mermaid/db-course-qna-threads.png" alt="course_qna_threads 테이블 구조"><figcaption>course_qna_threads 테이블 구조</figcaption></figure>
+<figure class="figure mermaid-db"><img src="assets/mermaid/db-course-qna-threads.png" alt="course_qna_threads 테이블 구조"><figcaption>course_qna_threads 테이블 구조</figcaption></figure>
 
 
 ## 4.5 DB schema 핵심 근거
@@ -1156,7 +1156,9 @@ Authorization: Bearer <student-access-token>
 
 ```http
 POST /collector/aps/b101-ap-1/snapshot
-X-Collector-Token: <collector-token>
+Authorization: Bearer <collector-token>
+X-Collector-Nonce: 20260615-b101-001
+X-Collector-Timestamp: 2026-06-15T09:00:00Z
 Content-Type: application/json
 
 {
@@ -1303,6 +1305,18 @@ PresenceService는 collector snapshot freshness, 등록 단말, RSSI threshold�
 ### 5.6.5 출석 및 시험의 재실성 결합
 
 출석은 Backend attendance session과 PresenceService eligibility를 결합한다. 시험 접근도 수강/시험 상태와 eligibility policy를 함께 고려할 수 있도록 endpoint와 service layer를 분리했다. 이 설계는 재실성 판정 로직을 특정 UI에 묶지 않고, 출석·시험 등 여러 도메인에서 재사용할 수 있게 한다.
+
+## 5.7 코드 기준 정합성 감사
+
+2026.06.15 제출본은 실제 main 코드, current-truth docs, 보고서 snapshot을 다시 대조해 정리했다. 코드에 구현되어 있는데 보고서에서 계획 단계로 남아 있던 항목은 구현 범위로 고치고, 운영 도입 전 보강해야 할 항목은 후속 과제로 분리했다.
+
+| 영역 | 코드 기준 사실 | 보고서 반영 | 근거 |
+|---|---|---|---|
+| Backend API | 인증, selected LMS, 과제 제출/채점, 출석 CSV export, 학기 매트릭스, AP registry/token API가 구현되어 있다. | API 표와 기능 범위를 확장하고, 과제·성적·Q&A를 계획이 아니라 구현 범위로 정리했다. | `Backend/app/main.py`, `Backend/app/services.py`, `Backend/app/attendance.py`, `Backend/app/storage.py` |
+| PresenceService | dummy overlay뿐 아니라 OpenWrt collector push ingest, bearer token, nonce/timestamp 검증, Backend registry cache를 사용한다. | collector ingest와 registry 동기화를 현재 구현으로 설명하고, stale snapshot은 fail-closed 정책으로 분리했다. | `PresenceService/app/main.py`, `PresenceService/app/service.py`, `PresenceService/app/registry.py` |
+| Front | 학생·교수·관리자 화면 안에 강의자료, 과제, 시험, Q&A, 성적, 출석, 관리자 demo controls가 API client와 연결되어 있다. | 화면 설명에서 임시 스캐폴드 표현을 제거하고, selected LMS와 attachment/download 흐름을 명시했다. | `Front/src/App.tsx`, `Front/src/api.ts`, `Front/src/router.ts` |
+| DB | 과제, object storage, selected LMS, report export, continuous attendance monitoring init script가 base schema 뒤에 추가되어 있다. | DB 표에 `014`~`018` init script의 테이블을 추가하고, 출석 CSV와 삭제 job을 운영 메타데이터로 분리했다. | `DB/postgres/init/014_assignment_schema.sql`, `015_object_storage_schema.sql`, `016_selected_lms_subset.sql`, `018_continuous_attendance_monitoring.sql` |
+| Service/CI | local source mode, GHCR image mode, demo mode, manifest pinning, DB reset guard, self-hosted demo workflow가 구성되어 있다. | 상용 운영 완료로 과장하지 않되, 구현된 release/demo guardrail은 보고서에 근거로 포함했다. | `Service/compose*.yml`, `Service/scripts/deploy-demo.sh`, `Service/.github/workflows/deploy-demo.yml` |
 
 # 6. 실험 및 결과
 

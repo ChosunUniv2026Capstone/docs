@@ -2,7 +2,7 @@
 title: 한계 및 향후 계획
 type: report-section
 status: draft
-updated: 2026-05-03
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -19,11 +19,11 @@ source:
 
 | 영역 | 한계 | 영향 |
 |---|---|---|
-| OpenWrt 수집 | 실제 장비/학교 네트워크별 출력 차이가 있음 | station parsing 안정성 검증 필요 |
+| OpenWrt 수집 | collector push ingest 는 구현됐지만 실제 장비/학교 네트워크별 출력 차이가 있음 | 장기 station parsing 안정성 검증 필요 |
 | MAC 기반 식별 | 랜덤 MAC 사용 시 매칭 실패 가능 | 학생 안내와 정책 필요 |
 | 개인정보 | 단말 식별자 저장 정책 필요 | 운영 도입 전 보안/법무 검토 필요 |
 | 시험 | 현재 MVP 는 객관식/진위형 중심 | 수동 채점/서술형/성적 공개 확장 필요 |
-| LMS 기능 | 과제/성적/질문/자료 정식 저장은 계획 단계 | 최종 LMS 완성도 보강 필요 |
+| LMS 기능 | 과제/성적/질문/자료 MVP 저장과 selected LMS 흐름은 구현됐지만 운영 수준의 정책과 예외 처리는 더 필요함 | 대규모 과목 운영과 학사시스템 연동 전 보강 필요 |
 | CI/CD | component image publish 와 public pull 은 검증됨, demo deploy workflow/server provenance 는 추가 수집 필요 | 최종보고서에 실제 workflow run/healthcheck 증거 보강 필요 |
 | 학교 도입 | 학교별 AP/학사 데이터 연동 방식 상이 | adapter/config 기반 확장 필요 |
 
@@ -37,11 +37,11 @@ source:
 
 # 19.3 향후 계획
 
-1. 실제 OpenWrt push collector 또는 안정적인 수집 adapter 구현
+1. 실제 강의실 OpenWrt/AP 환경에서 collector push 장기 수집 검증
 2. 서비스관리자용 router registration/token UI 완성
 3. 출석 리포트와 통계 고도화
 4. 시험 문제 유형 확장과 수동 채점/성적 공개
-5. 과제 제출, 강의자료, 동영상, 질문/문의 기능 정식 API/DB 연결
+5. 과제 제출, 강의자료, 동영상, 질문/문의 기능의 운영 정책과 예외 처리 보강
 6. GitHub Actions workflow run 증거와 demo deploy summary 수집
 7. staging/prod 배포 환경 분리와 운영 secret 정책 보강
 8. 조선대학교 테스트베드 운영 결과 수집

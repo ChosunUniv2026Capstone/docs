@@ -47,7 +47,8 @@ Front End 는 React + Vite 기반 단일 앱이다.
 | 출석 학기 매트릭스 | 차시별 최종 출석 상태 | `assets/screenshots/student-07-attendance-before-check.png` |
 | 시험 목록 | 강의별 시험 목록 | `assets/screenshots/student-10-exam-list.png` |
 | 시험 응시 | 문항 풀이, 답안 저장, 제출 | `assets/screenshots/student-11-exam-taking.png`, `assets/screenshots/student-12-exam-answer-selected.png` |
-| 자료/동영상 스캐폴드 | 임시 강의자료/영상 UI | `assets/screenshots/student-04-learning-content.png` |
+| 자료/동영상 | 강의자료/영상 조회, 인증 다운로드, 학습 진도 갱신 | `assets/screenshots/student-04-learning-content.png` |
+| 과제/성적/Q&A | 과제 제출·수정, 성적/피드백 확인, 질문 등록 | 최신 기능 캡처 패키지의 student/professor LMS 화면 |
 
 # 10.4 교수 화면
 
@@ -63,6 +64,7 @@ Front End 는 React + Vite 기반 단일 앱이다.
 | 출석 roster | 학생별 상태 수정/사유 입력 | `assets/screenshots/professor-12-attendance-roster.png`, `assets/screenshots/professor-13-attendance-slot-roster.png` |
 | 학생별 이력 | 학생 차시별 변경 이력 | 최종보고 전 추가 권장 |
 | 출석 리포트 | aggregate / student stats | `assets/screenshots/professor-10-attendance-student-stats.png` |
+| 자료/과제/성적/Q&A | 강의자료 등록/삭제, 과제 생성/채점, 성적/진도/Q&A 확인 | 최신 기능 캡처 패키지의 professor LMS 화면 |
 
 # 10.5 서비스관리자 화면
 
@@ -73,7 +75,7 @@ Front End 는 React + Vite 기반 단일 앱이다.
 | AP 매핑 | classroom_networks 조회/threshold 수정 | `assets/screenshots/admin-02-classrooms-networks.png` |
 | 재실성 snapshot | 강의실별 AP/station 상태 확인 | `assets/screenshots/admin-02-classrooms-networks.png` |
 | demo overlay | 더미 재실성 입력값 조작 | `assets/screenshots/admin-03-presence-demo-control.png`, `assets/screenshots/admin-04-presence-demo-applied.png` |
-| OpenWrt 장비 관리 | 장비 등록/토큰/상태 확인 | 현재 main 기준 화면 없음, 구현 후 촬영 |
+| OpenWrt 장비 관리 | 장비 등록/토큰 전용 UI | 현재 main 기준 화면 없음. Backend registry/token API, DB, Service collector script 근거로 구현 범위를 설명한다. |
 
 # 10.6 화면 설계 원칙
 
@@ -84,8 +86,8 @@ Front End 는 React + Vite 기반 단일 앱이다.
 
 # 10.7 초안 상태
 
-이 문서는 모든 기능 캡처가 들어갈 위치를 먼저 정의한다.
-실제 이미지 파일은 2026-04-12 Playwright 캡처 결과로 `08-reports/assets/screenshots/` 아래에 추가되었으며, 아직 남은 일부 실패/완료 상태 화면은 체크리스트에 후속 촬영 항목으로 유지한다.
+이 문서는 기능 캡처가 들어갈 위치와 최신 산출물의 대응 관계를 정의한다.
+최종 보고서에 쓰는 이미지는 2026-06-13 기준 `outputs/report-ppt-assets-20260613/` 패키지에서 가져오며, 오래된 2026-04-12 캡처는 섹션별 위치 확인용으로만 남긴다.
 
 # 10.8 실제 Playwright 캡처 산출물
 

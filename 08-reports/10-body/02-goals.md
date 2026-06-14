@@ -2,7 +2,7 @@
 title: 목표
 type: report-section
 status: draft
-updated: 2026-05-03
+updated: 2026-06-15
 owners:
   - team
 related:
@@ -30,13 +30,13 @@ source:
 | 구분 | 목표 | 현재 상태 |
 |---|---|---|
 | 인증 | 학생/교수/서비스관리자 로그인과 세션 유지 | 구현됨 |
-| 학생 기능 | 강의 목록, 공지, 단말 관리, 출석/시험 접근 | 일부 구현 + 확장 계획 |
-| 교수 기능 | 담당 강의, 공지 작성, 시험 운영, 출석 운영 | 일부 구현 + 확장 계획 |
-| 서비스관리자 기능 | 사용자/강의실/AP 조회, 재실성 데모 제어 | 일부 구현 |
-| 출석 | projected slot 기반 bundle attendance session | 설계/일부 구현 |
-| 시험 | 객관식/진위형 중심 MVP 시험 플로우 | 설계/일부 구현 |
-| 재실성 판별 | OpenWrt/더미 snapshot + Redis cache + 등록 단말 매칭 | 더미/로컬 구현, 실 장비 확장 계획 |
-| DB | LMS + 출석 + 시험 스키마 | 구현됨 |
+| 학생 기능 | 강의 목록, 공지, 단말 관리, 자료, 과제, 성적, Q&A, 출석/시험 접근 | 구현됨 |
+| 교수 기능 | 담당 강의, 공지 작성, 자료 등록/삭제, 과제 채점, 시험 운영, 출석 운영 | 구현됨 |
+| 서비스관리자 기능 | 사용자/강의실/AP 조회, 재실성 데모 제어, snapshot 확인 | 구현됨 |
+| 출석 | projected slot 기반 bundle attendance session, self check-in, 리포트/CSV, 학기 매트릭스 | 구현됨 |
+| 시험 | 객관식/진위형 중심 MVP 시험 플로우 | 구현됨 |
+| 재실성 판별 | OpenWrt collector snapshot + demo overlay + Redis cache + 등록 단말 매칭 | 구현/운영 보강 |
+| DB | LMS + 출석 + 시험 + object storage + selected LMS + continuous attendance schema | 구현됨 |
 | 인프라 | Docker Compose 로컬 실행 | 구현됨 |
 | CI/CD | repo별 테스트/빌드 자동화, GHCR 이미지 릴리스, Service manifest 기반 실행/배포 구조 | 구현/검증 진행 |
 
